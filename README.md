@@ -7,7 +7,7 @@ Projekt Meeting
 
 [+] Możliwość wyboru określonej kategorii spotkania z listy wyboru lub za pomocą filtrowania opisu spotkania.
 
-[+ -] Możliwość wyboru spotkania w określonej odległości od miejsc w ktorym aktualnie się znajdujemy
+[+/-] Możliwość wyboru spotkania w określonej odległości od miejsc w ktorym aktualnie się znajdujemy
 
 [+] Na głównej stronie będzie również możliwość dopisania nowej propozycji spotkania.
 
@@ -28,7 +28,7 @@ Projekt Meeting
 
 [+] możliwość dodania jakiejś dodatkowej informacji 
 
-[+] możliwość wypisania się z listy osób zainteresowanych udziałem w spotkaniu (0 uzytkowników dopisanych do spotkania – spotkanie znika z bazy danych)
+[+] możliwość wypisania się z listy osób zainteresowanych udziałem w spotkaniu (0 uzytkowników dopisanych do spotkania – spotkanie znika z bazy danych, uzyj crona)
 
 [+/-] czat z innymi uzytkownikami spotkania
 
