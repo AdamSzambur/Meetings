@@ -1,6 +1,7 @@
 package pl.coderslab.meetings.dto;
 
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import pl.coderslab.meetings.models.User;
 
 import javax.persistence.Column;
 import javax.persistence.Lob;
@@ -8,8 +9,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.sql.Blob;
+import java.util.Base64;
 
-public class RegistrationFormDTO {
+public class UserFormDTO {
     @NotBlank
     @Email
     private String email;
@@ -28,7 +30,25 @@ public class RegistrationFormDTO {
 
     private String lastName;
 
+    private String base64Image;
 
+    public UserFormDTO() {
+    }
+
+    public UserFormDTO(User user) {
+        this.email = user.getEmail();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.base64Image = Base64.getEncoder().encodeToString(user.getAvatar());
+    }
+
+    public String getBase64Image() {
+        return base64Image;
+    }
+
+    public void setBase64Image(String base64Image) {
+        this.base64Image = base64Image;
+    }
     public CommonsMultipartFile getAvatar() {
         return avatar;
     }

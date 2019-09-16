@@ -11,7 +11,7 @@
         <div class="rounded border p-5">
         <h4 class="cover-heading">Rejestrowanie nowego użytkownika</h4>
         <p>
-            <form:form method="post" modelAttribute="data" cssClass="form-group col-md-4" enctype="multipart/form-data">
+            <form:form method="post" modelAttribute="data" cssClass="form-group col-md-5" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="firstName">Imię</label>
                     <form:input path="firstName" cssClass="form-control" id="firstName"/>
@@ -31,11 +31,12 @@
                     <form:errors path="email" cssClass="error" element="div" />
                 </div>
                 <div class="form-group">
-                    <label for="avatar">Avatar</label>
+                    <label for="avatar">Avatar</label><br>
+                    <img class="border border-info rounded" src="data:image/jpeg;base64,${data.base64Image}" width="70" height="70"/><br><br>
+                    <form:hidden path="base64Image"/>
                     <form:input type="file" path="avatar" cssClass="form-control-file" id="avatar"/>
                     <form:errors path="avatar" cssClass="error" element="div" />
                 </div>
-
                 <div class="form-group">
                     <label for="password">Hasło</label>
                     <form:password path="password" cssClass="form-control" id="password"/>

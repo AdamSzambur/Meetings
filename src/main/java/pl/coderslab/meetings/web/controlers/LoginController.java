@@ -13,7 +13,6 @@ public class LoginController {
 
     @GetMapping
     public String registrationPage(@RequestParam(required = false) String error, Model model) {
-        // DTO - data transfer object (obiekt zawierajacy w tym wypadku pole formularza).
         model.addAttribute("user",new LoginFormDTO());
         if (!(error == null)) {
             model.addAttribute("errorMsg", "Podano błędne dane logowania");

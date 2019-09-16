@@ -34,7 +34,6 @@
         <c:if test="${principal!= null}">
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav mr-auto">
-<%--                    <c:set value="${fn:split(pageContext.request.contextPath, '/')}" var="splitUrl"/>--%>
                     <li class="nav-item active">
                         <a class="nav-link" href="${mainURL}"><i class="fas fa-home"></i> Strona
                             główna ${pageContext.request.pathTranslated}<span class="sr-only">(current)</span></a>
@@ -43,7 +42,7 @@
                         <a class="nav-link dropdown-toggle" href="#"
                            id="navbarDropdownMenuLink1" role="button" data-toggle="dropdown" aria-haspopup="true"
                            aria-expanded="false">
-                            <img src="data:image/jpeg;base64,${principal.base64Image}" width="27" height="27" class="avatar"/>&nbsp;&nbsp;${principal.fullName}
+                            <img src="data:image/jpeg;base64,${principal.base64Image}" width="27" height="27" class="avatar"/>&nbsp;${principal.fullName}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
                             <a class="dropdown-item" href="${mainURL}user/userTweets"><i class="fab fa-twitter"></i> Tweet'y</a>
@@ -53,15 +52,11 @@
                         </div>
                     </li>
                 </ul>
-
+                <a class="nav-link" href="${mainURL}logout"><i class="fas fa-sign-out-alt"></i>&nbsp;uLogout</a>
             </div>
-            <a class="nav-link" href="${mainURL}logout"><i class="fas fa-sign-out-alt"></i>
-                Logout
-            </a>
-
         </c:if>
         <c:if test="${principal == null}">
-<%--            Trochę masakra ale fajnie było przecwiczyć też trochę nowych funkcji z JSTL--%>
+<%--            Trochę masakra ale fajnie było przecwiczyć też trochę nowych funkcji --%>
             <c:set value="${fn:split(pageContext.request.requestURL, '/')}" var="splitUrl"/>
             <c:if test="${splitUrl[fn:length(splitUrl)-1].equals('login.jsp')}">
             <a class="nav-link" href="${mainURL}register"><i class="fas fa-user-plus"></i>
