@@ -29,6 +29,12 @@ public class UserService {
         return user;
     }
 
+    public User getUserById(Long id) {
+        User user = userRepository.findOne(id);
+        user.setBase64Image(Base64.getEncoder().encodeToString(user.getAvatar()));
+        return user;
+    }
+
     public void updateUser(UserFormDTO data) {
         User user = userRepository.findByEmail(data.getEmail());
         user.setEmail(data.getEmail());

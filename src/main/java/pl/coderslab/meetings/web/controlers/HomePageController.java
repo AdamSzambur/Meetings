@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pl.coderslab.meetings.Chat;
 import pl.coderslab.meetings.models.User;
 import pl.coderslab.meetings.services.UserService;
 import javax.validation.Validator;
@@ -20,6 +19,7 @@ public class HomePageController {
 
     public HomePageController(UserService userService) {
         this.userService = userService;
+
     }
 
     @ModelAttribute("principal")
@@ -30,8 +30,7 @@ public class HomePageController {
 
     @GetMapping
     public String homePage(Model model, Principal principal) {
-        ++Chat.i;
-        model.addAttribute("varible", Chat.i);
+        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
         return "index";
     }
 }

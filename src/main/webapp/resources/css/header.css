@@ -30,7 +30,7 @@ code {
     font-size: 80%;
 }
 
-.modal {
+.modal_alert {
     display: inline;
     position: absolute;
     top: 50%;

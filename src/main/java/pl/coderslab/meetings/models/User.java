@@ -21,6 +21,10 @@ public class User extends AbstractEntity{
     @Column(name = "last_name")
     private String lastName;
 
+    @ManyToMany
+    @JoinTable(name = "users_meetings")
+    private List<Meeting> meetings;
+
 
     // domyslnie dopisujemy avatara do uzytkownika (mogło być ładniej ale nie wyszła tak źle).
     @Lob
@@ -110,6 +114,14 @@ public class User extends AbstractEntity{
 
     public String getFullName() {
         return getFirstName()+ " "+getLastName();
+    }
+
+    public List<Meeting> getMeetings() {
+        return meetings;
+    }
+
+    public void setMeetings(List<Meeting> meetings) {
+        this.meetings = meetings;
     }
 
     @Override

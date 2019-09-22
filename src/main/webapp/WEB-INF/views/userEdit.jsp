@@ -4,20 +4,16 @@
 <jsp:include page="header.jsp"/>
 <c:url value="/" var="mainURL"/>
 <main role="main" class="flex-shrink-0">
-
-
     <br>
     <div class="container">
         <div class="rounded border p-5">
         <h4 class="cover-heading">Edycja danych użytkownika</h4>
-        <p>
             <form:form method="post" modelAttribute="data" cssClass="form-group col-md-4" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="firstName">Imię</label>
                     <form:input path="firstName" cssClass="form-control" id="firstName"/>
                     <form:errors path="firstName" cssClass="invalid-feedback" element="div" />
                 </div>
-
                 <div class="form-group">
                     <label for="lastName">Nazwisko</label>
                     <form:input path="lastName" cssClass="form-control" id="lastName"/>
@@ -48,16 +44,10 @@
                     <form:errors path="rePassword" cssClass="error" element="div" />
                 </div>
                 <button type="submit" class="btn btn-primary">Dodaj nowego użytkownika</button>
-
             </form:form>
-        </p>
         </div>
     </div>
-
-
-
-
-
+    <br>
 </main>
 <jsp:include page="footer.jsp"/>
 

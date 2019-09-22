@@ -17,7 +17,9 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/da6d9e6874.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
     <link rel="stylesheet" href="${mainURL}resources/css/header.css"/>
+    <link rel="stylesheet" href="${mainURL}resources/css/chat.css"/>
 </head>
 <body class="d-flex flex-column h-100">
 <header>
@@ -52,7 +54,7 @@
                         </div>
                     </li>
                 </ul>
-                <a class="nav-link" href="${mainURL}logout"><i class="fas fa-sign-out-alt"></i>&nbsp;uLogout</a>
+                <a class="nav-link" href="${mainURL}logout"><i class="fas fa-sign-out-alt"></i>&nbsp;Wyloguj się</a>
             </div>
         </c:if>
         <c:if test="${principal == null}">
