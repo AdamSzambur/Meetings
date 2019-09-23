@@ -74,10 +74,7 @@ $(function () {
     });
 
 
-    // tutaj jest funkcja ktora dipisuje brakujące
-
-
-
+    // funkcja wyswietlająca liste wiadomosci na stronie.
     function refreshChat() {
         var chatTable = $('#chat_table');
 
@@ -86,13 +83,6 @@ $(function () {
         for (element of currentMessages) {
             var row =$('<tr class="row"><td class="col-1"><img src="data:image/jpeg;base64,'+element.userAvatar+'" title="'+element.userName+'" width="27" height="27" class="avatar"/></td><td class="col-11 text-left">'+element.message+'</td></tr>');
             chatTable.append(row);
-
         }
     }
-
-
-
-
-
-
 });

@@ -2,6 +2,7 @@ package pl.coderslab.meetings.web.chat;
 
 import java.time.LocalDateTime;
 
+
 public class ChatMessage {
 
     private Long meetingId;
