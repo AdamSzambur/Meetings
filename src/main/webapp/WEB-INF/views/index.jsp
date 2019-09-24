@@ -79,25 +79,29 @@
 
 
 
+        Lista zalogowanych użytkowników :
+        <c:forEach items="${loggedUsers}" var="loggedUser">
+            <img src="data:image/jpeg;base64,${loggedUser.base64Image}" width="27" height="27" class="avatar"/>
+             ${loggedUser.fullName}
+        </c:forEach>
+        <br><br>
 
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-            Chat naszego spotkania
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable">
+            Chat <i class="far fa-comment-dots"></i> <span class="" id="chat_counter">[0]</span>
         </button>
 
         <!-- Modal -->
-        <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+        <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Czat</h5>
+                        <h5 class="modal-title" id="exampleModalScrollableTitle">Czat</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-<%--                        Tutaj dodajemy nowe wiadomości--%>
-<%--                        <form id="chatForm" method="post" action="http://localhost:8080/Meetings_war_exploded/chat/add">--%>
                         <form id="chatForm">
                             <input type="hidden" name="userId" value="${user.id}">
                             <input type="hidden" name="meetingId" value="1">
@@ -126,6 +130,7 @@
                 </div>
             </div>
         </div>
+
 
     </div>
     <br>

@@ -23,23 +23,22 @@ $(function () {
                         // console.log(json[0].created.nano);
                         // console.log(currentMessages[0].created.nano);
                         currentMessages = json;
-                        torf = true;
+                        refreshChat();
                     }
                 } else {
                     currentMessages = json;
-                    torf = true;
+                    refreshChat();
                 }
-            }
-            if (torf) {
-                // console.log("You have new messages in chat " + currentMessages.length);
-                refreshChat();
+            } else {
+                if (currentMessages.length > 0) {
+                    currentMessages = [];
+                    refreshChat();
+                }
             }
         });
     }
 
     setInterval(getAllMessages,5000);
-
-
 
     //dodajemy odpowiednie zdarzenie na formie chatForm
     var chatForm = $('#chatForm');
@@ -76,6 +75,18 @@ $(function () {
 
     // funkcja wyswietlająca liste wiadomosci na stronie.
     function refreshChat() {
+        var chatCounter = $('#chat_counter');
+
+        if (currentMessages.length>0 && !chatCounter.hasClass('chat_counter')) {
+            chatCounter.addClass('chat_counter');
+        }
+
+        if (currentMessages.length == 0) {
+            chatCounter.removeClass('chat_counter');
+        }
+
+        chatCounter.html('['+currentMessages.length+']');
+
         var chatTable = $('#chat_table');
 
         chatTable.html('');

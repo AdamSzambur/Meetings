@@ -1,6 +1,8 @@
 package pl.coderslab.meetings.services;
 
 import org.apache.commons.io.IOUtils;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.coderslab.meetings.dto.UserFormDTO;
@@ -10,6 +12,8 @@ import pl.coderslab.meetings.repositories.UserRepository;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Base64;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -17,10 +21,12 @@ public class UserService {
 
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+    private SessionRegistry sessionRegistry;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SessionRegistry sessionRegistry) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.sessionRegistry = sessionRegistry;
     }
 
     public User getUserByEmail(String email) {
@@ -49,5 +55,15 @@ public class UserService {
             }
         }
         userRepository.save(user);
+    }
+
+
+    public List<User> findAllLoggedInUsers() {
+        return sessionRegistry.getAllPrincipals()
+                .stream()
+                .filter(principal -> principal instanceof UserDetails)
+                .map(UserDetails.class::cast)
+                .map(p->getUserByEmail(p.getUsername()))
+                .collect(Collectors.toList());
     }
 }

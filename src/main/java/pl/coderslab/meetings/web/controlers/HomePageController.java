@@ -31,6 +31,7 @@ public class HomePageController {
     @GetMapping
     public String homePage(Model model, Principal principal) {
         model.addAttribute("user", userService.getUserByEmail(principal.getName()));
+        model.addAttribute("loggedUsers", userService.findAllLoggedInUsers());
         return "index";
     }
 }
