@@ -60,20 +60,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .logout().and()
                 .formLogin()
-                .loginPage("/login")
+                .loginPage("/user/login")
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .and()
-                .csrf().disable()
+                .and().logout()
+                .and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/chat").permitAll()
-                .antMatchers("/register").permitAll()
-                .antMatchers("/login").permitAll()
+                .antMatchers("/user/register").permitAll()
+                .antMatchers("/user/login").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN") //Czyli uzytkownik w bazie ma ROLE_ADMIN dostep do
                 .anyRequest().authenticated()
-                .and().logout()
                 .and().sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry()); // pobieramy wysztstkich zaloowanych uzytkowników
     }
 

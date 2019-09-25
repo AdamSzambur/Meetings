@@ -1,8 +1,4 @@
-package pl.coderslab.meetings.web.chat;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+package pl.coderslab.meetings.chat;
 
 public class ChatMessageDTO {
     private Long meetingId;

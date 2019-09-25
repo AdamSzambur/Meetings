@@ -1,4 +1,4 @@
-package pl.coderslab.meetings.web.chat;
+package pl.coderslab.meetings.chat;
 
 import org.springframework.stereotype.Component;
 
@@ -9,15 +9,15 @@ import java.util.List;
 public class ChatMessageRepository {
     private static List<ChatMessage> chatMessages = new ArrayList<>();
 
-    public List<ChatMessage> getChatMessages() {
+    List<ChatMessage> getChatMessages() {
         return chatMessages;
     }
 
-    public void setChatMessages(List<ChatMessage> chatMessages) {
+    void setChatMessages(List<ChatMessage> chatMessages) {
         ChatMessageRepository.chatMessages = chatMessages;
     }
 
-    public void addChatMessage(ChatMessage chatMessage) {
+    void addChatMessage(ChatMessage chatMessage) {
         ChatMessageRepository.chatMessages.add(chatMessage);
     }
 

@@ -1,11 +1,11 @@
-package pl.coderslab.meetings.services;
+package pl.coderslab.meetings.user.register;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.coderslab.meetings.dto.UserFormDTO;
-import pl.coderslab.meetings.models.User;
-import pl.coderslab.meetings.repositories.UserRepository;
+import pl.coderslab.meetings.user.UserFormDTO;
+import pl.coderslab.meetings.user.User;
+import pl.coderslab.meetings.user.UserRepository;
 
 import javax.transaction.Transactional;
 import java.io.IOException;

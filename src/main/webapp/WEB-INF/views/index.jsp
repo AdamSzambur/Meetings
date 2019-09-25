@@ -86,7 +86,7 @@
         </c:forEach>
         <br><br>
 
-        <!-- Button trigger modal -->
+        <!-- Chat-->
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable">
             Chat <i class="far fa-comment-dots"></i> <span class="" id="chat_counter">[0]</span>
         </button>
@@ -130,6 +130,45 @@
                 </div>
             </div>
         </div>
+<%--        chat end--%>
+
+
+
+
+
+    <div class="form-row">
+        <div class="form-group col-md-8">
+            <h4 class="cover-heading">Lista ostatnich poropozycji spotkań </h4>
+        </div>
+    </div>
+
+
+    <table class="table table-striped">
+        <tbody>
+        <c:forEach items="${meetingsNext7Days}" var="meeting" varStatus="i">
+            <tr>
+                <td>
+                    <div class="card">
+                        <div class="card-header">
+                            ${meeting.title}
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">${meeting.description}</p>
+                            <a href="${mainURL}tweet?id=${meeting.id}" class="btn btn-primary"><i class="fas fa-search-plus"></i> Pokaż szczegóły</a>
+                            <p class="card-text" style="text-align: right">Liczba komentarzy <i class="far fa-comments"></i> ${meeting.meetTime}</p>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+
+        Lista możliwych spotkań na najbliższe 7 dni
+        <c:forEach items="${meetingsNext7Days}" var="meeting">
+            ${meeting.meetTime} ${meeting.title} ${meeting.description} ${meeting.owner.fullName}<br>
+        </c:forEach>
+
 
 
     </div>

@@ -1,13 +1,10 @@
-package pl.coderslab.meetings.services;
+package pl.coderslab.meetings.user;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.coderslab.meetings.dto.UserFormDTO;
-import pl.coderslab.meetings.models.User;
-import pl.coderslab.meetings.repositories.UserRepository;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -59,11 +56,18 @@ public class UserService {
 
 
     public List<User> findAllLoggedInUsers() {
-        return sessionRegistry.getAllPrincipals()
+
+        System.out.println("Liczba zalogownych uzytkowników : " +sessionRegistry.getAllPrincipals().size());
+
+        List<User> result = sessionRegistry.getAllPrincipals()
                 .stream()
                 .filter(principal -> principal instanceof UserDetails)
                 .map(UserDetails.class::cast)
                 .map(p->getUserByEmail(p.getUsername()))
                 .collect(Collectors.toList());
+
+        System.out.println("Zalogowani uzytkownicy");
+        result.forEach(u-> System.out.println(u.getFullName()));
+        return result;
     }
 }

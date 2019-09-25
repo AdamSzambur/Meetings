@@ -1,4 +1,4 @@
-package pl.coderslab.meetings.web.controlers;
+package pl.coderslab.meetings.user.register;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,14 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pl.coderslab.meetings.dto.UserFormDTO;
-import pl.coderslab.meetings.models.User;
-import pl.coderslab.meetings.services.RegistrationService;
+import pl.coderslab.meetings.user.UserFormDTO;
+import pl.coderslab.meetings.user.User;
 
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/register")
+@RequestMapping("/user/register")
 public class RegistrationController {
 
     private RegistrationService registrationService;
@@ -46,6 +45,6 @@ public class RegistrationController {
             return "registration";
         }
         registrationService.registerUser(data);
-        return "redirect:/login";
+        return "redirect:/user/login";
     }
 }

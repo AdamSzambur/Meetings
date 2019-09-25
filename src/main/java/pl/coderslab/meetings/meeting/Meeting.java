@@ -1,11 +1,11 @@
-package pl.coderslab.meetings.models;
+package pl.coderslab.meetings.meeting;
 
 
-import pl.coderslab.meetings.web.chat.ChatMessage;
+import pl.coderslab.meetings.AbstractEntity;
+import pl.coderslab.meetings.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,7 +13,11 @@ import java.util.List;
 public class Meeting extends AbstractEntity {
 
     @Column(nullable = false)
-    private String name;
+    private String title;
+
+    @ManyToOne
+    private User owner;
+
 
     private LocalDateTime created;
 
@@ -28,20 +32,25 @@ public class Meeting extends AbstractEntity {
     @ManyToMany(mappedBy = "meetings")
     private List<User> members;
 
-    @Transient
-    private List<ChatMessage> chatMessages = new ArrayList<>();
-
     @PrePersist
     public void prePersist() {
         created = LocalDateTime.now();
     }
 
-    public String getName() {
-        return name;
+    public User getOwner() {
+        return owner;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public LocalDateTime getCreated() {

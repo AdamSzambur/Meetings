@@ -1,4 +1,4 @@
-package pl.coderslab.meetings.web.controlers;
+package pl.coderslab.meetings.user.userEdit;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pl.coderslab.meetings.dto.UserFormDTO;
-import pl.coderslab.meetings.models.User;
-import pl.coderslab.meetings.services.UserService;
+import pl.coderslab.meetings.user.UserFormDTO;
+import pl.coderslab.meetings.user.User;
+import pl.coderslab.meetings.user.UserService;
 
 import javax.validation.Valid;
 import java.security.Principal;

@@ -1,8 +1,8 @@
-package pl.coderslab.meetings.web.chat;
+package pl.coderslab.meetings.chat;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import pl.coderslab.meetings.services.UserService;
+import pl.coderslab.meetings.user.UserService;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

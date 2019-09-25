@@ -1,13 +1,15 @@
-package pl.coderslab.meetings.models;
+package pl.coderslab.meetings.user;
+
+import pl.coderslab.meetings.meeting.Meeting;
+import pl.coderslab.meetings.AbstractEntity;
 
 import javax.persistence.*;
-import java.sql.Blob;
 import java.util.Base64;
 import java.util.List;
 
 @Entity
 @Table(name="users")
-public class User extends AbstractEntity{
+public class User extends AbstractEntity {
 
     @Column(unique = true, nullable = false)
     private String email;
@@ -20,6 +22,9 @@ public class User extends AbstractEntity{
 
     @Column(name = "last_name")
     private String lastName;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Meeting> myMeetings;
 
     @ManyToMany
     @JoinTable(name = "users_meetings")
@@ -54,6 +59,14 @@ public class User extends AbstractEntity{
 
     public User() {
         setAvatar(Base64.getDecoder().decode(getDefaultAvatar()));
+    }
+
+    public List<Meeting> getMyMeetings() {
+        return myMeetings;
+    }
+
+    public void setMyMeetings(List<Meeting> myMeetings) {
+        this.myMeetings = myMeetings;
     }
 
     public String getDefaultAvatar() {

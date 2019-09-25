@@ -1,4 +1,4 @@
-package pl.coderslab.meetings.web.chat;
+package pl.coderslab.meetings.chat;
 
 import java.time.LocalDateTime;
 

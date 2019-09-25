@@ -1,14 +1,10 @@
-package pl.coderslab.meetings.dto;
+package pl.coderslab.meetings.user;
 
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
-import pl.coderslab.meetings.models.User;
 
-import javax.persistence.Column;
-import javax.persistence.Lob;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.sql.Blob;
 import java.util.Base64;
 
 public class UserFormDTO {

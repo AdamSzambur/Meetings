@@ -7,10 +7,10 @@
 <html lang="pl" class="h-100">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Jekyll v3.8.5">
+    <meta title="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta title="description" content="">
+    <meta title="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta title="generator" content="Jekyll v3.8.5">
     <title>Meetings by Adam</title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -38,7 +38,7 @@
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
                         <a class="nav-link" href="${mainURL}"><i class="fas fa-home"></i> Strona
-                            główna ${pageContext.request.pathTranslated}<span class="sr-only">(current)</span></a>
+                            główna</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#"
@@ -47,7 +47,7 @@
                             <img src="data:image/jpeg;base64,${principal.base64Image}" width="27" height="27" class="avatar"/>&nbsp;${principal.fullName}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
-                            <a class="dropdown-item" href="${mainURL}user/userTweets"><i class="fab fa-twitter"></i> Tweet'y</a>
+                            <a class="dropdown-item" href="${mainURL}user/userTweets"><i class="fab fa-twitter"></i> Meetings</a>
                             <a class="dropdown-item" href="${mainURL}message?box=inbox"><i class="fas fa-envelope-open-text"></i>
                                 Wiadomości [<span style="color: red;">${unreadMessagesNumber}</span>]</a>
                             <a class="dropdown-item" href="${mainURL}user/userEdit"><i class="fas fa-user-cog"></i> Moje ustawienia</a>
@@ -61,12 +61,12 @@
 <%--            Trochę masakra ale fajnie było przecwiczyć też trochę nowych funkcji --%>
             <c:set value="${fn:split(pageContext.request.requestURL, '/')}" var="splitUrl"/>
             <c:if test="${splitUrl[fn:length(splitUrl)-1].equals('login.jsp')}">
-            <a class="nav-link" href="${mainURL}register"><i class="fas fa-user-plus"></i>
+            <a class="nav-link" href="${mainURL}user/register"><i class="fas fa-user-plus"></i>
                 Zarejestruj nowego użytkownika
             </a>
             </c:if>
-            <c:if test="${splitUrl[fn:length(splitUrl)-1].equals('registration.jsp')}">
-            <a class="nav-link" href="${mainURL}login"><i class="fas fa-sign-in-alt"></i>
+            <c:if test="${splitUrl[fn:length(splitUrl)-1].equals('register.jsp')}">
+            <a class="nav-link" href="${mainURL}user/login"><i class="fas fa-sign-in-alt"></i>
                 Zaloguj się
             </a>
             </c:if>

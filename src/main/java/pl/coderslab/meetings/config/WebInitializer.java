@@ -9,7 +9,7 @@ import javax.servlet.ServletException;
 public class WebInitializer implements WebApplicationInitializer {
     // potrzebujemy tego do uzyskania listy aktualnie zalogowanych uzytkowników
     @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
+    public void onStartup(ServletContext servletContext) throws ServletException{
         servletContext.addListener(HttpSessionEventPublisher.class);
     }
 }

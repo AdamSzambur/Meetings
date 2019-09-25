@@ -1,4 +1,4 @@
-package pl.coderslab.meetings.dto;
+package pl.coderslab.meetings.user.login;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
