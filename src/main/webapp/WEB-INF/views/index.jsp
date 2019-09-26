@@ -4,6 +4,9 @@
 <jsp:include page="header.jsp"/>
 <c:url value="/" var="mainURL"/>
 <script src="${mainURL}resources/js/chat.js"></script>
+<script src="${mainURL}resources/js/jquery.simple-calendar.js"></script>
+
+
 <main role="main" class="flex-shrink-0">
     <br>
     <div class="container-fluid p-3" style="background-color: #ff8600">
@@ -116,6 +119,17 @@
             </div>
             <div class="col-sm-3">
 <%--                kalendarz i moze lista zalogowanych uzytkowników--%>
+                <div id="container" class="calendar-container"></div>
+                <script>
+                    $(document).ready(function(){
+                        $("#container").simpleCalendar({
+                            fixedStartDay: false
+                        });
+                    });
+                </script>
+
+
+
                 Lista zalogowanych użytkowników :
                 <c:forEach items="${loggedUsers}" var="loggedUser">
                     <img src="data:image/jpeg;base64,${loggedUser.base64Image}" width="27" height="27" class="avatar"/>
