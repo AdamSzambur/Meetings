@@ -18,22 +18,27 @@
             </div>
 
             <div class="col-sm-auto align-middle">
-                <form class="form-inline">
+                <form:form cssClass="form-inline" modelAttribute="finderFormDTO" method="get">
+                    <form:hidden path="latitude" value="" id="latitude"/>
+                    <form:hidden path="longitude" value="" id="longitude"/>
                     <div class="input-group mb-2 mr-sm-2">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-search"></i></span>
                         </div>
-                        <input style="font-weight: bold" type="text" class="form-control" placeholder="Znajdź">
+                        <form:input path="findPhrase" cssStyle="font-weight: bold" cssClass="form-control" placeholder="Znajdź"/>
                     </div>
-
                     <span class="mb-2 mr-sm-2" style="font-weight: bold;"> &nbsp;&nbsp;w odległości&nbsp;</span>
+                    <form:select path="distance" cssClass="custom-select mb-2 mr-sm-2" cssStyle="background-color: #ff8600; font-weight: bold; border: none">
+                        <form:option value="5" label="5 km"/>
+                        <form:option value="10" label="10 km"/>
+                        <form:option value="20" label="20 km"/>
+                        <form:option value="50" label="50 km"/>
+                        <form:option value="90000" label="far away"/>
+                    </form:select>
+                        <button type="submit" class="btn btn-primary">Szukaj</button>
+                </form:form>
 
-                    <select class="custom-select mb-2 mr-sm-2" style="background-color: #ff8600; font-weight: bold; border: none">
-                        <option value="20">20 km</option>
-                        <option value="50">50 km</option>
-                        <option value="40000">dużej :)</option>
-                    </select>
-                </form>
+
             </div>
         </div>
     </div>
@@ -45,11 +50,7 @@
                 <h4>Wydarzenia - następne 7 dni</h4><br>
 
 
-                <c:forEach items="${meetingsNext7Days}" var="meeting">
-
-
-
-
+                <c:forEach items="${meetings}" var="meeting">
 
                     <div class="card">
                         <div class="card-header">
@@ -61,11 +62,6 @@
                             <a href="#" class="btn btn-primary">Go somewhere</a>
                         </div>
                     </div>
-
-
-
-
-
 
                     <div class="row no-gutters bg-light position-relative">
                             <div class="col-md-6 mb-md-0 p-md-4">
@@ -87,34 +83,16 @@
                 </c:forEach>
 
 
-                <div class="row no-gutters bg-light position-relative">
-                    <div class="col-md-6 mb-md-0 p-md-4">
-                        <img src="..." class="w-100" alt="...">
-                    </div>
-                    <div class="col-md-6 position-static p-4 pl-md-0">
-                        <h5 class="mt-0">Columns with stretched link</h5>
-                        <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-                        <a href="#" class="stretched-link">Go somewhere</a>
-                    </div>
-                </div>
 
-
-                <br>
-                <br>
-    <div class="row no-gutters bg-light position-relative">
-        <div class="col-md-6 mb-md-0 p-md-4">
-            <img src="..." class="w-100" alt="...">
-        </div>
-        <div class="col-md-6 position-static p-4 pl-md-0">
-            <h5 class="mt-0">Columns with stretched link</h5>
-            <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-            <a href="#" class="stretched-link">Go somewhere</a>
+    <div class="form-group row">
+        <label for="example-datetime-local-input" class="col-2 col-form-label">Date and time</label>
+        <div class="col-10">
+            <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="example-datetime-local-input">
         </div>
     </div>
 
-    <br>
-    <br>
-    <br>
+
+
 
             </div>
             <div class="col-sm-3">
@@ -129,6 +107,63 @@
                 </script>
 
 
+                <googlemap>
+
+
+                    <script>
+                        // var map, infoWindow;
+                        // var cityCircle;
+                        // var zoomLevel = 11;
+
+                        function initMap() {
+                            // map = new google.maps.Map(document.getElementById('map'), {
+                            //     center: {lat: -34.397, lng: 150.644},
+                            //     zoom: zoomLevel
+                            // });
+
+
+
+                            // infoWindow = new google.maps.InfoWindow;
+
+                            // Try HTML5 geolocation.
+                            if (navigator.geolocation) {
+                                navigator.geolocation.getCurrentPosition(function(position) {
+
+
+                                    $('#latitude').attr('value', position.coords.latitude);
+                                    $('#longitude').attr('value', position.coords.longitude);
+
+
+
+                                    var pos = {
+                                        lat: position.coords.latitude,
+                                        lng: position.coords.longitude
+                                    };
+                                    // // console.log(pos.lat.toString())
+                                    // infoWindow.setPosition(pos);
+                                    // // console.log(infoWindow.position.lat.toString());
+                                    // infoWindow.setContent('Location found.');
+                                    // infoWindow.open(map);
+                                    // map.setCenter(pos);
+                                    // map.setZoom(zoomLevel);
+                                }, function() {
+                                    // console.log(infoWindow);
+                                    // handleLocationError(true, infoWindow, map.getCenter());
+                                });
+                            } else {
+                                 console.log("Browser doesn't support Geolocation");
+
+                            }
+                        }
+
+                    </script>
+                    <script async defer
+                            src="https://maps.googleapis.com/maps/api/js?key=------------------&callback=initMap">
+                    </script>
+                    <br><br>
+                </googlemap>
+
+
 
                 Lista zalogowanych użytkowników :
                 <c:forEach items="${loggedUsers}" var="loggedUser">
@@ -138,50 +173,50 @@
 
                 <br><br>
                 <chat>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable">
-            Chat <i class="far fa-comment-dots"></i> <span class="" id="chat_counter">[0]</span>
-        </button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable">
+                        Chat <i class="far fa-comment-dots"></i> <span class="" id="chat_counter">[0]</span>
+                    </button>
 
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalScrollableTitle">Czat</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="chatForm">
-                            <input type="hidden" name="userId" value="${user.id}">
-                            <input type="hidden" name="meetingId" value="1">
-                            <div class="input-group mb-3">
-                                <input type="text" name="message" class="form-control" placeholder="Nowa wiadomość"
-                                       id="message" aria-describedby="button-add">
-                                <div class="input-group-append">
-                                    <input type="submit" class="btn btn-outline-secondary" id="button-add">
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalScrollableTitle">Czat</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="chatForm">
+                                        <input type="hidden" name="userId" value="${user.id}">
+                                        <input type="hidden" name="meetingId" value="1">
+                                        <div class="input-group mb-3">
+                                            <input type="text" name="message" class="form-control" placeholder="Nowa wiadomość"
+                                                   id="message" aria-describedby="button-add">
+                                            <div class="input-group-append">
+                                                <input type="submit" class="btn btn-outline-secondary" id="button-add">
+                                            </div>
+                                        </div>
+                                    </form><br>
+
+                                    <table class="table" id="chat_table">
+                                        <tr class="row">
+                                            <td class="col-1"><i class="fas fa-handshake"></i>
+                                            </td>
+                                            <td class="col-11 text-left">
+                                                Witamy na czacie naszej grupy.
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 </div>
                             </div>
-                        </form><br>
-
-                        <table class="table" id="chat_table">
-                            <tr class="row">
-                                <td class="col-1"><i class="fas fa-handshake"></i>
-                                </td>
-                                <td class="col-11 text-left">
-                                    Witamy na czacie naszej grupy.
-                                </td>
-                            </tr>
-                        </table>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </chat>
+                </chat>
 
 
             </div>
@@ -191,110 +226,7 @@
 
         </div>
 
-        <%--            <img src="data:image/jpeg;base64,${principal.base64Image}" width="40" height="40"/>--%>
 
-        <%--    <div id="map"></div>--%>
-        <%--    <script>--%>
-        <%--        // Note: This example requires that you consent to location sharing when--%>
-        <%--        // prompted by your browser. If you see the error "The Geolocation service--%>
-        <%--        // failed.", it means you probably did not give permission for the browser to--%>
-        <%--        // locate you.--%>
-        <%--        var map, infoWindow, cityCircle;--%>
-        <%--        var zoomLevel = 11;--%>
-
-        <%--        function initMap() {--%>
-        <%--            map = new google.maps.Map(document.getElementById('map'), {--%>
-        <%--                center: {lat: -34.397, lng: 150.644},--%>
-        <%--                zoom: 6--%>
-        <%--            });--%>
-
-
-
-        <%--            infoWindow = new google.maps.InfoWindow;--%>
-
-        <%--            // Try HTML5 geolocation.--%>
-        <%--            if (navigator.geolocation) {--%>
-        <%--                navigator.geolocation.getCurrentPosition(function(position) {--%>
-        <%--                    var pos = {--%>
-        <%--                        lat: position.coords.latitude,--%>
-        <%--                        lng: position.coords.longitude--%>
-        <%--                    };--%>
-
-        <%--                    infoWindow.setPosition(pos);--%>
-        <%--                    infoWindow.setContent('Location found.');--%>
-        <%--                    infoWindow.open(map);--%>
-        <%--                    map.setCenter(pos);--%>
-        <%--                    map.setZoom(zoomLevel);--%>
-        <%--                }, function() {--%>
-        <%--                    handleLocationError(true, infoWindow, map.getCenter());--%>
-        <%--                });--%>
-        <%--            } else {--%>
-        <%--                // Browser doesn't support Geolocation--%>
-        <%--                handleLocationError(false, infoWindow, map.getCenter());--%>
-        <%--            }--%>
-
-        <%--            var cityCircle = function(){new google.maps.Circle({--%>
-        <%--                strokeColor: '#FF0000',--%>
-        <%--                strokeOpacity: 0.8,--%>
-        <%--                strokeWeight: 2,--%>
-        <%--                fillColor: '#FF0000',--%>
-        <%--                fillOpacity: 0.35,--%>
-        <%--                map: map,--%>
-        <%--                center: map.getCenter(),--%>
-        <%--                radius: 100--%>
-        <%--            })};--%>
-        <%--        }--%>
-
-
-        <%--        var test = 100;--%>
-
-        <%--        function handleLocationError(browserHasGeolocation, infoWindow, pos) {--%>
-        <%--            infoWindow.setPosition(pos);--%>
-        <%--            infoWindow.setContent(browserHasGeolocation ?--%>
-        <%--                'Error: The Geolocation service failed.' :--%>
-        <%--                'Error: Your browser doesn\'t support geolocation.');--%>
-        <%--            infoWindow.open(map);--%>
-        <%--        }--%>
-        <%--    </script>--%>
-        <%--    <script async defer--%>
-        <%--            src="https://maps.googleapis.com/maps/api/js?key=MY_KEY_VALUE&callback=initMap">--%>
-        <%--    </script>--%>
-        <br><br>
-
-
-
-
-
-
-
-
-<%--        <div class="form-row">--%>
-<%--            <div class="form-group col-md-8">--%>
-<%--                <h4 class="cover-heading">Lista ostatnich poropozycji spotkań </h4>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-
-
-<%--        <table class="table table-striped">--%>
-<%--            <tbody>--%>
-<%--            <c:forEach items="${meetingsNext7Days}" var="meeting" varStatus="i">--%>
-<%--                <tr>--%>
-<%--                    <td>--%>
-<%--                        <div class="card">--%>
-<%--                            <div class="card-header">--%>
-<%--                                    ${meeting.title}--%>
-<%--                            </div>--%>
-<%--                            <div class="card-body">--%>
-<%--                                <p class="card-text">${meeting.description}</p>--%>
-<%--                                <a href="${mainURL}tweet?id=${meeting.id}" class="btn btn-primary"><i class="fas fa-search-plus"></i> Pokaż szczegóły</a>--%>
-<%--                                <p class="card-text" style="text-align: right">Liczba komentarzy <i class="far fa-comments"></i> ${meeting.meetTime}</p>--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
-<%--                    </td>--%>
-<%--                </tr>--%>
-<%--            </c:forEach>--%>
-<%--            </tbody>--%>
-<%--        </table>--%>
 
 
     </div>

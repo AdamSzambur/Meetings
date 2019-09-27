@@ -65,9 +65,6 @@ public class UserService {
                 .map(UserDetails.class::cast)
                 .map(p->getUserByEmail(p.getUsername()))
                 .collect(Collectors.toList());
-
-        System.out.println("Zalogowani uzytkownicy");
-        result.forEach(u-> System.out.println(u.getFullName()));
         return result;
     }
 }

@@ -4,6 +4,9 @@
 
 	"use strict";
 
+
+    var context = window.location.pathname;
+
     // Create the defaults once
     var pluginName = "simpleCalendar",
         defaults = {
@@ -24,7 +27,19 @@
         this.settings = $.extend( {}, defaults, options );
         this._defaults = defaults;
         this._name = pluginName;
-        this.currentDate = new Date();
+
+        var searchParams = new URLSearchParams(window.location.search);
+
+        if (searchParams.has('selectedDate')) {
+            this.selectedDate = new Date(searchParams.get('selectedDate'));
+            this.currentDate = new Date(searchParams.get('selectedDate'));
+        } else {
+            this.selectedDate = new Date();
+            this.currentDate = new Date();
+        }
+
+
+
         this.init();
     }
 
@@ -32,7 +47,15 @@
     $.extend(Plugin.prototype, {
         init: function () {
             var container = $(this.element);
-            var todayDate = this.currentDate;
+
+            var todayDate;
+
+
+            if (this.selectedDate.getTime() === this.currentDate.getTime()) {
+                todayDate = this.selectedDate;
+            } else {
+                todayDate = this.selectedDate;
+            }
             
             var calendar = $('<div class="calendar"></div>');
             var header = $('<header>'+
@@ -85,13 +108,18 @@
             while(lastDay.getDay() != 0){
                 lastDay.setDate(lastDay.getDate()+1);
             }
-            
+
             //For firstDay to lastDay
             for(var day = firstDay; day <= lastDay; day.setDate(day.getDate())) {
                 var tr = $('<tr></tr>');
                 //For each row
                 for(var i = 0; i<7; i++) {
-                    var td = $('<td data-date="'+(day.getMonth()+1)+'.'+day.getDate()+'.'+day.getFullYear()+'"><a href="#" class="day">'+day.getDate()+'</a></td>');
+                    var dataDate = (day.getMonth()+1)+'.'+day.getDate()+'.'+day.getFullYear();
+                    var td = $('<td data-date="'+dataDate+'"><a href="'+context+'?selectedDate='+dataDate+'" class="day">'+day.getDate()+'</a></td>');
+                    if (day.getTime() === plugin.selectedDate.getTime()) {
+                        td.find('a').addClass('selected');
+                    }
+
                     //if today is this day
                     if(day.toDateString() === (new Date).toDateString()){
                         td.find(".day").addClass("today");
@@ -102,25 +130,7 @@
                     }
                     //Binding day event
                     td.on('click', function(e) {
-                        e.preventDefault();
-                        console.log($(this).data("date"));
-                        // czyscimy klase selected z kalendarza
-                        $('.day.selected').toggleClass("selected");
-                        //ustawiamy klasę selected w kalendarzu
-                        $(this).find(".day").addClass('selected');
-
-
-                        // tutaj wywołujemy metodę axaj pobierające z endpoint rest wydarzenia dla wybranego dnia.
-
-
-
-
-
-
-                        /////////////////////////////////
-
-
-
+                        // nie ma potrzeby wysylamy request przez anchor
                     });
                     
                     tr.append(td);
@@ -154,6 +164,18 @@
                 plugin.buildCalendar(plugin.currentDate, $('.calendar'));
                 plugin.updateHeader(plugin.currentDate, $('.calendar header'));
             });
+
+            // $('td').click(function(e){
+            //     console.log($(this).data("date"));
+            //     // // czyscimy klase selected z kalendarza
+            //     // $('.day.selected').toggleClass("selected");
+            //     // //ustawiamy klasę selected w kalendarzu
+            //     // $(this).find(".day").addClass('selected');
+            //
+            //
+            //
+            // })
+
 
 
 
