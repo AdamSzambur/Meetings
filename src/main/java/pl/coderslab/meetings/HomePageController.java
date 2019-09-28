@@ -10,6 +10,9 @@ import pl.coderslab.meetings.user.UserService;
 
 import javax.validation.Validator;
 import java.security.Principal;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/")
@@ -44,6 +47,9 @@ public class HomePageController {
             model.addAttribute("title","Wydarzenia kolejne 7 dni");
             model.addAttribute("meetings",meetingService.getMeetingsNext7Days());
         }
+
+        //potrzebujemy tego do parsowania LocalDateTime
+        model.addAttribute("localDateTimeFormat", DateTimeFormatter.ofPattern("yyyy/MM/dd"));
 
         model.addAttribute("user", userService.getUserByEmail(principal.getName()));
         model.addAttribute("loggedUsers", userService.findAllLoggedInUsers());

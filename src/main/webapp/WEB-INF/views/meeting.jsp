@@ -13,7 +13,7 @@
                 <div class="form-group">
                     <label for="title">Tytył</label>
                     <form:input path="title" cssClass="form-control" id="title" placeholder="Tytuł wydarzenia"/>
-                    <form:errors path="title" cssClass="invalid-feedback" element="div" />
+                    <form:errors path="title" cssClass="error" element="div" />
                 </div>
                 <div class="form-group">
                     <label for="description">Opis spotkania</label>

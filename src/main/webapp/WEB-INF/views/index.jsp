@@ -45,40 +45,6 @@
     <div class="container-fluid p-3 justify-content align-items-center" style="background-color:#6691CC;">
         <span mb-2 mr-sm-2 >Nie znalazłeś interesującego cię wydarzenia. &nbsp;&nbsp;</span>
         <button type="button" class="btn btn-warning" onclick="location.href='${mainURL}meeting/add'">Dodaj nowe</button>
-
-
-
-
-<%--        <div class="row justify-content align-items-center" >--%>
-<%--            <div class="col-sm-auto">--%>
-<%--                <h4>Witamy na stronie głównej aplikacji</h4>--%>
-<%--                <h6>Użyj wyszukiwarki żeby znaleźć interesujące cię wydarzenie</h6>--%>
-<%--            </div>--%>
-
-<%--            <div class="col-sm-auto align-middle">--%>
-<%--                <form:form cssClass="form-inline" modelAttribute="finderFormDTO" method="get">--%>
-<%--                    <form:hidden path="latitude" value="" id="latitude"/>--%>
-<%--                    <form:hidden path="longitude" value="" id="longitude"/>--%>
-<%--                    <div class="input-group mb-2 mr-sm-2">--%>
-<%--                        <div class="input-group-prepend">--%>
-<%--                            <span class="input-group-text"><i class="fas fa-search"></i></span>--%>
-<%--                        </div>--%>
-<%--                        <form:input path="findPhrase" cssStyle="font-weight: bold" cssClass="form-control" placeholder="Znajdź"/>--%>
-<%--                    </div>--%>
-<%--                    <span class="mb-2 mr-sm-2" style="font-weight: bold;"> &nbsp;&nbsp;w odległości&nbsp;</span>--%>
-<%--                    <form:select path="distance" cssClass="custom-select mb-2 mr-sm-2" cssStyle="background-color: #ff8600; font-weight: bold; border: none">--%>
-<%--                        <form:option value="5" label="5 km"/>--%>
-<%--                        <form:option value="10" label="10 km"/>--%>
-<%--                        <form:option value="20" label="20 km"/>--%>
-<%--                        <form:option value="50" label="50 km"/>--%>
-<%--                        <form:option value="90000" label="far away"/>--%>
-<%--                    </form:select>--%>
-<%--                    <button type="submit" class="btn btn-primary">Szukaj</button>--%>
-<%--                </form:form>--%>
-
-
-<%--            </div>--%>
-<%--        </div>--%>
     </div>
     <div class="container">
         <div class="row">
@@ -90,29 +56,61 @@
 
                 <c:forEach items="${meetings}" var="meeting">
 
-<%--                    <div class="card">--%>
-<%--                        <div class="card-header">--%>
+                    <div class="card">
+                        <div class="card-header">
+                                ${meeting.title}
+<%--                            <h6 class="card-title">${meeting.title}</h6>--%>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item"><b>${meeting.meetTime.dayOfWeek} ${meeting.meetTime.hour}:${meeting.meetTime.minute}</b></li>
+                                            <li class="list-group-item">Data : <b>${meeting.meetTime.dayOfMonth} ${meeting.meetTime.month.name()} ${meeting.meetTime.year}</b></li>
+                                            <li class="list-group-item">Adres : <b>${meeting.address}</b></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
 
-<%--                        </div>--%>
-<%--                        <div class="card-body">--%>
-<%--                            <h5 class="card-title">Special title treatment</h5>--%>
-<%--                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>--%>
-<%--                            <a href="#" class="btn btn-primary">Go somewhere</a>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
+                                    <div class="container" style="height: 180px;">
+                                        <div class="row align-content-start" style="height: 150px">
+                                            <div class="col-12">
+                                                <b>Opis : </b>
+                                                <c:out value="${meeting.description.length()>200 ? meeting.description.substring(0,199).concat('...') : meeting.description}"/>
+                                            </div>
+                                        </div>
+                                        <div class="row text-right">
+                                            <div class="col-12">
+                                                <span style="font-size: small">
+                                                    <i class="fas fa-users"></i>
+                                                    Uczestnicy [obecni/zapisani] 5/10,
+<%--                                                    Utworzono ${localDateTimeFormat.parse(meeting.created)}--%>
+                                                    Utworzył : ${meeting.owner.fullName} <img src="data:image/jpeg;base64,${meeting.owner.base64Image}" width="17" height="17" class="avatar"/>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                    <div class="row no-gutters bg-light position-relative">
-                            <div class="col-md-6 mb-md-0 p-md-4">
-                                <h5>${meeting.meetTime.dayOfWeek.name()} ${meeting.meetTime.hour}:${meeting.meetTime.minute} </h5>
-                                <h6>Data : ${meeting.meetTime.dayOfMonth} ${meeting.meetTime.month.name()} ${meeting.meetTime.year}</h6>
-                                <span>${meeting.address}</span>
+                                </div>
+                                <a href="#" class="stretched-link"></a>
                             </div>
-                            <div class="col-md-6 p-4 pl-md-0">
-                                <h5 class="mt-0">${meeting.title}</h5>
-                                <p>${meeting.description}</p>
-                            </div>
-                        <a href="#" class="stretched-link"></a>
+                        </div>
                     </div>
+
+<%--                    <div class="row no-gutters bg-light position-relative">--%>
+<%--                            <div class="col-md-6 mb-md-0 p-md-4">--%>
+<%--                                <h5>${meeting.meetTime.dayOfWeek.name()} ${meeting.meetTime.hour}:${meeting.meetTime.minute} </h5>--%>
+<%--                                <h6>Data : ${meeting.meetTime.dayOfMonth} ${meeting.meetTime.month.name()} ${meeting.meetTime.year}</h6>--%>
+<%--                                <span>${meeting.address}</span>--%>
+<%--                            </div>--%>
+<%--                            <div class="col-md-6 p-4 pl-md-0">--%>
+<%--                                <h5 class="mt-0">${meeting.title}</h5>--%>
+<%--                                <p>${meeting.description}</p>--%>
+<%--                            </div>--%>
+<%--                        <a href="#" class="stretched-link"></a>--%>
+<%--                    </div>--%>
                     <br>
                     <br>
                 </c:forEach>

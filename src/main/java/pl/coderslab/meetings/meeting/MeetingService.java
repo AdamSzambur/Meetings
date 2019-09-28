@@ -17,6 +17,7 @@ import java.net.URLConnection;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,30 +38,35 @@ public class MeetingService {
     }
 
     public List<Meeting> getMeetingsNext7Days() {
-        return meetingRepository.findAllByMeetTimeBetweenOrderByMeetTimeDesc(LocalDateTime.now(),
+        List<Meeting> result = meetingRepository.findAllByMeetTimeBetweenOrderByMeetTimeDesc(LocalDateTime.now(),
                 LocalDateTime.now().plusDays(7));
+        result.forEach(Meeting::setBase64fromOwnerAvatar);
+        return result ;
     }
 
     public List<Meeting> getMeetingByDate(String selectedDate) {
         LocalDateTime date0 = LocalDate.parse(selectedDate.replace('.', '/'),
                 DateTimeFormatter.ofPattern("M/d/yyyy")).atStartOfDay();
         LocalDateTime date1 = date0.plusDays(1);
-        return meetingRepository.findAllByMeetTimeBetweenOrderByMeetTimeDesc(date0, date1);
+        List<Meeting> result = meetingRepository.findAllByMeetTimeBetweenOrderByMeetTimeDesc(date0, date1);
+        result.forEach(Meeting::setBase64fromOwnerAvatar);
+        return result;
     }
 
     public List<Meeting> getMeetingByFinderForm(FinderFormDTO finderFormDTO) {
         List<Meeting> result;
-
         if (finderFormDTO.getFindPhrase() == null) {
             result = meetingRepository.findAllByMeetTimeBetweenOrderByMeetTimeDesc(LocalDateTime.now(),
-                    LocalDateTime.now().plusYears(100));
+                    LocalDateTime.now().plusYears(10));
         } else {
             result = meetingRepository.findAllByAddressContainsOrTitleContainsOrDescriptionContains(
                     finderFormDTO.getFindPhrase(),finderFormDTO.getFindPhrase(),finderFormDTO.getFindPhrase());
         }
-        return result.stream()
+        result =result.stream()
                 .filter(m->getDistance(finderFormDTO,m.getAddress())<=finderFormDTO.getDistance())
                 .collect(Collectors.toList());
+        result.forEach(Meeting::setBase64fromOwnerAvatar);
+        return result;
     }
 
 

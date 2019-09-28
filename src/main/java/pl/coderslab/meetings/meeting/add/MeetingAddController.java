@@ -49,6 +49,6 @@ public class MeetingAddController {
         }
 
         meetingService.addMeeting(meeting);
-        return "redirect::/";
+        return "redirect:";
     }
 }

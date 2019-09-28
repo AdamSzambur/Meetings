@@ -3,6 +3,7 @@ package pl.coderslab.meetings.models;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.List;
 
 @Entity
@@ -88,4 +89,9 @@ public class Meeting extends AbstractEntity {
     public void setMembers(List<User> members) {
         this.members = members;
     }
+
+    public void setBase64fromOwnerAvatar() {
+        owner.setBase64Image(Base64.getEncoder().encodeToString(owner.getAvatar()));
+    }
+
 }
