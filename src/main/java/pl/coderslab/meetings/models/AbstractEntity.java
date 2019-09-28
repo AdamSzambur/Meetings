@@ -1,4 +1,4 @@
-package pl.coderslab.meetings;
+package pl.coderslab.meetings.models;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

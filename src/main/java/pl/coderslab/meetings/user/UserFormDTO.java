@@ -1,6 +1,7 @@
 package pl.coderslab.meetings.user;
 
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import pl.coderslab.meetings.models.User;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

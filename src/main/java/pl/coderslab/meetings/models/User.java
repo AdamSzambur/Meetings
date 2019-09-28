@@ -1,7 +1,4 @@
-package pl.coderslab.meetings.user;
-
-import pl.coderslab.meetings.meeting.Meeting;
-import pl.coderslab.meetings.AbstractEntity;
+package pl.coderslab.meetings.models;
 
 import javax.persistence.*;
 import java.util.Base64;

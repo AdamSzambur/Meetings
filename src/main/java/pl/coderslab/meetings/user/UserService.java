@@ -5,6 +5,7 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.coderslab.meetings.models.User;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -56,9 +57,7 @@ public class UserService {
 
 
     public List<User> findAllLoggedInUsers() {
-
-        System.out.println("Liczba zalogownych uzytkowników : " +sessionRegistry.getAllPrincipals().size());
-
+      //  System.out.println("Liczba zalogownych uzytkowników : " +sessionRegistry.getAllPrincipals().size());
         List<User> result = sessionRegistry.getAllPrincipals()
                 .stream()
                 .filter(principal -> principal instanceof UserDetails)

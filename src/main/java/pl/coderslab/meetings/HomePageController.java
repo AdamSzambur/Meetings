@@ -5,10 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.meetings.meeting.MeetingService;
-import pl.coderslab.meetings.user.User;
+import pl.coderslab.meetings.models.User;
 import pl.coderslab.meetings.user.UserService;
 
-import javax.validation.Valid;
 import javax.validation.Validator;
 import java.security.Principal;
 
@@ -35,22 +34,17 @@ public class HomePageController {
     public String homePage(@ModelAttribute("finderFormDTO") FinderFormDTO finderFormDTO, @RequestParam(required = false) String selectedDate, Model model, Principal principal) {
 
         if (selectedDate!=null) {
+            model.addAttribute("title","Wszystkie spotkania dostepne ww wskazanym dniu");
             model.addAttribute("meetings", meetingService.getMeetingByDate(selectedDate));
+        } else if (finderFormDTO.getDistance()!=null) {
+            model.addAttribute("title","Wszystkie spotkania zawierające podaną frazę dostepne we wskazanej odległości");
+            model.addAttribute("meetings", meetingService.getMeetingByFinderForm(finderFormDTO));
+            model.addAttribute("finderFormDTO", finderFormDTO);
         } else {
+            model.addAttribute("title","Wydarzenia kolejne 7 dni");
             model.addAttribute("meetings",meetingService.getMeetingsNext7Days());
         }
 
-
-
-        if (finderFormDTO!=null) {
-
-            System.out.println(finderFormDTO.getLatitude());
-            System.out.println(finderFormDTO.getFindPhrase());
-
-            model.addAttribute("finderFormDTO", finderFormDTO);
-        } else {
-            model.addAttribute("finderFormDTO", new FinderFormDTO());
-        }
         model.addAttribute("user", userService.getUserByEmail(principal.getName()));
         model.addAttribute("loggedUsers", userService.findAllLoggedInUsers());
         return "index";

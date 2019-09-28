@@ -1,6 +1,7 @@
 package pl.coderslab.meetings.chat;
 
 import org.springframework.stereotype.Component;
+import pl.coderslab.meetings.models.ChatMessage;
 
 import java.util.ArrayList;
 import java.util.List;

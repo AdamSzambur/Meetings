@@ -1,8 +1,5 @@
-package pl.coderslab.meetings.meeting;
+package pl.coderslab.meetings.models;
 
-
-import pl.coderslab.meetings.AbstractEntity;
-import pl.coderslab.meetings.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -17,7 +14,6 @@ public class Meeting extends AbstractEntity {
 
     @ManyToOne
     private User owner;
-
 
     private LocalDateTime created;
 

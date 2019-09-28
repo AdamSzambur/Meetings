@@ -1,9 +1,7 @@
 package pl.coderslab.meetings.chat;
 
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.meetings.chat.ChatMessage;
-import pl.coderslab.meetings.chat.ChatMessageDTO;
-import pl.coderslab.meetings.chat.ChatService;
+import pl.coderslab.meetings.models.ChatMessage;
 
 import java.util.List;
 

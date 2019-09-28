@@ -47,21 +47,21 @@
             <div class="col-sm-9">
 <%--                lista wydarzeń--%>
 
-                <h4>Wydarzenia - następne 7 dni</h4><br>
+                <h4>${title}</h4><br>
 
 
                 <c:forEach items="${meetings}" var="meeting">
 
-                    <div class="card">
-                        <div class="card-header">
+<%--                    <div class="card">--%>
+<%--                        <div class="card-header">--%>
 
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Special title treatment</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
+<%--                        </div>--%>
+<%--                        <div class="card-body">--%>
+<%--                            <h5 class="card-title">Special title treatment</h5>--%>
+<%--                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>--%>
+<%--                            <a href="#" class="btn btn-primary">Go somewhere</a>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
 
                     <div class="row no-gutters bg-light position-relative">
                             <div class="col-md-6 mb-md-0 p-md-4">
@@ -77,9 +77,6 @@
                     </div>
                     <br>
                     <br>
-
-
-
                 </c:forEach>
 
 
@@ -108,61 +105,27 @@
 
 
                 <googlemap>
-
-
                     <script>
-                        // var map, infoWindow;
-                        // var cityCircle;
-                        // var zoomLevel = 11;
-
                         function initMap() {
-                            // map = new google.maps.Map(document.getElementById('map'), {
-                            //     center: {lat: -34.397, lng: 150.644},
-                            //     zoom: zoomLevel
-                            // });
-
-
-
-                            // infoWindow = new google.maps.InfoWindow;
-
                             // Try HTML5 geolocation.
                             if (navigator.geolocation) {
                                 navigator.geolocation.getCurrentPosition(function(position) {
-
-
                                     $('#latitude').attr('value', position.coords.latitude);
                                     $('#longitude').attr('value', position.coords.longitude);
-
-
-
-                                    var pos = {
-                                        lat: position.coords.latitude,
-                                        lng: position.coords.longitude
-                                    };
-                                    // // console.log(pos.lat.toString())
-                                    // infoWindow.setPosition(pos);
-                                    // // console.log(infoWindow.position.lat.toString());
-                                    // infoWindow.setContent('Location found.');
-                                    // infoWindow.open(map);
-                                    // map.setCenter(pos);
-                                    // map.setZoom(zoomLevel);
                                 }, function() {
                                     // console.log(infoWindow);
-                                    // handleLocationError(true, infoWindow, map.getCenter());
                                 });
                             } else {
                                  console.log("Browser doesn't support Geolocation");
-
                             }
                         }
 
                     </script>
                     <script async defer
-                            src="https://maps.googleapis.com/maps/api/js?key=------------------&callback=initMap">
+                            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5EJjfoZUTXckzVuwbvm3Ke0SWYwoi6OI&callback=initMap">
                     </script>
                     <br><br>
                 </googlemap>
-
 
 
                 Lista zalogowanych użytkowników :

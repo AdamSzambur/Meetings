@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.coderslab.meetings.user.UserFormDTO;
-import pl.coderslab.meetings.user.User;
+import pl.coderslab.meetings.models.User;
 
 import javax.validation.Valid;
 

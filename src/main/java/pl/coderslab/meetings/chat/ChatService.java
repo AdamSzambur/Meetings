@@ -2,6 +2,7 @@ package pl.coderslab.meetings.chat;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import pl.coderslab.meetings.models.ChatMessage;
 import pl.coderslab.meetings.user.UserService;
 
 import java.time.Duration;
@@ -20,8 +21,6 @@ public class ChatService {
     public ChatService(UserService userService, ChatMessageRepository chatMessageRepository) {
         this.userService = userService;
         this.chatMessageRepository = chatMessageRepository;
-//        chatMessages.add(new ChatMessage(1L,10L,"Adam Szamburski", null, "To jest pierwsza wiadomośc na czacie :)", LocalDateTime.now()));
-//        chatMessages.add(new ChatMessage(1L,14L,"Łukasz Farys", null, "To jest druga wiadomośc na czacie :)", LocalDateTime.now()));
     }
 
     public List<ChatMessage> getAllChatMessages() {
