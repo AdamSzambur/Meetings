@@ -42,6 +42,44 @@
             </div>
         </div>
     </div>
+    <div class="container-fluid p-3 justify-content align-items-center" style="background-color:#6691CC;">
+        <span mb-2 mr-sm-2 >Nie znalazłeś interesującego cię wydarzenia. &nbsp;&nbsp;</span>
+        <button type="button" class="btn btn-warning" onclick="location.href='${mainURL}meeting/add'">Dodaj nowe</button>
+
+
+
+
+<%--        <div class="row justify-content align-items-center" >--%>
+<%--            <div class="col-sm-auto">--%>
+<%--                <h4>Witamy na stronie głównej aplikacji</h4>--%>
+<%--                <h6>Użyj wyszukiwarki żeby znaleźć interesujące cię wydarzenie</h6>--%>
+<%--            </div>--%>
+
+<%--            <div class="col-sm-auto align-middle">--%>
+<%--                <form:form cssClass="form-inline" modelAttribute="finderFormDTO" method="get">--%>
+<%--                    <form:hidden path="latitude" value="" id="latitude"/>--%>
+<%--                    <form:hidden path="longitude" value="" id="longitude"/>--%>
+<%--                    <div class="input-group mb-2 mr-sm-2">--%>
+<%--                        <div class="input-group-prepend">--%>
+<%--                            <span class="input-group-text"><i class="fas fa-search"></i></span>--%>
+<%--                        </div>--%>
+<%--                        <form:input path="findPhrase" cssStyle="font-weight: bold" cssClass="form-control" placeholder="Znajdź"/>--%>
+<%--                    </div>--%>
+<%--                    <span class="mb-2 mr-sm-2" style="font-weight: bold;"> &nbsp;&nbsp;w odległości&nbsp;</span>--%>
+<%--                    <form:select path="distance" cssClass="custom-select mb-2 mr-sm-2" cssStyle="background-color: #ff8600; font-weight: bold; border: none">--%>
+<%--                        <form:option value="5" label="5 km"/>--%>
+<%--                        <form:option value="10" label="10 km"/>--%>
+<%--                        <form:option value="20" label="20 km"/>--%>
+<%--                        <form:option value="50" label="50 km"/>--%>
+<%--                        <form:option value="90000" label="far away"/>--%>
+<%--                    </form:select>--%>
+<%--                    <button type="submit" class="btn btn-primary">Szukaj</button>--%>
+<%--                </form:form>--%>
+
+
+<%--            </div>--%>
+<%--        </div>--%>
+    </div>
     <div class="container">
         <div class="row">
             <div class="col-sm-9">
@@ -78,19 +116,6 @@
                     <br>
                     <br>
                 </c:forEach>
-
-
-
-    <div class="form-group row">
-        <label for="example-datetime-local-input" class="col-2 col-form-label">Date and time</label>
-        <div class="col-10">
-            <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="example-datetime-local-input">
-        </div>
-    </div>
-
-
-
-
             </div>
             <div class="col-sm-3">
 <%--                kalendarz i moze lista zalogowanych uzytkowników--%>

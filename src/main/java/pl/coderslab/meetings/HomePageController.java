@@ -34,7 +34,7 @@ public class HomePageController {
     public String homePage(@ModelAttribute("finderFormDTO") FinderFormDTO finderFormDTO, @RequestParam(required = false) String selectedDate, Model model, Principal principal) {
 
         if (selectedDate!=null) {
-            model.addAttribute("title","Wszystkie spotkania dostepne ww wskazanym dniu");
+            model.addAttribute("title","Wszystkie spotkania dostepne we wskazanym dniu");
             model.addAttribute("meetings", meetingService.getMeetingByDate(selectedDate));
         } else if (finderFormDTO.getDistance()!=null) {
             model.addAttribute("title","Wszystkie spotkania zawierające podaną frazę dostepne we wskazanej odległości");

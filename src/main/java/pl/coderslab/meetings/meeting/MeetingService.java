@@ -1,6 +1,5 @@
 package pl.coderslab.meetings.meeting;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import pl.coderslab.meetings.FinderFormDTO;
 import pl.coderslab.meetings.meeting.DistanceJsonStructure.Distance;
@@ -60,10 +59,9 @@ public class MeetingService {
                     finderFormDTO.getFindPhrase(),finderFormDTO.getFindPhrase(),finderFormDTO.getFindPhrase());
         }
         return result.stream()
-                .filter(m->(getDistance(finderFormDTO,m.getAddress()))/1000<=finderFormDTO.getDistance())
+                .filter(m->getDistance(finderFormDTO,m.getAddress())<=finderFormDTO.getDistance())
                 .collect(Collectors.toList());
     }
-
 
 
     private Long getDistance(FinderFormDTO finderFormDTO, String destinationAddres) {
@@ -74,15 +72,16 @@ public class MeetingService {
                 + "&key=AIzaSyC5EJjfoZUTXckzVuwbvm3Ke0SWYwoi6OI";
 
         Jsonb jsonb = JsonbBuilder.create();
-        Distance distance = jsonb.fromJson(getJSONString(googleURL), Distance.class);
+        Distance distance = jsonb.fromJson(getJSONStringFromUrl(googleURL), Distance.class);
 
-        return distance.getRows().get(0).getElements().get(0).getDistance().getValue();
+
+        return distance.getDistanceInKm();
     }
 
-    private String getJSONString(String googleURL) {
+    private String getJSONStringFromUrl(String googleURL) {
         StringBuilder jsonFromGoogle = new StringBuilder();
         try {
-           // System.out.println(googleURL);
+            //System.out.println(googleURL);
             URL oracle = new URL(googleURL);
             URLConnection yc = oracle.openConnection();
             BufferedReader in = new BufferedReader(new InputStreamReader(
@@ -90,11 +89,22 @@ public class MeetingService {
 
             String inputLine;
             while ((inputLine = in.readLine()) != null)
+                //System.out.println(inputLine);
                 jsonFromGoogle.append(inputLine);
             in.close();
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
         return jsonFromGoogle.toString();
+    }
+
+    public void addMeeting(MeetingDTO meetingDTO) {
+        Meeting meeting = new Meeting();
+        meeting.setAddress(meetingDTO.getAddress());
+        meeting.setDescription(meetingDTO.getDescription());
+        meeting.setMeetTime(meetingDTO.getMeetTime());
+        meeting.setOwner(userService.getUserById(meetingDTO.getOwnerId()));
+        meeting.setTitle(meetingDTO.getTitle());
+        meetingRepository.save(meeting);
     }
 }

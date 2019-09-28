@@ -17,11 +17,11 @@ import java.security.Principal;
 
 @Controller
 @RequestMapping("/user")
-public class UserController {
+public class UserEditController {
 
     private UserService userService;
 
-    public UserController(UserService userService) {
+    public UserEditController(UserService userService) {
         this.userService = userService;
     }
 
