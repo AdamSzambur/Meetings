@@ -4,15 +4,18 @@ $(function () {
 
     console.log(context);
 
+    var currentMeeting = $('#chat-button').data('current_meeting');
+
+    console.log(currentMeeting);
+
+
     // zaciągmay wszystkie wiadomosci z aplikajci (pod warunkiem ze sa nowe)
     var currentMessages = [];
-
     function getAllMessages() {
         $.getJSON({
-            url: context+'chat/',
-            data: {},
+            url: context+'/chat?id='+currentMeeting,
+            data: {}
         }, function(json) {
-
             json.reverse();
             // console.log("Getting all messages");
             // sprawdzamy czy pojawiła się jakaś nowa wiadomosc na serwerze. Sprawdzamy ostatni wpis.
@@ -38,6 +41,8 @@ $(function () {
         });
     }
 
+    getAllMessages();
+
     setInterval(getAllMessages,5000);
 
     //dodajemy odpowiednie zdarzenie na formie chatForm
@@ -54,7 +59,7 @@ $(function () {
         result = JSON.stringify(result);
 
         var startOption = {
-            url: context+"chat/",
+            url: context+"/chat",
             data: result,
             method: "POST",
             dataType: "json",

@@ -1,6 +1,7 @@
-package pl.coderslab.meetings.meeting;
+package pl.coderslab.meetings.meetings;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import pl.coderslab.meetings.models.Meeting;
 
 import java.time.LocalDateTime;

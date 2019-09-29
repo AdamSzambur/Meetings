@@ -67,7 +67,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().logout()
                 .and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/chat").permitAll()
                 .antMatchers("/user/register").permitAll()
                 .antMatchers("/user/login").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN") //Czyli uzytkownik w bazie ma ROLE_ADMIN dostep do

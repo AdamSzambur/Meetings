@@ -3,9 +3,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <jsp:include page="header.jsp"/>
 <c:url value="/" var="mainURL"/>
-<script src="${mainURL}resources/js/chat.js"></script>
 <script src="${mainURL}resources/js/jquery.simple-calendar.js"></script>
-
+<script src="${mainURL}resources/js/main_page.js"></script>
 
 <main role="main" class="flex-shrink-0">
     <br>
@@ -16,7 +15,6 @@
                 <h4>Witamy na stronie głównej aplikacji</h4>
                 <h6>Użyj wyszukiwarki żeby znaleźć interesujące cię wydarzenie</h6>
             </div>
-
             <div class="col-sm-auto align-middle">
                 <form:form cssClass="form-inline" modelAttribute="finderFormDTO" method="get">
                     <form:hidden path="latitude" value="" id="latitude"/>
@@ -44,7 +42,7 @@
     </div>
     <div class="container-fluid p-3 justify-content align-items-center" style="background-color:#6691CC;">
         <span mb-2 mr-sm-2 >Nie znalazłeś interesującego cię wydarzenia. &nbsp;&nbsp;</span>
-        <button type="button" class="btn btn-warning" onclick="location.href='${mainURL}meeting/add'">Dodaj nowe</button>
+        <button type="button" class="btn btn-warning" onclick="location.href='${mainURL}meetings/add'">Dodaj nowe</button>
     </div>
     <div class="container">
         <div class="row">
@@ -59,20 +57,20 @@
                     <div class="card">
                         <div class="card-header">
                                 ${meeting.title}
-<%--                            <h6 class="card-title">${meeting.title}</h6>--%>
+<%--                            <h6 class="card-title">${meetings.title}</h6>--%>
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-5">
                                     <div class="card">
                                         <ul class="list-group list-group-flush">
-                                            <li class="list-group-item"><b>${meeting.meetTime.dayOfWeek} ${meeting.meetTime.hour}:${meeting.meetTime.minute}</b></li>
-                                            <li class="list-group-item">Data : <b>${meeting.meetTime.dayOfMonth} ${meeting.meetTime.month.name()} ${meeting.meetTime.year}</b></li>
+                                            <li class="list-group-item"><b>${changeEnglishToPolish.parseDayEnglishToPolish(meeting.meetTime.dayOfWeek)} ${meeting.meetTime.hour}:${meeting.meetTime.minute}</b></li>
+                                            <li class="list-group-item">Data : <b>${meeting.meetTime.dayOfMonth} ${changeEnglishToPolish.parseMonthEnglishToPolish(meeting.meetTime.month.name())} ${meeting.meetTime.year}</b></li>
                                             <li class="list-group-item">Adres : <b>${meeting.address}</b></li>
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-7">
 
                                     <div class="container" style="height: 180px;">
                                         <div class="row align-content-start" style="height: 150px">
@@ -85,32 +83,21 @@
                                             <div class="col-12">
                                                 <span style="font-size: small">
                                                     <i class="fas fa-users"></i>
-                                                    Uczestnicy [obecni/zapisani] 5/10,
-<%--                                                    Utworzono ${localDateTimeFormat.parse(meeting.created)}--%>
-                                                    Utworzył : ${meeting.owner.fullName} <img src="data:image/jpeg;base64,${meeting.owner.base64Image}" width="17" height="17" class="avatar"/>
+                                                    Uczestnicy ${meeting.members.size()+1},
+                                                    Utworzył : ${meeting.owner.fullName} <img src="data:image/jpeg;base64,${meeting.owner.base64Image}" width="17" height="17" class="avatar"/> ,
+                                                    Chat <i class="far fa-comment-dots"></i> <span data-meetingid ="${meeting.id}" class="chat_counter_homepage">[0]</span>
                                                 </span>
                                             </div>
                                         </div>
                                     </div>
 
                                 </div>
-                                <a href="#" class="stretched-link"></a>
+                                <a href="${mainURL}meetings?id=${meeting.id}" class="stretched-link"></a>
                             </div>
                         </div>
                     </div>
 
-<%--                    <div class="row no-gutters bg-light position-relative">--%>
-<%--                            <div class="col-md-6 mb-md-0 p-md-4">--%>
-<%--                                <h5>${meeting.meetTime.dayOfWeek.name()} ${meeting.meetTime.hour}:${meeting.meetTime.minute} </h5>--%>
-<%--                                <h6>Data : ${meeting.meetTime.dayOfMonth} ${meeting.meetTime.month.name()} ${meeting.meetTime.year}</h6>--%>
-<%--                                <span>${meeting.address}</span>--%>
-<%--                            </div>--%>
-<%--                            <div class="col-md-6 p-4 pl-md-0">--%>
-<%--                                <h5 class="mt-0">${meeting.title}</h5>--%>
-<%--                                <p>${meeting.description}</p>--%>
-<%--                            </div>--%>
-<%--                        <a href="#" class="stretched-link"></a>--%>
-<%--                    </div>--%>
+
                     <br>
                     <br>
                 </c:forEach>
@@ -157,62 +144,9 @@
                     ${loggedUser.fullName}<br>
                 </c:forEach>
 
-                <br><br>
-                <chat>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable">
-                        Chat <i class="far fa-comment-dots"></i> <span class="" id="chat_counter">[0]</span>
-                    </button>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-scrollable" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalScrollableTitle">Czat</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form id="chatForm">
-                                        <input type="hidden" name="userId" value="${user.id}">
-                                        <input type="hidden" name="meetingId" value="1">
-                                        <div class="input-group mb-3">
-                                            <input type="text" name="message" class="form-control" placeholder="Nowa wiadomość"
-                                                   id="message" aria-describedby="button-add">
-                                            <div class="input-group-append">
-                                                <input type="submit" class="btn btn-outline-secondary" id="button-add">
-                                            </div>
-                                        </div>
-                                    </form><br>
-
-                                    <table class="table" id="chat_table">
-                                        <tr class="row">
-                                            <td class="col-1"><i class="fas fa-handshake"></i>
-                                            </td>
-                                            <td class="col-11 text-left">
-                                                Witamy na czacie naszej grupy.
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </chat>
-
-
             </div>
 
-
-
-
         </div>
-
-
 
 
     </div>

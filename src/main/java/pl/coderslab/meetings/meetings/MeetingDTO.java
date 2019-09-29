@@ -1,14 +1,10 @@
-package pl.coderslab.meetings.meeting;
+package pl.coderslab.meetings.meetings;
 
 
 import com.sun.istack.internal.NotNull;
-import pl.coderslab.meetings.models.AbstractEntity;
-import pl.coderslab.meetings.models.User;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class MeetingDTO {
 

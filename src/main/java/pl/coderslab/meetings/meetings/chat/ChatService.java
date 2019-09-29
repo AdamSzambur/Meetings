@@ -1,12 +1,14 @@
-package pl.coderslab.meetings.chat;
+package pl.coderslab.meetings.meetings.chat;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import pl.coderslab.meetings.meetings.MeetingRepository;
 import pl.coderslab.meetings.models.ChatMessage;
 import pl.coderslab.meetings.user.UserService;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,12 +17,13 @@ import java.util.stream.Collectors;
 public class ChatService {
 
     private UserService userService;
+    private MeetingRepository meetingRepository;
     private ChatMessageRepository chatMessageRepository;
 
-
-    public ChatService(UserService userService, ChatMessageRepository chatMessageRepository) {
+    public ChatService(UserService userService, ChatMessageRepository chatMessageRepository, MeetingRepository meetingRepository) {
         this.userService = userService;
         this.chatMessageRepository = chatMessageRepository;
+        this.meetingRepository = meetingRepository;
     }
 
     public List<ChatMessage> getAllChatMessages() {
@@ -63,12 +66,27 @@ public class ChatService {
 
     @Scheduled(fixedDelay = 20000)
     private void chatGarbageCollector() {
-        Long secondsBetween = Duration.between(
-                getLastChatMessageByMeetingId(1L).getCreated(), LocalDateTime.now()).getSeconds();
-//        System.out.println("Róznica sekund pomiędzy aktualnym czasem a data ostatniego wpisu to : "+secondsBetween);
-        if (secondsBetween > 60) {
-            System.out.println("Kasujemy zwartość czatu");
-            deleteAllChatMessagesByMeetingId(1L);
+        for (Long meetingId : getListOfMeetingsIdInChat()) {
+            Long secondsBetween = Duration.between(
+                    getLastChatMessageByMeetingId(meetingId).getCreated(), LocalDateTime.now()).getSeconds();
+            if (secondsBetween > 60) {
+                System.out.println("Kasujemy zwartość czatu dla wydarzenia o id =" + meetingId);
+                deleteAllChatMessagesByMeetingId(meetingId);
+            }
         }
+    }
+
+    public Long getLengthListMessages(Long id) {
+        return chatMessageRepository.getChatMessages().stream().filter(m->m.getMeetingId()==id).count();
+    }
+
+    public List<Long> getListOfMeetingsIdInChat() {
+        List<Long> result = new ArrayList<>();
+        for (ChatMessage message : chatMessageRepository.getChatMessages()) {
+            if (!result.contains(message.getMeetingId())) {
+                result.add(message.getMeetingId());
+            }
+        }
+        return result;
     }
 }

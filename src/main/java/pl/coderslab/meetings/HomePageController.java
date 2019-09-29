@@ -4,15 +4,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.meetings.meeting.MeetingService;
+import pl.coderslab.meetings.converters.PolishDayAndMonthNamesConverter;
+import pl.coderslab.meetings.meetings.MeetingService;
 import pl.coderslab.meetings.models.User;
 import pl.coderslab.meetings.user.UserService;
 
 import javax.validation.Validator;
 import java.security.Principal;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 @Controller
 @RequestMapping("/")
@@ -49,7 +47,7 @@ public class HomePageController {
         }
 
         //potrzebujemy tego do parsowania LocalDateTime
-        model.addAttribute("localDateTimeFormat", DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        model.addAttribute("changeEnglishToPolish", new PolishDayAndMonthNamesConverter());
 
         model.addAttribute("user", userService.getUserByEmail(principal.getName()));
         model.addAttribute("loggedUsers", userService.findAllLoggedInUsers());

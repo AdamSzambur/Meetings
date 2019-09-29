@@ -1,8 +1,8 @@
-package pl.coderslab.meetings.meeting;
+package pl.coderslab.meetings.meetings;
 
 import org.springframework.stereotype.Service;
 import pl.coderslab.meetings.FinderFormDTO;
-import pl.coderslab.meetings.meeting.DistanceJsonStructure.Distance;
+import pl.coderslab.meetings.meetings.DistanceJsonStructure.Distance;
 import pl.coderslab.meetings.models.Meeting;
 import pl.coderslab.meetings.user.UserService;
 
@@ -17,7 +17,6 @@ import java.net.URLConnection;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,12 +33,14 @@ public class MeetingService {
     }
 
     public Meeting getMeetingById(Long id) {
-        return meetingRepository.getOne(id);
+        return meetingRepository.findOne(id);
     }
 
     public List<Meeting> getMeetingsNext7Days() {
         List<Meeting> result = meetingRepository.findAllByMeetTimeBetweenOrderByMeetTimeDesc(LocalDateTime.now(),
                 LocalDateTime.now().plusDays(7));
+
+        result.forEach(m->m.getMembers().size());
         result.forEach(Meeting::setBase64fromOwnerAvatar);
         return result ;
     }
@@ -49,6 +50,7 @@ public class MeetingService {
                 DateTimeFormatter.ofPattern("M/d/yyyy")).atStartOfDay();
         LocalDateTime date1 = date0.plusDays(1);
         List<Meeting> result = meetingRepository.findAllByMeetTimeBetweenOrderByMeetTimeDesc(date0, date1);
+        result.forEach(m->m.getMembers().size());
         result.forEach(Meeting::setBase64fromOwnerAvatar);
         return result;
     }
@@ -65,10 +67,10 @@ public class MeetingService {
         result =result.stream()
                 .filter(m->getDistance(finderFormDTO,m.getAddress())<=finderFormDTO.getDistance())
                 .collect(Collectors.toList());
+        result.forEach(m->m.getMembers().size());
         result.forEach(Meeting::setBase64fromOwnerAvatar);
         return result;
     }
-
 
     private Long getDistance(FinderFormDTO finderFormDTO, String destinationAddres) {
         String googleURL = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins="

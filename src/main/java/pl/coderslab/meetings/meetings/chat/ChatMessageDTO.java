@@ -1,4 +1,4 @@
-package pl.coderslab.meetings.chat;
+package pl.coderslab.meetings.meetings.chat;
 
 public class ChatMessageDTO {
     private Long meetingId;
