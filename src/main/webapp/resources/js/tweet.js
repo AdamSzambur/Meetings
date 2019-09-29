@@ -7,7 +7,7 @@ $(function () {
             $(this).show();
             $(this).prev().find('a.btn.btn-primary').hide();
         }
-    })
+    });
 
     $('a.btn.btn-primary').on('click', function (even) {
         even.preventDefault();

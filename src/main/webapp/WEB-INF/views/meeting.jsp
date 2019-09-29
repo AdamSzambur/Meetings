@@ -8,14 +8,63 @@
     <br>
     <div class="container">
         <div class="rounded border p-5">
-        <h4 class="cover-heading">Kata spotkania o nazwie ${meeting.title}</h4>
+            <div class="card mb-3">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <div id="map"></div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">${meeting.title}</h5>
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable"
+                                    id="chat-button" data-current_meeting="${meeting.id}">
+                                Chat <i class="far fa-comment-dots"></i> <span class="" id="chat_counter">[0]</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <mapa>
+                <script>
+                    function initMap() {
+                        function codeAddress(geocoder, address) {
+                            geocoder.geocode({
+                                    'address': address
+                                }, // change
+                                function(results, status) {
+                                    if (status == 'OK') {
+                                        var infowindow = new google.maps.InfoWindow({
+                                            content: '${meeting.title}'
+                                        });
+                                        var map = new google.maps.Map(
+                                            document.getElementById('map'), {zoom: 15, center: results[0].geometry.location});
+                                        var marker = new google.maps.Marker({
+                                            position: results[0].geometry.location,
+                                            title : '${meeting.title}',
+                                            map: map,
+                                        });
+                                        marker.addListener('click', function() {
+                                            infowindow.open(map, marker);
+                                        });
+
+                                    } else {
+                                        console.log('This didnt work' + status);
+                                    }
+                                });
+                        };
+                        codeAddress(new google.maps.Geocoder(), "${meeting.address}");
+                    }
+                </script>
+                <script async defer
+                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5EJjfoZUTXckzVuwbvm3Ke0SWYwoi6OI&callback=initMap">
+                </script>
+            </mapa>
 
             <chat>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable"
-                        id="chat-button" data-current_meeting="${meeting.id}">
-                    Chat <i class="far fa-comment-dots"></i> <span class="" id="chat_counter">[0]</span>
-                </button>
-
                 <!-- Modal -->
                 <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable" role="document">
@@ -59,7 +108,6 @@
                     </div>
                 </div>
             </chat>
-
         </div>
     </div>
     <br>

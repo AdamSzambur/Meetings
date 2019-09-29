@@ -1,16 +1,9 @@
 $(function () {
-
     var context = window.location.pathname;
-
-    console.log(context);
-
     var currentMeeting = $('#chat-button').data('current_meeting');
-
-    console.log(currentMeeting);
-
-
     // zaciągmay wszystkie wiadomosci z aplikajci (pod warunkiem ze sa nowe)
     var currentMessages = [];
+
     function getAllMessages() {
         $.getJSON({
             url: context+'/chat?id='+currentMeeting,
