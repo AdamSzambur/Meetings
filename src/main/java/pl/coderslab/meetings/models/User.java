@@ -23,8 +23,7 @@ public class User extends AbstractEntity {
     @OneToMany(mappedBy = "owner")
     private List<Meeting> myMeetings;
 
-    @ManyToMany
-    @JoinTable(name = "users_meetings")
+    @ManyToMany(mappedBy = "members")
     private List<Meeting> meetings;
 
 

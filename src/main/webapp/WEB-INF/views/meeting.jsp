@@ -4,10 +4,12 @@
 <jsp:include page="header.jsp"/>
 <c:url value="/" var="mainURL"/>
 <script src="${mainURL}resources/js/chat.js"></script>
+<script src="${mainURL}resources/js/comment.js"></script>
+<script src="${mainURL}resources/js/meeting.js"></script>
 <main role="main" class="flex-shrink-0">
     <br>
     <div class="container">
-        <div class="rounded border p-5">
+        <div class="rounded border p-2">
             <div class="card mb-3">
                 <div class="row no-gutters">
                     <div class="col-md-4">
@@ -23,10 +25,239 @@
                                     id="chat-button" data-current_meeting="${meeting.id}">
                                 Chat <i class="far fa-comment-dots"></i> <span class="" id="chat_counter">[0]</span>
                             </button>
+
+                            <a href="#" class="btn btn-primary"><i class="far fa-comments"></i> Dodaj komentarz</a>
+                            <c:if test="${meeting.owner != user}">
+                                <c:if test="${!meeting.members.contains(user)}">
+                                <button id="addMember" type="button" class="btn btn-warning"><i class="fas fa-user-plus"></i> Dołącz do wydarzenia</button>
+                                </c:if>
+                                <c:if test="${meeting.members.contains(user)}">
+                                <button id="removeMember" type="button" class="btn btn-danger"><i class="fas fa-user-minus"></i> Opuść wydarzenie</button>
+                                </c:if>
+                            </c:if>
                         </div>
                     </div>
                 </div>
+                <div class="card-footer" data-error="<c:out value="${error == 0 ? 1 : 0}"/>">
+                    <form:form modelAttribute="newComment">
+                        <form:hidden path="meetingId"/>
+                        <div class="input-group mb-3">
+                            <form:input path="text" cssClass="form-control" placeholder="Nowy komentarz"/>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="submit">
+                                    <i class="fas fa-comment-plus"></i> Dodaj</button>
+                            </div>
+                        </div>
+                        <form:errors path="text" cssClass="error" element="div" />
+                    </form:form>
+                </div>
             </div>
+
+            <table class="table">
+                <tr>
+                    <td colspan="6">Komentarze</td>
+                </tr>
+
+            <c:forEach var="comment" items="${meeting.comments}">
+                <tr>
+                    <td colspan="6">
+                        <div class="card">
+                            <div class="card-header">
+                                <img src="data:image/jpeg;base64,${comment.user.base64Image}" width="27" height="27" class="avatar"/>
+                                <c:if test="${comment.user.email.equals(principal.email)}">
+                                    ${comment.user.fullName}
+                                </c:if>
+                                <c:if test="${!comment.user.email.equals(principal.email)}">
+                                    <a href="${mainURL}message/add?id=${comment.user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${comment.user.fullName}</a>
+                                </c:if>
+                                , Utworzono : ${comment.created},
+                            </div>
+                            <div>
+                                <div>
+                                    <div class="card-body">
+                                        <p class="card-text">${comment.text}</p>
+                                        <a href="#" class="btn btn-primary"><i class="far fa-comments"></i> Dodaj komentarz</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer" data-error="<c:out value="${error == comment.id ? 1 : 0}"/>">
+                                <form:form modelAttribute="newComment" method="post">
+                                    <form:hidden path="meetingId"/>
+                                    <form:hidden path="parentId" value="${comment.id}"/>
+                                    <div class="input-group mb-3">
+                                        <form:input path="text" cssClass="form-control" placeholder="Nowy komentarz"/>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="submit">
+                                                <i class="fas fa-comment-plus"></i> Dodaj</button>
+                                        </div>
+                                    </div>
+                                    <form:errors path="text" cssClass="error" element="div" />
+                                </form:form>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <c:forEach var="child1" items="${comment.children}">
+                    <tr>
+                        <td></td>
+                        <td colspan="5">
+                            <div class="card">
+                                <div class="card-header">
+                                    <img src="data:image/jpeg;base64,${child1.user.base64Image}" width="27" height="27" class="avatar"/>
+                                    <c:if test="${child1.user.email.equals(principal.email)}">
+                                        ${child1.user.fullName}
+                                    </c:if>
+                                    <c:if test="${!child1.user.email.equals(principal.email)}">
+                                        <a href="${mainURL}message/add?id=${child1.user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${child1.user.fullName}</a>
+                                    </c:if>
+                                    , Utworzono : ${child1.created},
+                                </div>
+                                <div>
+                                    <div>
+                                        <div class="card-body">
+                                            <p class="card-text">${child1.text}</p>
+                                            <a href="#" class="btn btn-primary"><i class="far fa-comments"></i> Dodaj komentarz</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer" data-error="<c:out value="${child1.id == null ? 1 : 0}"/>">
+                                    <form:form modelAttribute="newComment" method="post">
+                                        <form:hidden path="meetingId"/>
+                                        <form:hidden path="parentId" value="${child1.id}"/>
+                                        <div class="input-group mb-3">
+                                            <form:input path="text" cssClass="form-control" placeholder="Nowy komentarz"/>
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-secondary" type="submit">
+                                                    <i class="fas fa-comment-plus"></i> Dodaj</button>
+                                            </div>
+                                        </div>
+                                        <form:errors path="text" cssClass="error" element="div" />
+                                    </form:form>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <c:forEach var="child2" items="${child1.children}">
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td colspan="4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <img src="data:image/jpeg;base64,${child1.user.base64Image}" width="27" height="27" class="avatar"/>
+                                        <c:if test="${child2.user.email.equals(principal.email)}">
+                                            ${child1.user.fullName}
+                                        </c:if>
+                                        <c:if test="${!child2.user.email.equals(principal.email)}">
+                                            <a href="${mainURL}message/add?id=${child2.user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${child2.user.fullName}</a>
+                                        </c:if>
+                                        , Utworzono : ${child2.created},
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <div class="card-body">
+                                                <p class="card-text">${child2.text}</p>
+                                                <a href="#" class="btn btn-primary"><i class="far fa-comments"></i> Dodaj komentarz</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer" data-error="<c:out value="${child2.id == null ? 1 : 0}"/>">
+                                        <form:form modelAttribute="newComment" method="post">
+                                            <form:hidden path="meetingId"/>
+                                            <form:hidden path="parentId" value="${child2.id}"/>
+                                            <div class="input-group mb-3">
+                                                <form:input path="text" cssClass="form-control" placeholder="Nowy komentarz"/>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-secondary" type="submit">
+                                                        <i class="fas fa-comment-plus"></i> Dodaj</button>
+                                                </div>
+                                            </div>
+                                            <form:errors path="text" cssClass="error" element="div" />
+                                        </form:form>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <c:forEach var="child3" items="${child2.children}">
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td colspan="3">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <img src="data:image/jpeg;base64,${child3.user.base64Image}" width="27" height="27" class="avatar"/>
+                                            <c:if test="${child3.user.email.equals(principal.email)}">
+                                                ${child3.user.fullName}
+                                            </c:if>
+                                            <c:if test="${!child3.user.email.equals(principal.email)}">
+                                                <a href="${mainURL}message/add?id=${child3.user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${child3.user.fullName}</a>
+                                            </c:if>
+                                            , Utworzono : ${child3.created},
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <div class="card-body">
+                                                    <p class="card-text">${child3.text}</p>
+                                                    <a href="#" class="btn btn-primary"><i class="far fa-comments"></i> Dodaj komentarz</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer" data-error="<c:out value="${child3 == null ? 1 : 0}"/>">
+                                            <form:form modelAttribute="newComment" method="post">
+                                                <form:hidden path="meetingId"/>
+                                                <form:hidden path="parentId" value="${child3.id}"/>
+                                                <div class="input-group mb-3">
+                                                    <form:input path="text" cssClass="form-control" placeholder="Nowy komentarz"/><br>
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-outline-secondary" type="submit">
+                                                            <i class="fas fa-comment-plus"></i> Dodaj</button>
+                                                    </div>
+                                                </div>
+                                                <form:errors path="text" cssClass="error" element="div" />
+                                            </form:form>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <c:forEach var="child4" items="${child3.children}">
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td colspan="2">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <img src="data:image/jpeg;base64,${child4.user.base64Image}" width="27" height="27" class="avatar"/>
+                                                <c:if test="${child4.user.email.equals(principal.email)}">
+                                                    ${child4.user.fullName}
+                                                </c:if>
+                                                <c:if test="${!child4.user.email.equals(principal.email)}">
+                                                    <a href="${mainURL}message/add?id=${child4.user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${child4.user.fullName}</a>
+                                                </c:if>
+                                                , Utworzono : ${child4.created},
+                                            </div>
+                                            <div>
+                                                <div>
+                                                    <div class="card-body">
+                                                        <p class="card-text">${child4.text}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </c:forEach>
+                    </c:forEach>
+
+                </c:forEach>
+
+            </c:forEach>
+            </table>
+
+
 
             <mapa>
                 <script>
@@ -108,6 +339,26 @@
                     </div>
                 </div>
             </chat>
+
+            <message>
+                <div class="alert modal_alert invisible" id="messageBox">
+                    <button type="button" class="close" onclick="event.preventDefault(); $('#messageBox').toggleClass('invisible');">
+                        <span>&times;</span>
+                    </button><br>
+                    <p style="text-align: center">
+                        <span class="messageValue">Czy napewno chcesz usunąć tego pracownika</span>
+                        <form:form modelAttribute="memberDTO" action="${mainURL}meetings/member">
+                            <form:hidden path="meetingId" value="${meeting.id}"/>
+                            <form:hidden path="userId" value="${user.id}"/>
+                            <p style="text-align: center">
+                                <button type="submit" role="button" class="btn btn-success">success</button>
+                                <a role="button" class="btn btn-danger" href="" onclick="event.preventDefault(); $('#messageBox').toggleClass('invisible');">Anuluj</a>
+                            </p>
+                        </form:form>
+                    </p>
+                </div>
+            </message>
+
         </div>
     </div>
     <br>

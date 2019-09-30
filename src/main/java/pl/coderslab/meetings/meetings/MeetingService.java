@@ -3,7 +3,11 @@ package pl.coderslab.meetings.meetings;
 import org.springframework.stereotype.Service;
 import pl.coderslab.meetings.FinderFormDTO;
 import pl.coderslab.meetings.meetings.DistanceJsonStructure.Distance;
+import pl.coderslab.meetings.meetings.member.MemberDTO;
+import pl.coderslab.meetings.models.Comment;
 import pl.coderslab.meetings.models.Meeting;
+import pl.coderslab.meetings.models.User;
+import pl.coderslab.meetings.user.UserRepository;
 import pl.coderslab.meetings.user.UserService;
 
 import javax.json.bind.Jsonb;
@@ -26,22 +30,50 @@ public class MeetingService {
 
     private MeetingRepository meetingRepository;
     private UserService userService;
+    private CommentRepository commentRepository;
+    private UserRepository userRepository;
 
-    public MeetingService(UserService userService, MeetingRepository meetingRepository) {
-        this.userService = userService;
+    public MeetingService(MeetingRepository meetingRepository, UserService userService
+            , CommentRepository commentRepository, UserRepository userRepository) {
         this.meetingRepository = meetingRepository;
+        this.userService = userService;
+        this.commentRepository = commentRepository;
+        this.userRepository = userRepository;
     }
 
-    public Meeting getMeetingById(Long id) {
-        return meetingRepository.findOne(id);
+    public Meeting getMeetingById(Long id, boolean alldata) {
+        Meeting result = meetingRepository.findOne(id);
+        if (alldata) {
+            result.getMembers().size();
+            result.setBase64fromOwnerAvatar();
+            result.setComments(commentRepository.getAllByParentAndMeeting(null,result));
+            // w zasadzie nieograniczona ilosc komentarzy do komentarzy
+            for (Comment comment : result.getComments()) {
+                comment.setBase64fromUserAvatar();
+                comment.setChildren(getChildrenLoop(comment.getChildren()));
+            }
+        }
+        return result;
+    }
+
+    // metoda rekurencyjna
+    public List<Comment> getChildrenLoop(List<Comment> childrenList) {
+        for (Comment child : childrenList) {
+            child.setBase64fromUserAvatar();
+            child.setChildren(getChildrenLoop(child.getChildren()));
+        }
+        return childrenList;
     }
 
     public List<Meeting> getMeetingsNext7Days() {
         List<Meeting> result = meetingRepository.findAllByMeetTimeBetweenOrderByMeetTimeDesc(LocalDateTime.now(),
                 LocalDateTime.now().plusDays(7));
+        result.forEach(m->{
+            m.getMembers().size();
+            m.setCommentsNumber(commentRepository.countAllByMeeting(m));
+            m.setBase64fromOwnerAvatar();
+        });
 
-        result.forEach(m->m.getMembers().size());
-        result.forEach(Meeting::setBase64fromOwnerAvatar);
         return result ;
     }
 
@@ -50,8 +82,11 @@ public class MeetingService {
                 DateTimeFormatter.ofPattern("M/d/yyyy")).atStartOfDay();
         LocalDateTime date1 = date0.plusDays(1);
         List<Meeting> result = meetingRepository.findAllByMeetTimeBetweenOrderByMeetTimeDesc(date0, date1);
-        result.forEach(m->m.getMembers().size());
-        result.forEach(Meeting::setBase64fromOwnerAvatar);
+        result.forEach(m->{
+            m.getMembers().size();
+            m.setCommentsNumber(commentRepository.countAllByMeeting(m));
+            m.setBase64fromOwnerAvatar();
+        });
         return result;
     }
 
@@ -67,8 +102,11 @@ public class MeetingService {
         result =result.stream()
                 .filter(m->getDistance(finderFormDTO,m.getAddress())<=finderFormDTO.getDistance())
                 .collect(Collectors.toList());
-        result.forEach(m->m.getMembers().size());
-        result.forEach(Meeting::setBase64fromOwnerAvatar);
+        result.forEach(m->{
+            m.getMembers().size();
+            m.setCommentsNumber(commentRepository.countAllByMeeting(m));
+            m.setBase64fromOwnerAvatar();
+        });
         return result;
     }
 
@@ -113,6 +151,21 @@ public class MeetingService {
         meeting.setMeetTime(meetingDTO.getMeetTime());
         meeting.setOwner(userService.getUserById(meetingDTO.getOwnerId()));
         meeting.setTitle(meetingDTO.getTitle());
+        meetingRepository.save(meeting);
+    }
+
+    public void toogleMemberInMeeting(MemberDTO memberDTO) {
+        Meeting meeting = meetingRepository.findOne(memberDTO.getMeetingId());
+        User user = userRepository.findOne(memberDTO.getUserId());
+        meeting.getMembers().size();
+
+        if (meeting.getMembers().contains(user)) {
+            System.out.println("Usuwamy uzytkownika z listy członków");
+            meeting.removeMember(user);
+        } else {
+            System.out.println("Dodajemy uzytkownika do listy członków");
+            meeting.addMember(user);
+        }
         meetingRepository.save(meeting);
     }
 }

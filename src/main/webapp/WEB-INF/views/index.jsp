@@ -81,12 +81,7 @@
                                         </div>
                                         <div class="row text-right">
                                             <div class="col-12">
-                                                <span style="font-size: small">
-                                                    <i class="fas fa-users"></i>
-                                                    Uczestnicy ${meeting.members.size()+1},
-                                                    Utworzył : ${meeting.owner.fullName} <img src="data:image/jpeg;base64,${meeting.owner.base64Image}" width="17" height="17" class="avatar"/> ,
-                                                    Chat <i class="far fa-comment-dots"></i> <span data-meetingid ="${meeting.id}" class="chat_counter_homepage">[0]</span>
-                                                </span>
+<%--                                                ---------------------%>
                                             </div>
                                         </div>
                                     </div>
@@ -94,6 +89,14 @@
                                 </div>
                                 <a href="${mainURL}meetings?id=${meeting.id}" class="stretched-link"></a>
                             </div>
+                        </div>
+                        <div class="card-footer">
+                            <span style="font-size: small">
+                                Członkowie : <i class="fas fa-users"></i> ${(meeting.members.size()+1)},
+                                Utworzył : <img src="data:image/jpeg;base64,${meeting.owner.base64Image}" width="17" height="17" class="avatar"/> ${meeting.owner.fullName},
+                                Chat <i class="far fa-comment-dots"></i> <span data-meetingid ="${meeting.id}" class="chat_counter_homepage">[0]</span>,
+                                Komentarze <i class="far fa-comments"></i> ${meeting.commentsNumber}
+                            </span>
                         </div>
                     </div>
 

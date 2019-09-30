@@ -4,9 +4,7 @@
 
 	"use strict";
 
-
     var context = window.location.pathname;
-
     // Create the defaults once
     var pluginName = "simpleCalendar",
         defaults = {
@@ -163,61 +161,6 @@
                 plugin.currentDate.setMonth(plugin.currentDate.getMonth()+1);
                 plugin.buildCalendar(plugin.currentDate, $('.calendar'));
                 plugin.updateHeader(plugin.currentDate, $('.calendar header'));
-            });
-
-            // $('td').click(function(e){
-            //     console.log($(this).data("date"));
-            //     // // czyscimy klase selected z kalendarza
-            //     // $('.day.selected').toggleClass("selected");
-            //     // //ustawiamy klasę selected w kalendarzu
-            //     // $(this).find(".day").addClass('selected');
-            //
-            //
-            //
-            // })
-
-
-
-
-        },
-        //Small effect to fillup a container
-        fillUp : function (elem,x,y){
-
-            var plugin = this;
-            var elemOffset = elem.offset();
-
-            var filler = $('<div class="filler" style=""></div>');
-            filler.css("left", x-elemOffset.left);
-            filler.css("top", y-elemOffset.top);
-
-            $('.calendar').append(filler);
-
-
-            filler.animate({
-                width: "300%",
-                height: "300%"
-            }, 500, function() {
-                $('.event-container').show();
-                filler.hide();
-            });
-        },
-        //Small effect to empty a container
-        empty : function (elem,x,y){
-            var elemOffset = elem.offset();
-
-            var filler = $('.filler');
-            filler.css("width", "300%");
-            filler.css("height", "300%");
-
-            filler.show();
-
-            $('.event-container').hide();
-
-            filler.animate({
-                width: "0%",
-                height: "0%"
-            }, 500, function() {
-                filler.remove();
             });
         }
     });

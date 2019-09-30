@@ -11,7 +11,9 @@ $(function () {
 
     $('a.btn.btn-primary').on('click', function (even) {
         even.preventDefault();
-        ($(this).parent().next()).show();
+        ($(this).parent().parent().parent().next()).show();
+        console.log('dziala czy nie');
+        console.log($(this).parent().parent().parent().next());
         $(this).hide();
     })
 });

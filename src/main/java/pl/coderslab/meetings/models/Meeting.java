@@ -26,12 +26,34 @@ public class Meeting extends AbstractEntity {
     @Column(nullable = false)
     private String address;
 
-    @ManyToMany(mappedBy = "meetings")
+    @ManyToMany
     private List<User> members;
+
+    @OneToMany(mappedBy = "meeting")
+    private List<Comment> comments;
+
+    @Transient
+    private Long commentsNumber;
 
     @PrePersist
     public void prePersist() {
         created = LocalDateTime.now();
+    }
+
+    public Long getCommentsNumber() {
+        return commentsNumber;
+    }
+
+    public void setCommentsNumber(Long commentsNumber) {
+        this.commentsNumber = commentsNumber;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     public User getOwner() {
@@ -94,4 +116,11 @@ public class Meeting extends AbstractEntity {
         owner.setBase64Image(Base64.getEncoder().encodeToString(owner.getAvatar()));
     }
 
+    public void addMember(User member) {
+        this.members.add(member);
+    }
+
+    public void removeMember(User member) {
+        this.members.remove(member);
+    }
 }

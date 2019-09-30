@@ -46,7 +46,6 @@ public class MeetingAddController {
         if (result.hasErrors()) {
             return "meetingAdd";
         }
-
         meetingService.addMeeting(meeting);
         return "redirect:/";
     }
