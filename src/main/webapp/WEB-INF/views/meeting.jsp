@@ -20,13 +20,14 @@
                             <h5 class="card-title">${meeting.title}</h5>
                             <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
                             <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable"
-                                    id="chat-button" data-current_meeting="${meeting.id}">
-                                Chat <i class="far fa-comment-dots"></i> <span class="" id="chat_counter">[0]</span>
-                            </button>
-
-                            <a href="#" class="btn btn-primary"><i class="far fa-comments"></i> Dodaj komentarz</a>
+                            <div class="m-1">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable"
+                                        id="chat-button" data-current_meeting="${meeting.id}">
+                                    Chat <i class="far fa-comment-dots"></i> <span class="" id="chat_counter">[0]</span>
+                                </button>
+                                <a href="#" class="btn btn-primary"><i class="far fa-comments"></i> Dodaj komentarz</a>
+                            </div>
+                            <div class="m-1">
                             <c:if test="${meeting.owner != user}">
                                 <c:if test="${!meeting.members.contains(user)}">
                                 <button id="addMember" type="button" class="btn btn-warning"><i class="fas fa-user-plus"></i> Dołącz do wydarzenia</button>
@@ -35,6 +36,7 @@
                                 <button id="removeMember" type="button" class="btn btn-danger"><i class="fas fa-user-minus"></i> Opuść wydarzenie</button>
                                 </c:if>
                             </c:if>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -23,8 +23,10 @@ public class UserFormDTO {
 
     private CommonsMultipartFile avatar;
 
+    @NotBlank
     private String firstName;
 
+    @NotBlank
     private String lastName;
 
     private String base64Image;

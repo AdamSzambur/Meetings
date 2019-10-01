@@ -48,6 +48,12 @@ public class UserEditController {
             result.rejectValue("repassword", null,"Hasła muszą być zgodne");
             return "userEdit";
         }
+
+        if (data.getAvatar().getSize()>150000) {
+            result.rejectValue("avatar", null,"Plik nie może być większy od 150kB");
+            return "registration";
+        }
+
         userService.updateUser(data);
         model.addAttribute("msg", "Dane uzytkownika zostały zaktualizowane");
         return "userEdit";

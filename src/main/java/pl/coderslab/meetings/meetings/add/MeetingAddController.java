@@ -49,6 +49,7 @@ public class MeetingAddController {
     public  String processAddPage(@ModelAttribute("meeting") @Valid MeetingDTO meeting, BindingResult result,
                                   Model model, Principal principal) {
         model.addAttribute("user", userService.getUserByEmail(principal.getName()));
+
         if (result.hasErrors()) {
             return "meetingAdd";
         }
