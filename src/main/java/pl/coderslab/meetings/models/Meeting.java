@@ -2,6 +2,7 @@ package pl.coderslab.meetings.models;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
@@ -21,6 +22,8 @@ public class Meeting extends AbstractEntity {
     @Column(nullable = false)
     private LocalDateTime meetTime;
 
+    @Column(length = 500)
+    @Size(max = 500)
     private String description;
 
     @Column(nullable = false)

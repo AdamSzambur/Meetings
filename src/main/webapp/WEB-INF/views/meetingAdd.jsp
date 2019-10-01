@@ -28,7 +28,7 @@
                 </div>
                 <div class="form-group">
                     <label for="meetTime">Data i godzina spotkania</label>
-                    <form:input path="meetTime" cssClass="form-control" id="meetTime" type="datetime-local" />
+                    <form:input path="meetTime" cssClass="form-control" id="meetTime" type="datetime-local" value="${actualTime}" />
                     <form:errors path="meetTime" cssClass="error" element="div" />
                 </div>
                 <button type="submit" class="btn btn-primary">Dodaj nowe spotkanie</button>
@@ -36,6 +36,7 @@
         </div>
     </div>
     <br>
+    ${actualTime}
 </main>
 <jsp:include page="footer.jsp"/>
 

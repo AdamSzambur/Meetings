@@ -11,6 +11,7 @@ import pl.coderslab.meetings.user.UserService;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping("/meetings")
@@ -34,7 +35,7 @@ public class MeetingController {
 
 
     @GetMapping
-    public String userAddPage(@RequestParam Long id, Model model, Principal principal) {
+    public String meetingPage(@RequestParam Long id, Model model, Principal principal) {
         model.addAttribute("user", userService.getUserByEmail(principal.getName()));
         model.addAttribute("meeting", meetingService.getMeetingById(id,true));
         model.addAttribute("newComment", new CommentFormDTO(id));
@@ -44,8 +45,10 @@ public class MeetingController {
 
 
     @PostMapping
-    public String addTweet(@ModelAttribute("newComment") @Valid CommentFormDTO newComment, BindingResult result, Model model, Principal principal,@RequestParam Long id) {
+    public String processMeetingPage(@ModelAttribute("newComment") @Valid CommentFormDTO newComment, BindingResult result,
+                                     Model model, Principal principal,@RequestParam Long id) {
         if (result.hasErrors()) {
+            model.addAttribute("user", userService.getUserByEmail(principal.getName()));
             model.addAttribute("meeting", meetingService.getMeetingById(id, true));
             if (newComment.getParentId() != null) {
                 model.addAttribute("error", newComment.getParentId());

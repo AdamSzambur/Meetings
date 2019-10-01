@@ -2,8 +2,10 @@ package pl.coderslab.meetings.meetings;
 
 
 import com.sun.istack.internal.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 public class MeetingDTO {
@@ -11,9 +13,11 @@ public class MeetingDTO {
     @NotBlank
     private String title;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @NotNull
     private LocalDateTime meetTime;
 
+    @Size(max = 500)
     private String description;
 
     @NotBlank
