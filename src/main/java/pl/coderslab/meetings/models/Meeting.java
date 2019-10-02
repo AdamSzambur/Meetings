@@ -19,6 +19,8 @@ public class Meeting extends AbstractEntity {
 
     private LocalDateTime created;
 
+    private LocalDateTime updated;
+
     @Column(nullable = false)
     private LocalDateTime meetTime;
 
@@ -42,6 +44,9 @@ public class Meeting extends AbstractEntity {
     public void prePersist() {
         created = LocalDateTime.now();
     }
+
+//    @PreUpdate ze względu na to ze dodaję liste komentarzy do tej encji nie moge tego uzyc.
+    public void preUpdate() { updated = LocalDateTime.now();}
 
     public Long getCommentsNumber() {
         return commentsNumber;
@@ -113,6 +118,14 @@ public class Meeting extends AbstractEntity {
 
     public void setMembers(List<User> members) {
         this.members = members;
+    }
+
+    public LocalDateTime getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(LocalDateTime updated) {
+        this.updated = updated;
     }
 
     public void setBase64fromOwnerAvatar() {

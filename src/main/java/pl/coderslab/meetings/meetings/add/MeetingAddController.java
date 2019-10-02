@@ -37,7 +37,7 @@ public class MeetingAddController {
     }
 
     @GetMapping
-    public String userAddPage(Model model, Principal principal) {
+    public String meetingAddPage(Model model, Principal principal) {
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         model.addAttribute("actualTime", LocalDateTime.now().format(inputFormatter));
         model.addAttribute("user", userService.getUserByEmail(principal.getName()));

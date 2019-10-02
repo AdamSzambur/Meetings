@@ -18,25 +18,27 @@
                     <div class="col-md-8">
                         <div class="card-body">
                             <h5 class="card-title">${meeting.title}</h5>
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                            <div class="m-1">
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable"
+                            <p class="card-text">${meeting.description}</p>
+                            <p class="card-text"><small class="text-muted">
+                                Ostatnia aktualizacja : ${meeting.updated.format(formater)}
+                                </small></p>
+
+                                <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#exampleModalScrollable"
                                         id="chat-button" data-current_meeting="${meeting.id}">
                                     Chat <i class="far fa-comment-dots"></i> <span class="" id="chat_counter">[0]</span>
                                 </button>
-                                <a href="#" class="btn btn-primary"><i class="far fa-comments"></i> Dodaj komentarz</a>
-                            </div>
-                            <div class="m-1">
+                                <a href="#" class="btn btn-primary m-1"><i class="far fa-comments"></i> Dodaj komentarz</a>
+
+
                             <c:if test="${meeting.owner != user}">
                                 <c:if test="${!meeting.members.contains(user)}">
-                                <button id="addMember" type="button" class="btn btn-warning"><i class="fas fa-user-plus"></i> Dołącz do wydarzenia</button>
+                                <button id="addMember" type="button" class="btn btn-warning m-1"><i class="fas fa-user-plus"></i> Dołącz do wydarzenia</button>
                                 </c:if>
                                 <c:if test="${meeting.members.contains(user)}">
-                                <button id="removeMember" type="button" class="btn btn-danger"><i class="fas fa-user-minus"></i> Opuść wydarzenie</button>
+                                <button id="removeMember" type="button" class="btn btn-danger m-1"><i class="fas fa-user-minus"></i> Opuść wydarzenie</button>
                                 </c:if>
                             </c:if>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -72,7 +74,7 @@
                                 <c:if test="${!comment.user.email.equals(principal.email)}">
                                     <a href="${mainURL}message/add?id=${comment.user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${comment.user.fullName}</a>
                                 </c:if>
-                                , Utworzono : ${comment.created},
+                                , Utworzono : ${comment.created.format(formater)}
                             </div>
                             <div>
                                 <div>
@@ -112,7 +114,7 @@
                                     <c:if test="${!child1.user.email.equals(principal.email)}">
                                         <a href="${mainURL}message/add?id=${child1.user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${child1.user.fullName}</a>
                                     </c:if>
-                                    , Utworzono : ${child1.created},
+                                    , Utworzono : ${child1.created.format(formater)}
                                 </div>
                                 <div>
                                     <div>
@@ -153,7 +155,7 @@
                                         <c:if test="${!child2.user.email.equals(principal.email)}">
                                             <a href="${mainURL}message/add?id=${child2.user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${child2.user.fullName}</a>
                                         </c:if>
-                                        , Utworzono : ${child2.created},
+                                        , Utworzono : ${child2.created.format(formater)}
                                     </div>
                                     <div>
                                         <div>
@@ -195,7 +197,7 @@
                                             <c:if test="${!child3.user.email.equals(principal.email)}">
                                                 <a href="${mainURL}message/add?id=${child3.user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${child3.user.fullName}</a>
                                             </c:if>
-                                            , Utworzono : ${child3.created},
+                                            , Utworzono : ${child3.created.format(formater)}
                                         </div>
                                         <div>
                                             <div>
@@ -238,7 +240,7 @@
                                                 <c:if test="${!child4.user.email.equals(principal.email)}">
                                                     <a href="${mainURL}message/add?id=${child4.user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${child4.user.fullName}</a>
                                                 </c:if>
-                                                , Utworzono : ${child4.created},
+                                                , Utworzono : ${child4.created.format(formater)}
                                             </div>
                                             <div>
                                                 <div>

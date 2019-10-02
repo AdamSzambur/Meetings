@@ -6,6 +6,7 @@ import pl.coderslab.meetings.models.Meeting;
 import pl.coderslab.meetings.user.UserRepository;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -38,8 +39,11 @@ public class CommentService {
             comment.setParent(commentRepository.findOne(newComment.getParentId()));
         }
         comment.setText(newComment.getText());
-        comment.setMeeting(meetingRepository.findOne(newComment.getMeetingId()));
 
+        Meeting meeting = meetingRepository.findOne(newComment.getMeetingId());
+        meeting.setUpdated(LocalDateTime.now());
+        meetingRepository.save(meeting); //ustawiamy w ten spsób update.
+        comment.setMeeting(meeting);
         commentRepository.save(comment);
     }
 }

@@ -11,7 +11,9 @@ import pl.coderslab.meetings.user.UserService;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Controller
 @RequestMapping("/meetings")
@@ -40,6 +42,7 @@ public class MeetingController {
         model.addAttribute("meeting", meetingService.getMeetingById(id,true));
         model.addAttribute("newComment", new CommentFormDTO(id));
         model.addAttribute("memberDTO", new MemberDTO());
+        model.addAttribute("formater", DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm"));
         return "meeting";
     }
 
@@ -60,5 +63,17 @@ public class MeetingController {
             commentService.addComment(newComment,principal.getName());
             return "redirect:/meetings?id="+newComment.getMeetingId();
         }
+    }
+
+    private static long[] getTime(LocalDateTime dob, LocalDateTime now) {
+        LocalDateTime today = LocalDateTime.of(now.getYear(),
+                now.getMonthValue(), now.getDayOfMonth(), dob.getHour(), dob.getMinute(), dob.getSecond());
+        Duration duration = Duration.between(today, now);
+        long seconds = duration.getSeconds();
+        long hours = seconds / 3600;
+        long minutes = ((seconds % 3600) / 60);
+        long secs = (seconds % 60);
+
+        return new long[]{hours, minutes, secs};
     }
 }

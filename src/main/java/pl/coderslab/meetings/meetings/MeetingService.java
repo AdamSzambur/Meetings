@@ -151,6 +151,8 @@ public class MeetingService {
         meeting.setMeetTime(meetingDTO.getMeetTime());
         meeting.setOwner(userService.getUserById(meetingDTO.getOwnerId()));
         meeting.setTitle(meetingDTO.getTitle());
+
+        meeting.setUpdated(LocalDateTime.now());
         meetingRepository.save(meeting);
     }
 
