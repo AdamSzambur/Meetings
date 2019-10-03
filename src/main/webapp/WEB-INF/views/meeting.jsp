@@ -7,7 +7,10 @@
 <script src="${mainURL}resources/js/comment.js"></script>
 <script src="${mainURL}resources/js/meeting.js"></script>
 <main role="main" class="flex-shrink-0">
-    <br>
+    <div class="container-fluid p-3" style="background-color: #ff8600">
+        <br><br><br>
+        <span class="align-text-bottom"><h4><i class="fas fa-handshake"></i> Szczegóły spotkania ${meeting.title}</h4></span>
+    </div>
     <div class="container">
         <div class="rounded border p-2">
             <div class="card mb-3">

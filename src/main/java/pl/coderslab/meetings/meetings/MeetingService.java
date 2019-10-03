@@ -66,7 +66,7 @@ public class MeetingService {
     }
 
     public List<Meeting> getMeetingsNext7Days() {
-        List<Meeting> result = meetingRepository.findAllByMeetTimeBetweenOrderByMeetTimeDesc(LocalDateTime.now(),
+        List<Meeting> result = meetingRepository.findAllByMeetTimeBetweenOrderByMeetTime(LocalDateTime.now(),
                 LocalDateTime.now().plusDays(7));
         result.forEach(m->{
             m.getMembers().size();
@@ -81,7 +81,7 @@ public class MeetingService {
         LocalDateTime date0 = LocalDate.parse(selectedDate.replace('.', '/'),
                 DateTimeFormatter.ofPattern("M/d/yyyy")).atStartOfDay();
         LocalDateTime date1 = date0.plusDays(1);
-        List<Meeting> result = meetingRepository.findAllByMeetTimeBetweenOrderByMeetTimeDesc(date0, date1);
+        List<Meeting> result = meetingRepository.findAllByMeetTimeBetweenOrderByMeetTime(date0, date1);
         result.forEach(m->{
             m.getMembers().size();
             m.setCommentsNumber(commentRepository.countAllByMeeting(m));
@@ -93,7 +93,7 @@ public class MeetingService {
     public List<Meeting> getMeetingByFinderForm(FinderFormDTO finderFormDTO) {
         List<Meeting> result;
         if (finderFormDTO.getFindPhrase() == null) {
-            result = meetingRepository.findAllByMeetTimeBetweenOrderByMeetTimeDesc(LocalDateTime.now(),
+            result = meetingRepository.findAllByMeetTimeBetweenOrderByMeetTime(LocalDateTime.now(),
                     LocalDateTime.now().plusYears(10));
         } else {
             result = meetingRepository.findAllByAddressContainsOrTitleContainsOrDescriptionContains(
@@ -169,5 +169,25 @@ public class MeetingService {
             meeting.addMember(user);
         }
         meetingRepository.save(meeting);
+    }
+
+    public List<Meeting> getMeetingByOwner(User owner) {
+        List<Meeting> result = meetingRepository.findAllByOwnerOrderByMeetTime(owner);
+        result.forEach(m->{
+            m.getMembers().size();
+            m.setCommentsNumber(commentRepository.countAllByMeeting(m));
+            m.setBase64fromOwnerAvatar();
+        });
+        return result;
+    }
+
+    public List<Meeting> getMeetingsByMember(User member) {
+        List<Meeting> result = meetingRepository.findAllByMembersContainingOrderByMeetTime(member);
+        result.forEach(m->{
+            m.getMembers().size();
+            m.setCommentsNumber(commentRepository.countAllByMeeting(m));
+            m.setBase64fromOwnerAvatar();
+        });
+        return result;
     }
 }

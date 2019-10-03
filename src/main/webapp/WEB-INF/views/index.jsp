@@ -4,7 +4,7 @@
 <jsp:include page="header.jsp"/>
 <c:url value="/" var="mainURL"/>
 <script src="${mainURL}resources/js/jquery.simple-calendar.js"></script>
-<script src="${mainURL}resources/js/main_page.js"></script>
+<script src="${mainURL}resources/js/countChatMessages.js"></script>
 
 <main role="main" class="flex-shrink-0">
     <br>
@@ -42,7 +42,7 @@
     </div>
     <div class="container-fluid p-3 justify-content align-items-center" style="background-color:#6691CC;">
         <span mb-2 mr-sm-2 >Nie znalazłeś interesującego cię wydarzenia. &nbsp;&nbsp;</span>
-        <button type="button" class="btn btn-warning" onclick="location.href='${mainURL}meetings/add'">Dodaj nowe</button>
+        <button type="button" class="btn btn-warning" onclick="location.href='${mainURL}meetings/add'"><i class="far fa-calendar-plus"></i> Dodaj nowe</button>
     </div>
     <div class="container">
         <div class="row">
@@ -72,8 +72,8 @@
                                 </div>
                                 <div class="col-md-7">
 
-                                    <div class="container" style="height: 180px;">
-                                        <div class="row align-content-start" style="height: 150px">
+                                    <div class="container">
+                                        <div class="row align-content-start">
                                             <div class="col-12">
                                                 <b>Opis : </b>
                                                 <c:out value="${meeting.description.length()>200 ? meeting.description.substring(0,199).concat('...') : meeting.description}"/>
@@ -141,7 +141,7 @@
                 </googlemap>
 
 
-                Lista zalogowanych użytkowników :
+                Lista zalogowanych użytkowników :<br>
                 <c:forEach items="${loggedUsers}" var="loggedUser">
                     <img src="data:image/jpeg;base64,${loggedUser.base64Image}" width="27" height="27" class="avatar"/>
                     ${loggedUser.fullName}<br>

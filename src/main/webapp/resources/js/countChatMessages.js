@@ -1,9 +1,13 @@
 $(function () {
     var context = window.location.pathname;
 
+    function getContextPath() {
+        return window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
+    }
+
     function testAjax(meetingId, span) {
         $.ajax({
-            url: context + "meetings/chat/length?id=" + meetingId
+            url: getContextPath() + "/meetings/chat/length?id=" + meetingId
         }).done(function (result) {
             if (result>0) {
                 span.addClass('chat_counter');
