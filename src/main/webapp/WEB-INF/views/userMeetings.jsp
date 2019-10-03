@@ -97,7 +97,7 @@
 <%--                <td><c:out value="${(meeting.description.length()>50) ? meeting.description.substring(0,50).concat('...') : meeting.description}"/></td>--%>
                 <td>
                     <i class="fas fa-users" title="Członkowie"></i> ${(meeting.members.size()+1)},
-                    <img src="data:image/jpeg;base64,${meeting.owner.base64Image}" width="17" height="17" class="avatar"/> ${meeting.owner.fullName},
+                    <img src="data:image/jpeg;base64,${meeting.owner.base64Image}" width="17" height="17" class="avatar" title="Organizator : ${meeting.owner.fullName}"/>,
                     <i class="far fa-comment-dots"  title="Liczba wiadomości na czacie"></i> <span data-meetingid ="${meeting.id}" class="chat_counter_homepage">[0]</span>,
                     <i class="far fa-comments" title="Liczba komentarzy"></i> ${meeting.commentsNumber}
                 </td>
