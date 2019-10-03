@@ -1,11 +1,10 @@
 package pl.coderslab.meetings.user.meetings;
 
+import org.springframework.http.HttpRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import pl.coderslab.meetings.meetings.MeetingService;
 import pl.coderslab.meetings.models.User;
 import pl.coderslab.meetings.user.UserService;
@@ -35,10 +34,14 @@ public class UserMeetingsController {
     public String userMeetingsPage(Principal principal, Model model) {
         model.addAttribute("user", userService.getUserByEmail(principal.getName()));
         model.addAttribute("formater", DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm"));
-
         model.addAttribute("ownerMeetings", meetingService.getMeetingByOwner(userService.getUserByEmail(principal.getName())));
         model.addAttribute("memberMeetings", meetingService.getMeetingsByMember(userService.getUserByEmail(principal.getName())));
-
         return "userMeetings";
+    }
+
+    @PostMapping("/delete")
+    public String userMeetingDelete(@RequestParam Long meetingId) {
+        meetingService.removeMeeting(meetingId);
+        return "redirect:/user/meetings";
     }
 }

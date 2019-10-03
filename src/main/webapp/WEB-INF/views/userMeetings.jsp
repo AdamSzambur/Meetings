@@ -4,6 +4,7 @@
 <jsp:include page="header.jsp"/>
 <c:url value="/" var="mainURL"/>
 <script src="${mainURL}resources/js/countChatMessages.js"></script>
+<script src="${mainURL}resources/js/userMeetings.js"></script>
 
 
 <main role="main" class="flex-shrink-0">
@@ -38,7 +39,7 @@
 
         <br>
 
-
+        <c:if test="${ownerMeetings.size()>0}">
         <h5>Moje wydarzenia</h5>
         <table class="table table-hover">
             <thead class="thead-dark">
@@ -51,60 +52,82 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${ownerMeetings}" var="meeting">
+                <c:forEach items="${ownerMeetings}" var="meeting">
+                <tr>
+                    <th scope="row">${meeting.meetTime.format(formater)}</th>
+                    <td class="meetingTitle">${meeting.title}</td>
+                    <td>${meeting.address}</td>
+                    <td>
+                        <i class="fas fa-users" title="Członkowie"></i> ${(meeting.members.size()+1)},
+                        <i class="far fa-comment-dots"  title="Liczba wiadomości na czacie"></i> <span data-meetingid ="${meeting.id}" class="chat_counter_homepage">[0]</span>,
+                        <i class="far fa-comments" title="Liczba komentarzy"></i> ${meeting.commentsNumber}
+                    </td>
+                    <td>
+                        <div class="btn-group" role="group" aria-label="First group">
+                            <button type="button" class="btn btn-primary" title="Edytuj" onclick="window.location.href='/jee-crm-1.0-SNAPSHOT/order/orderEdit?orderId=4'"><i class="far fa-edit"></i></button>
+                            <button type="button" class="btn btn-danger remove"  data-meetingtitle="${meeting.title}" data-meetingid="${meeting.id}" title="Usuń" onclick="event.preventDefault();$('#deleteBtn').attr('href','/jee-crm-1.0-SNAPSHOT/order/orderDel?orderId=4'); $('#deleteMsg').toggleClass('invisible');"><i class="far fa-trash-alt"></i></button>
+                            <button type="button" class="btn btn-success" title="Podgląd" onclick="window.location.href='${mainURL}meetings?id=${meeting.id}'"><i class="far fa-eye"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+        </c:if>
+
+        <c:if test="${memberMeetings.size()>0}">
+        <h5>Wydarzenia w ktorych biorę udział</h5>
+        <table class="table table-hover">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col">Data i godzina</th>
+                <th scope="col">Tytuł</th>
+                <th scope="col">Miejsce spotkania</th>
+<%--                <th scope="col">Opis wydarzenia</th>--%>
+                <th scope="col">Pozostałe info</th>
+                <th scope="col">Akcja</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach items="${memberMeetings}" var="meeting">
             <tr>
                 <th scope="row">${meeting.meetTime.format(formater)}</th>
                 <td>${meeting.title}</td>
                 <td>${meeting.address}</td>
+<%--                <td><c:out value="${(meeting.description.length()>50) ? meeting.description.substring(0,50).concat('...') : meeting.description}"/></td>--%>
                 <td>
                     <i class="fas fa-users" title="Członkowie"></i> ${(meeting.members.size()+1)},
-<%--                    Utworzył : <img src="data:image/jpeg;base64,${meeting.owner.base64Image}" width="17" height="17" class="avatar"/> ${meeting.owner.fullName},--%>
+                    <img src="data:image/jpeg;base64,${meeting.owner.base64Image}" width="17" height="17" class="avatar"/> ${meeting.owner.fullName},
                     <i class="far fa-comment-dots"  title="Liczba wiadomości na czacie"></i> <span data-meetingid ="${meeting.id}" class="chat_counter_homepage">[0]</span>,
                     <i class="far fa-comments" title="Liczba komentarzy"></i> ${meeting.commentsNumber}
                 </td>
                 <td>
-                    <div class="btn-group" role="group" aria-label="First group">
-                        <button type="button" class="btn btn-primary" onclick="window.location.href='/jee-crm-1.0-SNAPSHOT/order/orderEdit?orderId=4'">Edytuj</button>
-                        <button type="button" class="btn btn-danger"  onclick="event.preventDefault();$('#deleteBtn').attr('href','/jee-crm-1.0-SNAPSHOT/order/orderDel?orderId=4'); $('#deleteMsg').toggleClass('invisible');">Usuń</button>
-                    </div>
+                    <button type="button" class="btn btn-success" title="Podgląd" onclick="window.location.href='${mainURL}meetings?id=${meeting.id}'"><i class="far fa-eye"></i></button>
                 </td>
             </tr>
             </c:forEach>
             </tbody>
         </table>
-        <h5>Wydarzenia w ktorych biorę udział</h5>
-        <table class="table">
-            <thead class="thead-light">
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-            </tr>
-            </tbody>
-        </table>
-
+        </c:if>
     </div>
+
+    <message>
+        <div class="alert modal_alert invisible alert-danger" id="messageBox">
+            <button type="button" class="close" onclick="event.preventDefault(); $('#messageBox').toggleClass('invisible');">
+                <span>&times;</span>
+            </button><br>
+            <p style="text-align: center">
+                <span class="messageValue"></span>
+                <form method="post" action="${mainURL}user/meetings/delete">
+                    <input type="hidden" name="meetingId" value="45">
+                    <p style="text-align: center">
+                        <button type="submit" role="button" class="btn btn-success">Usuń wydarzenie</button>
+                        <a role="button" class="btn btn-danger" href="" onclick="event.preventDefault(); $('#messageBox').toggleClass('invisible');">Anuluj</a>
+                    </p>
+                </form>
+            </p>
+        </div>
+    </message>
 
 
 </main>

@@ -46,4 +46,8 @@ public class CommentService {
         comment.setMeeting(meeting);
         commentRepository.save(comment);
     }
+
+    public void removeCommentsByMeetingId(Long meetingId) {
+        commentRepository.deleteAllByMeetingId(meetingId);
+    }
 }

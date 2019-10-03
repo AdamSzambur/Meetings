@@ -92,21 +92,27 @@ public class MeetingService {
 
     public List<Meeting> getMeetingByFinderForm(FinderFormDTO finderFormDTO) {
         List<Meeting> result;
-        if (finderFormDTO.getFindPhrase() == null) {
+        if (!(finderFormDTO.getFindPhrase().length()>0)) {
+            System.out.println("Pobieramy wszystkie");
             result = meetingRepository.findAllByMeetTimeBetweenOrderByMeetTime(LocalDateTime.now(),
                     LocalDateTime.now().plusYears(10));
         } else {
+            System.out.println("Pobieramy tylko te ktore w opisie posiadaja "+finderFormDTO.getFindPhrase());
             result = meetingRepository.findAllByAddressContainsOrTitleContainsOrDescriptionContains(
                     finderFormDTO.getFindPhrase(),finderFormDTO.getFindPhrase(),finderFormDTO.getFindPhrase());
         }
-        result =result.stream()
-                .filter(m->getDistance(finderFormDTO,m.getAddress())<=finderFormDTO.getDistance())
-                .collect(Collectors.toList());
-        result.forEach(m->{
-            m.getMembers().size();
-            m.setCommentsNumber(commentRepository.countAllByMeeting(m));
-            m.setBase64fromOwnerAvatar();
-        });
+
+        if (finderFormDTO.getLongitude()!=null) {  //jeśli jest null to nie działa google maps location.
+            result = result.stream()
+                    .filter(m -> getDistance(finderFormDTO, m.getAddress()) <= finderFormDTO.getDistance())
+                    .collect(Collectors.toList());
+            result.forEach(m -> {
+                m.getMembers().size();
+                m.setCommentsNumber(commentRepository.countAllByMeeting(m));
+                m.setBase64fromOwnerAvatar();
+            });
+        }
+
         return result;
     }
 
@@ -189,5 +195,10 @@ public class MeetingService {
             m.setBase64fromOwnerAvatar();
         });
         return result;
+    }
+
+    public void removeMeeting(Long meetingId) {
+        commentRepository.deleteAllByMeetingId(meetingId);
+        meetingRepository.delete(meetingId);
     }
 }

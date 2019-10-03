@@ -4,6 +4,12 @@
 
 	"use strict";
 
+
+    String.prototype.replaceAll = function(search, replacement) {
+        var target = this;
+        return target.split(search).join(replacement);
+    };
+
     var context = window.location.pathname;
     // Create the defaults once
     var pluginName = "simpleCalendar",
@@ -29,12 +35,22 @@
         var searchParams = new URLSearchParams(window.location.search);
 
         if (searchParams.has('selectedDate')) {
-            this.selectedDate = new Date(searchParams.get('selectedDate'));
-            this.currentDate = new Date(searchParams.get('selectedDate'));
+            this.selectedDate = new Date(Date.parse((searchParams.get('selectedDate')).replaceAll(".", " ")));
+            this.currentDate = new Date(Date.parse((searchParams.get('selectedDate')).replaceAll(".", " ")));
         } else {
             this.selectedDate = new Date();
             this.currentDate = new Date();
         }
+        // console.log(this.selectedDate);
+        // console.log(this.currentDate);
+        //
+        // console.log(searchParams);
+        //
+        // if (searchParams!==null) {
+        //     console.log(searchParams.get('selectedDate').replaceAll('.', ' '));
+        //     console.log(new Date(Date.parse((searchParams.get('selectedDate')).replaceAll(".", " "))));
+        // }
+
 
 
 
@@ -97,13 +113,13 @@
             //first day of the month
             var firstDay = new Date(y, m, 1);
             //If not monday set to previous monday
-            while(firstDay.getDay() != 1){
+            while(firstDay.getDay() !== 1){
                 firstDay.setDate(firstDay.getDate()-1);
             }
             //last day of the month
             var lastDay = new Date(y, m + 1, 0);
             //If not sunday set to next sunday
-            while(lastDay.getDay() != 0){
+            while(lastDay.getDay() !== 0){
                 lastDay.setDate(lastDay.getDate()+1);
             }
 
@@ -123,7 +139,7 @@
                         td.find(".day").addClass("today");
                     }
                     //if day is not in this month
-                    if(day.getMonth() != fromDate.getMonth()){
+                    if(day.getMonth() !== fromDate.getMonth()){
                        td.find(".day").addClass("wrong-month"); 
                     }
                     //Binding day event
