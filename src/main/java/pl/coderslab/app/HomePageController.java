@@ -5,9 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.app.converters.PolishDayAndMonthNamesConverter;
-import pl.coderslab.app.meetings.MeetingService;
+import pl.coderslab.app.web.meetings.MeetingService;
 import pl.coderslab.app.models.User;
-import pl.coderslab.app.user.UserService;
+import pl.coderslab.app.web.user.UserService;
 
 import javax.validation.Validator;
 import java.security.Principal;
