@@ -31,6 +31,11 @@ public class Meeting extends AbstractEntity {
     @Column(nullable = false)
     private String address;
 
+
+    private Double latitude;
+
+    private Double longitude;
+
     @ManyToMany
     private List<User> members;
 
@@ -47,6 +52,22 @@ public class Meeting extends AbstractEntity {
 
 //    @PreUpdate ze względu na to ze dodaję liste komentarzy do tej encji nie moge tego uzyc.
     public void preUpdate() { updated = LocalDateTime.now();}
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
 
     public Long getCommentsNumber() {
         return commentsNumber;

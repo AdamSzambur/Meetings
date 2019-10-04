@@ -12,7 +12,7 @@
         <span class="align-text-bottom"><h4><i class="fas fa-handshake"></i> Szczegóły spotkania ${meeting.title}</h4></span>
     </div>
     <div class="container">
-        <div class="rounded border p-2">
+        <div class="rounded border p-2 whiteBg">
             <div class="card mb-3">
                 <div class="row no-gutters">
                     <div class="col-md-4">
@@ -269,32 +269,28 @@
             <mapa>
                 <script>
                     function initMap() {
-                        function codeAddress(geocoder, address) {
-                            geocoder.geocode({
-                                    'address': address
-                                }, // change
-                                function(results, status) {
-                                    if (status == 'OK') {
-                                        var infowindow = new google.maps.InfoWindow({
-                                            content: '${meeting.title}'
-                                        });
-                                        var map = new google.maps.Map(
-                                            document.getElementById('map'), {zoom: 15, center: results[0].geometry.location});
-                                        var marker = new google.maps.Marker({
-                                            position: results[0].geometry.location,
-                                            title : '${meeting.title}',
-                                            map: map,
-                                        });
-                                        marker.addListener('click', function() {
-                                            infowindow.open(map, marker);
-                                        });
+                        var infowindow = new google.maps.InfoWindow({
+                            content: '${meeting.title}'
+                        });
 
-                                    } else {
-                                        console.log('This didnt work' + status);
-                                    }
-                                });
-                        };
-                        codeAddress(new google.maps.Geocoder(), "${meeting.address}");
+
+                        var map = new google.maps.Map(
+                            document.getElementById('map'), {zoom: 15, center: {
+                                    lat : ${meeting.latitude},
+                                    lng : ${meeting.longitude}
+                                }});
+                        var marker = new google.maps.Marker({
+                            position: {
+                                lat : ${meeting.latitude},
+                                lng : ${meeting.longitude}
+                            },
+                            title : '${meeting.title}',
+                            map: map,
+                        });
+
+                        marker.addListener('click', function() {
+                            infowindow.open(map, marker);
+                        });
                     }
                 </script>
                 <script async defer

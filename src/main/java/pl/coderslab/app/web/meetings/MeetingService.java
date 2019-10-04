@@ -2,6 +2,7 @@ package pl.coderslab.app.web.meetings;
 
 import org.springframework.stereotype.Service;
 import pl.coderslab.app.FinderFormDTO;
+import pl.coderslab.app.web.meetings.CoordianteJsonStructure.Coordinate;
 import pl.coderslab.app.web.meetings.DistanceJsonStructure.Distance;
 import pl.coderslab.app.web.meetings.member.MemberDTO;
 import pl.coderslab.app.models.Comment;
@@ -114,6 +115,15 @@ public class MeetingService {
                 m.setBase64fromOwnerAvatar();
             });
         }
+        return result;
+    }
+
+    private Coordinate getCoordinates(String address) {
+        String googleURL = "https://maps.googleapis.com/maps/api/geocode/json?address="
+                +address.replaceAll(" ","+")
+                + "&key=AIzaSyC5EJjfoZUTXckzVuwbvm3Ke0SWYwoi6OI";
+        Jsonb jsonb = JsonbBuilder.create();
+        Coordinate result = jsonb.fromJson(getJSONStringFromUrl(googleURL), Coordinate.class);
 
         return result;
     }
@@ -124,7 +134,6 @@ public class MeetingService {
                 + "&destinations="
                 + destinationAddres.replaceAll(" ","+")
                 + "&key=AIzaSyC5EJjfoZUTXckzVuwbvm3Ke0SWYwoi6OI";
-
         Jsonb jsonb = JsonbBuilder.create();
         Distance distance = jsonb.fromJson(getJSONStringFromUrl(googleURL), Distance.class);
 
@@ -169,7 +178,9 @@ public class MeetingService {
         meeting.setMeetTime(meetingDTO.getMeetTime());
         meeting.setOwner(userService.getUserById(meetingDTO.getOwnerId()));
         meeting.setTitle(meetingDTO.getTitle());
-
+        Coordinate coordinate = getCoordinates(meetingDTO.getAddress());
+        meeting.setLatitude(coordinate.getLatitude());
+        meeting.setLongitude(coordinate.getLongitude());
         meeting.setUpdated(LocalDateTime.now());
         meetingRepository.save(meeting);
     }

@@ -9,12 +9,10 @@
         <br><br><br>
         <span class="align-text-bottom" style="color: white"><h4><i class="fas fa-user-cog"></i> Edycja danych użytkownika</h4></span>
     </div>
-
-
     <div class="container">
         <div class="row justify-content-sm-center">
             <div class="col-sm-4"></div>
-            <div class="col-sm-4 rounded border p-3">
+            <div class="col-sm-4 rounded border p-3 whiteBg">
                 <form:form method="post" modelAttribute="data" cssClass="form-group" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="firstName">Imię</label>

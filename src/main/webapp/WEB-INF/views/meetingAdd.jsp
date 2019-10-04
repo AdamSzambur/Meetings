@@ -12,7 +12,7 @@
     <div class="container">
         <div class="row justify-content-sm-center">
             <div class="col-sm-3"></div>
-            <div class="col-sm-6 rounded border p-5">
+            <div class="col-sm-6 rounded border p-5 whiteBg">
                 <form:form method="post" modelAttribute="meeting" cssClass="form-group" enctype="multipart/form-data">
                     <form:hidden path="ownerId" value="${user.id}"/>
                     <div class="form-group">

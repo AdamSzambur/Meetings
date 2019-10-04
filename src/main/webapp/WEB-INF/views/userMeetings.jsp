@@ -24,91 +24,93 @@
     </div>
 
     <div class="container">
-        <form method="post">
-            <div class="input-group mb-3" >
-                <input name="searchFraze" id="filter" type="text" class="form-control"  placeholder="Podaj szukaną frazę w tablicy spotkań" aria-label="Podaj szukaną frazę w tablicy spotkań" aria-describedby="button-addon2">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-danger" type="button" id="button-addon2" onclick="$('#filter').attr('value',''); $(this).closest('form').submit()">Wyczyść filtr</button>
-                </div>
-                <div class="input-group-append">
-                    <button class="btn btn-outline-primary" type="button" id="button-addon3" onclick="$(this).closest('form').submit()">Szukaj</button>
-                </div>
-            </div>
-            <small id="emailHelp" class="form-text text-muted">Podaj szykaną frazę w tablicy spotkań.</small>
-        </form>
+        <div class="rounded border p-2 whiteBg">
 
-        <br>
+            <form method="post">
+                <div class="input-group mb-3" >
+                    <input name="searchFraze" id="filter" type="text" class="form-control"  placeholder="Podaj szukaną frazę w tablicy spotkań" aria-label="Podaj szukaną frazę w tablicy spotkań" aria-describedby="button-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-danger" type="button" id="button-addon2" onclick="$('#filter').attr('value',''); $(this).closest('form').submit()">Wyczyść filtr</button>
+                    </div>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-primary" type="button" id="button-addon3" onclick="$(this).closest('form').submit()">Szukaj</button>
+                    </div>
+                </div>
+                <small id="emailHelp" class="form-text text-muted">Podaj szykaną frazę w tablicy spotkań.</small>
+            </form>
 
-        <c:if test="${ownerMeetings.size()>0}">
-        <h5>Moje wydarzenia</h5>
-        <table class="table table-hover">
-            <thead class="thead-dark">
-            <tr>
-                <th scope="col">Data i godzina</th>
-                <th scope="col">Tytuł</th>
-                <th scope="col">Miejsce spotkania</th>
-                <th scope="col">Pozostałe info</th>
-                <th scope="col">Akcja</th>
-            </tr>
-            </thead>
-            <tbody>
-                <c:forEach items="${ownerMeetings}" var="meeting">
+            <br>
+
+            <c:if test="${ownerMeetings.size()>0}">
+            <h5>Moje wydarzenia</h5>
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Data i godzina</th>
+                    <th scope="col">Tytuł</th>
+                    <th scope="col">Miejsce spotkania</th>
+                    <th scope="col">Pozostałe info</th>
+                    <th scope="col">Akcja</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <c:forEach items="${ownerMeetings}" var="meeting">
+                    <tr>
+                        <th scope="row">${meeting.meetTime.format(formater)}</th>
+                        <td class="meetingTitle">${meeting.title}</td>
+                        <td>${meeting.address}</td>
+                        <td>
+                            <i class="fas fa-users" title="Członkowie"></i> ${(meeting.members.size()+1)},
+                            <i class="far fa-comment-dots"  title="Liczba wiadomości na czacie"></i> <span data-meetingid ="${meeting.id}" class="chat_counter_homepage">[0]</span>,
+                            <i class="far fa-comments" title="Liczba komentarzy"></i> ${meeting.commentsNumber}
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="First group">
+                                <button type="button" class="btn btn-primary" title="Edytuj" onclick="window.location.href='${mainURL}user/meetings/edit?id=${meeting.id}'"><i class="far fa-edit"></i></button>
+                                <button type="button" class="btn btn-danger remove"  data-meetingtitle="${meeting.title}" data-meetingid="${meeting.id}" title="Usuń" onclick="event.preventDefault();$('#deleteBtn').attr('href','/jee-crm-1.0-SNAPSHOT/order/orderDel?orderId=4'); $('#deleteMsg').toggleClass('invisible');"><i class="far fa-trash-alt"></i></button>
+                                <button type="button" class="btn btn-success" title="Podgląd" onclick="window.location.href='${mainURL}meetings?id=${meeting.id}'"><i class="far fa-eye"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+            </c:if>
+
+            <c:if test="${memberMeetings.size()>0}">
+            <h5>Wydarzenia w ktorych biorę udział</h5>
+            <table class="table table-hover">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">Data i godzina</th>
+                    <th scope="col">Tytuł</th>
+                    <th scope="col">Miejsce spotkania</th>
+                    <th scope="col">Pozostałe info</th>
+                    <th scope="col">Akcja</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${memberMeetings}" var="meeting">
                 <tr>
                     <th scope="row">${meeting.meetTime.format(formater)}</th>
-                    <td class="meetingTitle">${meeting.title}</td>
+                    <td>${meeting.title}</td>
                     <td>${meeting.address}</td>
+    <%--                <td><c:out value="${(meeting.description.length()>50) ? meeting.description.substring(0,50).concat('...') : meeting.description}"/></td>--%>
                     <td>
                         <i class="fas fa-users" title="Członkowie"></i> ${(meeting.members.size()+1)},
+                        <img src="data:image/jpeg;base64,${meeting.owner.base64Image}" width="17" height="17" class="avatar" title="Organizator : ${meeting.owner.fullName}"/>,
                         <i class="far fa-comment-dots"  title="Liczba wiadomości na czacie"></i> <span data-meetingid ="${meeting.id}" class="chat_counter_homepage">[0]</span>,
                         <i class="far fa-comments" title="Liczba komentarzy"></i> ${meeting.commentsNumber}
                     </td>
                     <td>
-                        <div class="btn-group" role="group" aria-label="First group">
-                            <button type="button" class="btn btn-primary" title="Edytuj" onclick="window.location.href='${mainURL}user/meetings/edit?id=${meeting.id}'"><i class="far fa-edit"></i></button>
-                            <button type="button" class="btn btn-danger remove"  data-meetingtitle="${meeting.title}" data-meetingid="${meeting.id}" title="Usuń" onclick="event.preventDefault();$('#deleteBtn').attr('href','/jee-crm-1.0-SNAPSHOT/order/orderDel?orderId=4'); $('#deleteMsg').toggleClass('invisible');"><i class="far fa-trash-alt"></i></button>
-                            <button type="button" class="btn btn-success" title="Podgląd" onclick="window.location.href='${mainURL}meetings?id=${meeting.id}'"><i class="far fa-eye"></i></button>
-                        </div>
+                        <button type="button" class="btn btn-success" title="Podgląd" onclick="window.location.href='${mainURL}meetings?id=${meeting.id}'"><i class="far fa-eye"></i></button>
                     </td>
                 </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-        </c:if>
-
-        <c:if test="${memberMeetings.size()>0}">
-        <h5>Wydarzenia w ktorych biorę udział</h5>
-        <table class="table table-hover">
-            <thead class="thead-light">
-            <tr>
-                <th scope="col">Data i godzina</th>
-                <th scope="col">Tytuł</th>
-                <th scope="col">Miejsce spotkania</th>
-<%--                <th scope="col">Opis wydarzenia</th>--%>
-                <th scope="col">Pozostałe info</th>
-                <th scope="col">Akcja</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach items="${memberMeetings}" var="meeting">
-            <tr>
-                <th scope="row">${meeting.meetTime.format(formater)}</th>
-                <td>${meeting.title}</td>
-                <td>${meeting.address}</td>
-<%--                <td><c:out value="${(meeting.description.length()>50) ? meeting.description.substring(0,50).concat('...') : meeting.description}"/></td>--%>
-                <td>
-                    <i class="fas fa-users" title="Członkowie"></i> ${(meeting.members.size()+1)},
-                    <img src="data:image/jpeg;base64,${meeting.owner.base64Image}" width="17" height="17" class="avatar" title="Organizator : ${meeting.owner.fullName}"/>,
-                    <i class="far fa-comment-dots"  title="Liczba wiadomości na czacie"></i> <span data-meetingid ="${meeting.id}" class="chat_counter_homepage">[0]</span>,
-                    <i class="far fa-comments" title="Liczba komentarzy"></i> ${meeting.commentsNumber}
-                </td>
-                <td>
-                    <button type="button" class="btn btn-success" title="Podgląd" onclick="window.location.href='${mainURL}meetings?id=${meeting.id}'"><i class="far fa-eye"></i></button>
-                </td>
-            </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-        </c:if>
+                </c:forEach>
+                </tbody>
+            </table>
+            </c:if>
+        </div>
     </div>
 
     <message>

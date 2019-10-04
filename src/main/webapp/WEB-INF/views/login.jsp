@@ -13,7 +13,7 @@
     <div class="container">
         <div class="row justify-content-sm-center">
             <div class="col-sm-4"></div>
-            <div class="col-sm-4 rounded border p-5">
+            <div class="col-sm-4 rounded border p-5 whiteBg">
                 <form:form method="post" modelAttribute="user" cssClass="form-group">
                     <span class="error" style="text-align: center;">${errorMsg}</span>
                     <div class="form-group">

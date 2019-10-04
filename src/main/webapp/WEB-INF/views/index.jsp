@@ -26,7 +26,7 @@
                         <form:input path="findPhrase" cssStyle="font-weight: bold" cssClass="form-control" placeholder="Znajdź"/>
                     </div>
                     <span class="mb-2 mr-sm-2" style="font-weight: bold;"> &nbsp;&nbsp;w odległości&nbsp;</span>
-                    <form:select path="distance" cssClass="custom-select mb-2 mr-sm-2" cssStyle="background-color: #ff8600; font-weight: bold; border: none">
+                    <form:select id="distance" path="distance" cssClass="custom-select mb-2 mr-sm-2" cssStyle="background-color: #ff8600; font-weight: bold; border: none">
                         <form:option value="5" label="5 km"/>
                         <form:option value="10" label="10 km"/>
                         <form:option value="20" label="20 km"/>
@@ -44,21 +44,21 @@
         <span mb-2 mr-sm-2 >Nie znalazłeś interesującego cię wydarzenia. &nbsp;&nbsp;</span>
         <button type="button" class="btn btn-warning" onclick="location.href='${mainURL}meetings/add'"><i class="far fa-calendar-plus"></i> Dodaj nowe</button>
     </div>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-9">
-<%--                lista wydarzeń--%>
+            <div class="col-sm-12">
+                <br><h4><b>${title}</b></h4><br>
+            </div>
+        </div>
 
-                <h4>${title}</h4><br>
-
-
+        <div class="row">
+            <div class="col-sm-6">
                 <c:forEach items="${meetings}" var="meeting">
-
                     <div class="card">
                         <div class="card-header">
-                                ${meeting.title}
+                            <b>${meeting.title}</b>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body" id="meeting${meeting.id}">
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="card">
@@ -97,53 +97,34 @@
                             </span>
                         </div>
                     </div>
-
-
                     <br>
                     <br>
                 </c:forEach>
             </div>
-            <div class="col-sm-3">
-<%--                kalendarz i moze lista zalogowanych uzytkowników--%>
-                <div id="container" class="calendar-container"></div>
-                <script>
-                    $(document).ready(function(){
-                        $("#container").simpleCalendar({
-                            fixedStartDay: false
-                        });
-                    });
-                </script>
+
+            <div class="col-sm-4">
+                <div class="rounded border p-2 whiteBg">
+                    <div id="map"></div>
+                </div>
+            </div>
 
 
-                <googlemap>
+            <div class="col-sm-2">
+                <div class="rounded border p-3 whiteBg">
+                    <div id="container" class="calendar-container"></div>
                     <script>
-                        function initMap() {
-                            // Try HTML5 geolocation.
-                            if (navigator.geolocation) {
-                                navigator.geolocation.getCurrentPosition(function(position) {
-                                    $('#latitude').attr('value', position.coords.latitude);
-                                    $('#longitude').attr('value', position.coords.longitude);
-                                }, function() {
-                                    // console.log(infoWindow);
-                                });
-                            } else {
-                                 console.log("Browser doesn't support Geolocation");
-                            }
-                        }
-
+                        $(document).ready(function(){
+                            $("#container").simpleCalendar({
+                                fixedStartDay: false
+                            });
+                        });
                     </script>
-                    <script async defer
-                            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5EJjfoZUTXckzVuwbvm3Ke0SWYwoi6OI&callback=initMap">
-                    </script>
-                    <br><br>
-                </googlemap>
-
-
-                Lista zalogowanych użytkowników :<br>
-                <c:forEach items="${loggedUsers}" var="loggedUser">
-                    <img src="data:image/jpeg;base64,${loggedUser.base64Image}" width="27" height="27" class="avatar"/>
-                    ${loggedUser.fullName}<br>
-                </c:forEach>
+                    Zalogowani użytkownicy :<br>
+                    <c:forEach items="${loggedUsers}" var="loggedUser">
+                        <img src="data:image/jpeg;base64,${loggedUser.base64Image}" width="27" height="27" class="avatar"/>
+                        ${loggedUser.fullName}<br>
+                    </c:forEach>
+                </div>
 
             </div>
 
@@ -153,6 +134,77 @@
     </div>
     <br>
 
+    <googlemap>
+        <script>
+
+            function initMap() {
+                // Przepisujemy tablice z Javy do JS :)
+                var meetingsJS = new Array();
+                <c:forEach items="${meetings}" var="meeting" varStatus="i">
+                meetingsJS[${i.index}] = new Array();
+                meetingsJS[${i.index}]['id'] = '${meeting.id}';
+                meetingsJS[${i.index}]['title'] = '${meeting.title}';
+                meetingsJS[${i.index}]['latitude'] = '${meeting.latitude}';
+                meetingsJS[${i.index}]['longitude'] = '${meeting.longitude}';
+                </c:forEach>
+
+                // pobieramy aktualny zakres obszaru ktorego dotyczy lista
+                var distanceSelect = document.getElementById("distance");
+                var distance = distanceSelect.options[distanceSelect.selectedIndex].value;
+
+                // Try HTML5 geolocation.
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        $('#latitude').attr('value', position.coords.latitude);
+                        $('#longitude').attr('value', position.coords.longitude);
+
+
+                        map = new google.maps.Map(document.getElementById('map'), {
+                            center: {lat: position.coords.latitude, lng: position.coords.longitude},
+                            zoom: 8
+                        });
+
+                        meetingsJS.forEach(function(meeting) {
+
+                            // var infowindow = new google.maps.InfoWindow({
+                            //     content : meeting.title
+                            // });
+
+                            var myLatlng = new google.maps.LatLng(parseFloat(meeting.latitude),parseFloat(meeting.longitude));
+
+                            var marker = new google.maps.Marker({
+                                position: myLatlng,
+                                title : meeting.title,
+                                map: map,
+                            });
+
+                            marker.addListener('click', function() {
+                                // infowindow.open(map, marker);
+                                document.location.href=window.location.pathname+'meetings?id='+meeting.id;
+                            });
+                            marker.addListener('mouseover', function() {
+                                $('#meeting'+meeting.id).addClass('googlehover');
+                            });
+
+                            marker.addListener('mouseout', function() {
+                                $('#meeting'+meeting.id).removeClass('googlehover');
+                            });
+
+                        });
+                    }, function() {
+                        // console.log(infoWindow);
+                    });
+                } else {
+                    console.log("Browser doesn't support Geolocation");
+                }
+            }
+
+        </script>
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5EJjfoZUTXckzVuwbvm3Ke0SWYwoi6OI&callback=initMap">
+        </script>
+        <br><br>
+    </googlemap>
 
 </main>
 
