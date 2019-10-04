@@ -57,7 +57,6 @@
                     <div class="card">
                         <div class="card-header">
                                 ${meeting.title}
-<%--                            <h6 class="card-title">${app.title}</h6>--%>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -81,7 +80,6 @@
                                         </div>
                                         <div class="row text-right">
                                             <div class="col-12">
-<%--                                                ---------------------%>
                                             </div>
                                         </div>
                                     </div>

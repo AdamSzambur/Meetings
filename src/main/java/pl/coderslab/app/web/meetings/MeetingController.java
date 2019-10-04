@@ -61,7 +61,7 @@ public class MeetingController {
             return "meeting";
         } else {
             commentService.addComment(newComment,principal.getName());
-            return "redirect:/app?id="+newComment.getMeetingId();
+            return "redirect:/meetings?id="+newComment.getMeetingId();
         }
     }
 
