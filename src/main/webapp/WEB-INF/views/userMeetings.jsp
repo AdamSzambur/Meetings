@@ -24,9 +24,9 @@
     </div>
 
     <div class="container">
-        <form method="get" action="/jee-crm-1.0-SNAPSHOT/order/orderList">
+        <form method="post">
             <div class="input-group mb-3" >
-                <input name="filter" id="filter" type="text" class="form-control"  placeholder="Podaj szukaną frazę w tablicy spotkań" aria-label="Podaj szukaną frazę w tablicy spotkań" aria-describedby="button-addon2">
+                <input name="searchFraze" id="filter" type="text" class="form-control"  placeholder="Podaj szukaną frazę w tablicy spotkań" aria-label="Podaj szukaną frazę w tablicy spotkań" aria-describedby="button-addon2">
                 <div class="input-group-append">
                     <button class="btn btn-outline-danger" type="button" id="button-addon2" onclick="$('#filter').attr('value',''); $(this).closest('form').submit()">Wyczyść filtr</button>
                 </div>
@@ -64,7 +64,7 @@
                     </td>
                     <td>
                         <div class="btn-group" role="group" aria-label="First group">
-                            <button type="button" class="btn btn-primary" title="Edytuj" onclick="window.location.href='/jee-crm-1.0-SNAPSHOT/order/orderEdit?orderId=4'"><i class="far fa-edit"></i></button>
+                            <button type="button" class="btn btn-primary" title="Edytuj" onclick="window.location.href='${mainURL}user/meetings/edit?id=${meeting.id}'"><i class="far fa-edit"></i></button>
                             <button type="button" class="btn btn-danger remove"  data-meetingtitle="${meeting.title}" data-meetingid="${meeting.id}" title="Usuń" onclick="event.preventDefault();$('#deleteBtn').attr('href','/jee-crm-1.0-SNAPSHOT/order/orderDel?orderId=4'); $('#deleteMsg').toggleClass('invisible');"><i class="far fa-trash-alt"></i></button>
                             <button type="button" class="btn btn-success" title="Podgląd" onclick="window.location.href='${mainURL}meetings?id=${meeting.id}'"><i class="far fa-eye"></i></button>
                         </div>

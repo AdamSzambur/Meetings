@@ -154,6 +154,16 @@ public class MeetingService {
 
     public void addMeeting(MeetingDTO meetingDTO) {
         Meeting meeting = new Meeting();
+        fillMeetingAndSave(meetingDTO, meeting);
+    }
+
+    public void updateMeeting(MeetingDTO meetingDTO) {
+        Meeting meeting = meetingRepository.findOne(meetingDTO.getId());
+        fillMeetingAndSave(meetingDTO, meeting);
+    }
+
+
+    private void fillMeetingAndSave(MeetingDTO meetingDTO, Meeting meeting) {
         meeting.setAddress(meetingDTO.getAddress());
         meeting.setDescription(meetingDTO.getDescription());
         meeting.setMeetTime(meetingDTO.getMeetTime());
@@ -163,7 +173,6 @@ public class MeetingService {
         meeting.setUpdated(LocalDateTime.now());
         meetingRepository.save(meeting);
     }
-
     public void toogleMemberInMeeting(MemberDTO memberDTO) {
         Meeting meeting = meetingRepository.findOne(memberDTO.getMeetingId());
         User user = userRepository.findOne(memberDTO.getUserId());
@@ -202,5 +211,36 @@ public class MeetingService {
     public void removeMeeting(Long meetingId) {
         commentRepository.deleteAllByMeetingId(meetingId);
         meetingRepository.delete(meetingId);
+    }
+
+    public List<Meeting> getMeetingByOwnerContainsFraze(String searchFraze, User owner) {
+        List<Meeting> result = meetingRepository.findAllByOwnerOrderByMeetTime(owner);
+
+        return filterMeetings(searchFraze, result);
+    }
+
+    public List<Meeting> getMeetingByMemberContainsFraze(String searchFraze, User member) {
+        List<Meeting> result = meetingRepository.findAllByMembersContainingOrderByMeetTime(member);
+
+        return filterMeetings(searchFraze, result);
+    }
+
+    private List<Meeting> filterMeetings(String searchFraze, List<Meeting> result) {
+        result = result.stream()
+                .filter(m -> {
+                    return (
+                            m.getAddress().contains(searchFraze) ||
+                                    m.getTitle().contains(searchFraze) ||
+                                    m.getMeetTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm")).contains(searchFraze)
+                    );
+                })
+                .collect(Collectors.toList());
+
+        result.forEach(m -> {
+            m.getMembers().size();
+            m.setCommentsNumber(commentRepository.countAllByMeeting(m));
+            m.setBase64fromOwnerAvatar();
+        });
+        return result;
     }
 }
