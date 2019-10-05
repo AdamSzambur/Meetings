@@ -77,16 +77,4 @@ public class ChatMessage {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
-
-    @Override
-    public String toString() {
-        return "Message{" +
-                "meetingId=" + meetingId +
-                "userId=" + userId +
-                "userName=" + userName +
-                "userAvatar=" + userAvatar +
-                ", message='" + message + '\'' +
-                ", created=" + created +
-                '}';
-    }
 }

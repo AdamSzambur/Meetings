@@ -160,4 +160,6 @@ public class Meeting extends AbstractEntity {
     public void removeMember(User member) {
         this.members.remove(member);
     }
+
+
 }

@@ -19,7 +19,7 @@ public class MemberController {
     @PostMapping
     public String toogleMemberInMeeting(@ModelAttribute("memberDTO") MemberDTO memberDTO) {
         meetingService.toogleMemberInMeeting(memberDTO);
-        return "redirect:/app?id=" + memberDTO.getMeetingId();
+        return "redirect:/meetings?id=" + memberDTO.getMeetingId();
     }
 
 }

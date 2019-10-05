@@ -9,7 +9,7 @@ body {
 }
 
 .calendar-container{
-    font: 200 75% "Lato",sans-serif;
+    font: 200 75% "../fonts/Lato-Regular.ttf",sans-serif;
     position: relative;
     /*margin: 0px auto;*/
     max-width: 500px;

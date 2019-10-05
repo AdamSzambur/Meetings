@@ -52,7 +52,7 @@
         </div>
 
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-5">
                 <c:forEach items="${meetings}" var="meeting">
                     <div class="card">
                         <div class="card-header">
@@ -109,7 +109,7 @@
             </div>
 
 
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <div class="rounded border p-3 whiteBg">
                     <div id="container" class="calendar-container"></div>
                     <script>

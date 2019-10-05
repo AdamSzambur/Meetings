@@ -1,5 +1,7 @@
 package pl.coderslab.app.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Base64;
 import java.util.List;
@@ -26,6 +28,16 @@ public class User extends AbstractEntity {
     @ManyToMany(mappedBy = "members")
     private List<Meeting> meetings;
 
+    @OneToMany(mappedBy = "user")
+    private List<Notification> notification;
+
+    public List<Notification> getNotification() {
+        return notification;
+    }
+
+    public void setNotification(List<Notification> notification) {
+        this.notification = notification;
+    }
 
     // domyslnie dopisujemy avatara do uzytkownika (mogło być ładniej ale nie wyszła tak źle).
     @Lob
@@ -131,15 +143,5 @@ public class User extends AbstractEntity {
 
     public void setMeetings(List<Meeting> meetings) {
         this.meetings = meetings;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                "} " + super.toString();
     }
 }

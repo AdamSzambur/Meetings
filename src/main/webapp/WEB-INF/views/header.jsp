@@ -53,6 +53,7 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
                             <a class="dropdown-item" href="${mainURL}user/meetings"><i class="fas fa-handshake"></i> Moje Spotkania</a>
+                            <a class="dropdown-item" href="${mainURL}user/notifications"><i class="far fa-bell"></i> Powiadomienia</a>
                             <a class="dropdown-item" href="${mainURL}message?box=inbox"><i class="fas fa-envelope-open-text"></i>
                                 Wiadomości [<span style="color: red;">${unreadMessagesNumber}</span>]</a>
                             <a class="dropdown-item" href="${mainURL}user/userEdit"><i class="fas fa-user-cog"></i> Moje ustawienia</a>
