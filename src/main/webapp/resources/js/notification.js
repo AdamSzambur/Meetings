@@ -19,7 +19,7 @@ $(function () {
                     var alert = $(
                         '<div class="alert alert-'+notification.alertType+' alert-dismissible fade show" role="alert" data-id="' + notification.id + '">' +
                         '<button type="button" class="btn btn-'+notification.alertType+'" title="Przejdź do elementu"><i class="far fa-hand-point-right"></i></button> ' +
-                        notification.created+' '+notification.text +
+                        '['+parseLocalDateTime(notification.created)+'] '+notification.text +
                         '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
                         '<span aria-hidden="true">&times;</span>' +
                         '</button>' +
@@ -76,5 +76,16 @@ $(function () {
 
     getAllUnreadNotifications();
     setInterval(getAllUnreadNotifications,5000);
+
+
+    function parseLocalDateTime(time) {
+        var result = time[0]
+            +"-"+((time[1]>9)?time[1]:("0"+time[1]))
+            +"-"+((time[2]>9)?time[2]:("0"+time[2]))
+            +" "+((time[3]>9)?time[3]:("0"+time[3]))
+            +":"+((time[4]>9)?time[4]:("0"+time[4]))
+            +":"+((time[5]>9)?time[5]:("0"+time[5]));
+        return result;
+    }
 
 });
