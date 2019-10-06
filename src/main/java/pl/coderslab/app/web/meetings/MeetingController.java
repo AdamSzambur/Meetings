@@ -64,16 +64,4 @@ public class MeetingController {
             return "redirect:/meetings?id="+newComment.getMeetingId();
         }
     }
-
-    private static long[] getTime(LocalDateTime dob, LocalDateTime now) {
-        LocalDateTime today = LocalDateTime.of(now.getYear(),
-                now.getMonthValue(), now.getDayOfMonth(), dob.getHour(), dob.getMinute(), dob.getSecond());
-        Duration duration = Duration.between(today, now);
-        long seconds = duration.getSeconds();
-        long hours = seconds / 3600;
-        long minutes = ((seconds % 3600) / 60);
-        long secs = (seconds % 60);
-
-        return new long[]{hours, minutes, secs};
-    }
 }
