@@ -4,12 +4,6 @@
 
 	"use strict";
 
-
-    String.prototype.replaceAll = function(search, replacement) {
-        var target = this;
-        return target.split(search).join(replacement);
-    };
-
     var context = window.location.pathname;
     // Create the defaults once
     var pluginName = "simpleCalendar",
@@ -35,25 +29,13 @@
         var searchParams = new URLSearchParams(window.location.search);
 
         if (searchParams.has('selectedDate')) {
-            this.selectedDate = new Date(Date.parse((searchParams.get('selectedDate')).replaceAll(".", " ")));
-            this.currentDate = new Date(Date.parse((searchParams.get('selectedDate')).replaceAll(".", " ")));
+            var splitDate = searchParams.get('selectedDate').split('.');
+            this.selectedDate = new Date (splitDate[2],splitDate[0]-1,splitDate[1]);
+            this.currentDate = new Date (splitDate[2],splitDate[0]-1,splitDate[1]);
         } else {
             this.selectedDate = new Date();
             this.currentDate = new Date();
         }
-        // console.log(this.selectedDate);
-        // console.log(this.currentDate);
-        //
-        // console.log(searchParams);
-        //
-        // if (searchParams!==null) {
-        //     console.log(searchParams.get('selectedDate').replaceAll('.', ' '));
-        //     console.log(new Date(Date.parse((searchParams.get('selectedDate')).replaceAll(".", " "))));
-        // }
-
-
-
-
         this.init();
     }
 

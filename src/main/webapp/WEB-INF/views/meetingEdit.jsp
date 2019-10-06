@@ -6,7 +6,7 @@
 <main role="main" class="flex-shrink-0">
     <div class="container-fluid p-3" style="background-color: #ff8600">
         <br><br><br>
-        <span class="align-text-bottom"><h4><i class="far fa-calendar-plus"></i> Dodawanie nowego spotkania</h4></span>
+        <span class="align-text-bottom"><h4><i class="far fa-calendar-plus"></i> Edycja spotkania</h4></span>
     </div>
 
     <div class="container">
@@ -14,6 +14,7 @@
             <div class="col-sm-3"></div>
             <div class="col-sm-6 rounded border p-5 whiteBg">
                 <form:form method="post" modelAttribute="meeting" cssClass="form-group" enctype="multipart/form-data">
+                    <form:hidden path="id"/>
                     <form:hidden path="ownerId" value="${user.id}"/>
                     <div class="form-group">
                         <label for="title">Tytuł</label>
@@ -36,12 +37,21 @@
                         <form:input path="meetTime" cssClass="form-control col-sm-6" id="meetTime" type="datetime-local" value="${actualTime}" />
                         <form:errors path="meetTime" cssClass="error" element="div" />
                     </div>
-                    <button type="submit" class="btn btn-primary">Dodaj nowe spotkanie</button>
+                    <div class="form-group form-check">
+                        <form:checkbox path="sendNotification" cssClass="form-check-input" id="sendNotification"/>
+                        <label class="form-check-label" for="sendNotification">Wyślij powiadomienia o zmianie do członków wydarzenia</label>
+                    </div>
+                    <div class="form-group form-check">
+                        <form:checkbox path="sendEmail" cssClass="form-check-input" id="sendEmail"/>
+                        <label class="form-check-label" for="sendEmail">Wyślij email z powiadomieniem o zmianach do członków wydarzenia</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
                 </form:form>
             </div>
             <div class="col-sm-3"></div>
         </div>
     </div>
+    <br>
 </main>
 <jsp:include page="footer.jsp"/>
 

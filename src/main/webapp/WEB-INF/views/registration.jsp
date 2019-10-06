@@ -15,7 +15,7 @@
     <div class="container">
         <div class="row justify-content-sm-center">
             <div class="col-sm-4"></div>
-            <div class="col-sm-4 rounded border p-3">
+            <div class="col-sm-4 rounded border p-3 whiteBg">
                 <form:form method="post" modelAttribute="data" cssClass="form-group" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="firstName">Imię</label>
