@@ -2,6 +2,7 @@ package pl.coderslab.app.web.meetings;
 
 import org.springframework.stereotype.Service;
 import pl.coderslab.app.FinderFormDTO;
+import pl.coderslab.app.repositories.NotificationRepository;
 import pl.coderslab.app.web.meetings.CoordianteJsonStructure.Coordinate;
 import pl.coderslab.app.web.meetings.DistanceJsonStructure.Distance;
 import pl.coderslab.app.web.meetings.member.MemberDTO;
@@ -12,6 +13,8 @@ import pl.coderslab.app.repositories.CommentRepository;
 import pl.coderslab.app.repositories.MeetingRepository;
 import pl.coderslab.app.repositories.UserRepository;
 import pl.coderslab.app.web.user.UserService;
+import pl.coderslab.app.web.user.meetings.MeetingEditDTO;
+import pl.coderslab.app.web.user.notifications.NotificationService;
 
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
@@ -35,13 +38,14 @@ public class MeetingService {
     private UserService userService;
     private CommentRepository commentRepository;
     private UserRepository userRepository;
+    private NotificationService notificationService;
 
-    public MeetingService(MeetingRepository meetingRepository, UserService userService
-            , CommentRepository commentRepository, UserRepository userRepository) {
+    public MeetingService(MeetingRepository meetingRepository, UserService userService, CommentRepository commentRepository, UserRepository userRepository, NotificationService notificationService) {
         this.meetingRepository = meetingRepository;
         this.userService = userService;
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
+        this.notificationService = notificationService;
     }
 
     public Meeting getMeetingById(Long id, boolean alldata) {
@@ -166,8 +170,32 @@ public class MeetingService {
         fillMeetingAndSave(meetingDTO, meeting);
     }
 
-    public void updateMeeting(MeetingDTO meetingDTO) {
+    public void updateMeeting(MeetingEditDTO meetingDTO) {
         Meeting meeting = meetingRepository.findOne(meetingDTO.getId());
+
+        if (meetingDTO.getSendNotification()) {
+            // przygotowanie tresci powiadomienia
+            String notificationText = "";
+            if (!meetingDTO.getAddress().equals(meeting.getAddress())) {
+                notificationText += "adres ";
+            }
+            if (!meetingDTO.getMeetTime().equals(meeting.getMeetTime())) {
+                notificationText += "data i godzina spotkania ";
+            }
+            if (!meetingDTO.getDescription().equals(meeting.getDescription())) {
+                notificationText += "opis ";
+            }
+            if (!meetingDTO.getTitle().equals(meeting.getTitle())) {
+                notificationText += "tytuł";
+            }
+            if (notificationText.length() > 0) {
+                notificationText = "Nastąpila zmiana wydarzenia <strong>" +
+                        meeting.getTitle() + "</strong> : " + notificationText;
+                notificationService.addNotificationForUserList(notificationText, "meetings?id=" + meeting.getId(), getMeetingById(meetingDTO.getId(), true).getMembers(),"primary");
+                // powiadomienie zapisane
+            }
+
+        }
         fillMeetingAndSave(meetingDTO, meeting);
     }
 
@@ -189,13 +217,27 @@ public class MeetingService {
         User user = userRepository.findOne(memberDTO.getUserId());
         meeting.getMembers().size();
 
+        String notificationText = "";
+        String alertType = "";
         if (meeting.getMembers().contains(user)) {
             System.out.println("Usuwamy uzytkownika z listy członków");
+            notificationText="Uzytkownik <strong>"
+                    +user.getFullName()
+                    +"</strong> opuścił wydarzenie <strong>"
+                    +meeting.getTitle()+"</strong>";
+            alertType = "danger";
             meeting.removeMember(user);
         } else {
             System.out.println("Dodajemy uzytkownika do listy członków");
+            notificationText="Uzytkownik <strong>"
+                    +user.getFullName()
+                    +"</strong> bierze udział w wydarzeniu <strong>"
+                    +meeting.getTitle()+"</strong>";
+            alertType = "success";
             meeting.addMember(user);
         }
+
+        notificationService.addNotificationForUser(notificationText,"meetings?id=" + meeting.getId(), meeting.getOwner(),alertType);
         meetingRepository.save(meeting);
     }
 

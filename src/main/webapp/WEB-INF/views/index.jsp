@@ -5,6 +5,7 @@
 <c:url value="/" var="mainURL"/>
 <script src="${mainURL}resources/js/jquery.simple-calendar.js"></script>
 <script src="${mainURL}resources/js/countChatMessages.js"></script>
+<script src="${mainURL}resources/js/notification.js"></script>
 
 <main role="main" class="flex-shrink-0">
     <br>
@@ -44,10 +45,13 @@
         <span mb-2 mr-sm-2 >Nie znalazłeś interesującego cię wydarzenia. &nbsp;&nbsp;</span>
         <button type="button" class="btn btn-warning" onclick="location.href='${mainURL}meetings/add'"><i class="far fa-calendar-plus"></i> Dodaj nowe</button>
     </div>
+    <div class="container my-1 py-1">
+        <notifications data-userid="${user.id}"></notifications>
+    </div>
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <br><h4><b>${title}</b></h4><br>
+                <h4><b>${title}</b></h4><br>
             </div>
         </div>
 

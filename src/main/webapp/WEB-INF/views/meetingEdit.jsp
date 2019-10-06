@@ -37,12 +37,21 @@
                         <form:input path="meetTime" cssClass="form-control col-sm-6" id="meetTime" type="datetime-local" value="${actualTime}" />
                         <form:errors path="meetTime" cssClass="error" element="div" />
                     </div>
+                    <div class="form-group form-check">
+                        <form:checkbox path="sendNotification" cssClass="form-check-input" id="sendNotification"/>
+                        <label class="form-check-label" for="sendNotification">Wyślij powiadomienia o zmianie do członków wydarzenia</label>
+                    </div>
+                    <div class="form-group form-check">
+                        <form:checkbox path="sendEmail" cssClass="form-check-input" id="sendEmail"/>
+                        <label class="form-check-label" for="sendEmail">Wyślij email z powiadomieniem o zmianach do członków wydarzenia</label>
+                    </div>
                     <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
                 </form:form>
             </div>
             <div class="col-sm-3"></div>
         </div>
     </div>
+    <br>
 </main>
 <jsp:include page="footer.jsp"/>
 

@@ -19,19 +19,20 @@ public class NotificationService {
         this.notificationRepository = notificationRepository;
     }
 
-    public void addNotificationForUser(String notificationText, String url, User user) {
-        setNotificationAndSave(notificationText, url, user);
+    public void addNotificationForUser(String notificationText, String url, User user, String alertType) {
+        setNotificationAndSave(notificationText, url, user, alertType);
     }
 
-    public void addNotificationForUserList(String notificationText, String url, List<User> users) {
-        users.forEach(u->setNotificationAndSave(notificationText,url,u));
+    public void addNotificationForUserList(String notificationText, String url, List<User> users, String alertType) {
+        users.forEach(u->setNotificationAndSave(notificationText,url,u,alertType));
     }
 
-    private void setNotificationAndSave(String notificationText, String url, User user) {
+    private void setNotificationAndSave(String notificationText, String url, User user, String alertType) {
         Notification notification = new Notification();
         notification.setUser(user);
         notification.setText(notificationText);
         notification.setUrl(url);
+        notification.setAlertType(alertType);
         notificationRepository.save(notification);
     }
 

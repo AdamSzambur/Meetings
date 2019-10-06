@@ -62,12 +62,12 @@ public class UserMeetingsController {
     @GetMapping("/edit")
     public String userMeetingEditPage(@RequestParam Long id, Model model, Principal principal) {
         model.addAttribute("user", userService.getUserByEmail(principal.getName()));
-        model.addAttribute("meeting", new MeetingDTO(meetingService.getMeetingById(id,false)));
+        model.addAttribute("meeting", new MeetingEditDTO(meetingService.getMeetingById(id,false)));
         return "meetingEdit";
     }
 
     @PostMapping("/edit")
-    public String processUserMeetingEdit(@ModelAttribute("meeting") @Valid MeetingDTO meeting, BindingResult result) {
+    public String processUserMeetingEdit(@ModelAttribute("meeting") @Valid MeetingEditDTO meeting, BindingResult result) {
         if (result.hasErrors()) {
             return "meetingEdit";
         } else {

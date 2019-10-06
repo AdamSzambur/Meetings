@@ -5,6 +5,7 @@
 <c:url value="/" var="mainURL"/>
 <script src="${mainURL}resources/js/countChatMessages.js"></script>
 <script src="${mainURL}resources/js/userMeetings.js"></script>
+<script src="${mainURL}resources/js/notification.js"></script>
 
 
 <main role="main" class="flex-shrink-0">
@@ -22,7 +23,9 @@
         <span mb-2 mr-sm-2 >Nie znalazłeś interesującego cię wydarzenia. &nbsp;&nbsp;</span>
         <button type="button" class="btn btn-warning" onclick="location.href='${mainURL}meetings/add'"><i class="far fa-calendar-plus"></i> Dodaj nowe</button>
     </div>
-
+    <div class="container my-1 py-1">
+        <notifications data-userid="${user.id}"></notifications>
+    </div>
     <div class="container">
         <div class="rounded border p-2 whiteBg">
 
@@ -112,6 +115,7 @@
             </c:if>
         </div>
     </div>
+    <br>
 
     <message>
         <div class="alert modal_alert invisible alert-danger" id="messageBox">

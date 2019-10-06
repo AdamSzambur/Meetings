@@ -1,13 +1,12 @@
 package pl.coderslab.app.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.Base64;
-import java.util.List;
-import java.util.Objects;
 
 @JsonIgnoreProperties(value= {"user"})
 @Entity
@@ -26,7 +25,11 @@ public class Notification extends AbstractEntity {
 
     private String status;
 
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime created;
+
+    private String alertType = "primary";
 
     public Notification() {
         this.status = "unread";
@@ -43,6 +46,14 @@ public class Notification extends AbstractEntity {
 
     public void setOwnerId(Long ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public String getAlertType() {
+        return alertType;
+    }
+
+    public void setAlertType(String alertType) {
+        this.alertType = alertType;
     }
 
     public User getUser() {
