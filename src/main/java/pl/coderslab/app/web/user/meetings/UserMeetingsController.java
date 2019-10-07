@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.coderslab.app.models.Meeting;
 import pl.coderslab.app.web.meetings.MeetingDTO;
 import pl.coderslab.app.web.meetings.MeetingService;
 import pl.coderslab.app.models.User;
@@ -44,7 +45,6 @@ public class UserMeetingsController {
 
     @PostMapping
     public String processUserMeetingPage(@RequestParam String searchFraze, Model model, Principal principal) {
-
         System.out.println(searchFraze);
         model.addAttribute("user", userService.getUserByEmail(principal.getName()));
         model.addAttribute("formater", DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm"));
@@ -61,9 +61,14 @@ public class UserMeetingsController {
 
     @GetMapping("/edit")
     public String userMeetingEditPage(@RequestParam Long id, Model model, Principal principal) {
-        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
-        model.addAttribute("meeting", new MeetingEditDTO(meetingService.getMeetingById(id,false)));
-        return "meetingEdit";
+        Meeting meeting = meetingService.getMeetingById(id,false);
+        if (meeting!=null) {
+            model.addAttribute("user", userService.getUserByEmail(principal.getName()));
+            model.addAttribute("meeting", new MeetingEditDTO(meetingService.getMeetingById(id, false)));
+            return "meetingEdit";
+        } else {
+            return "redirect:/user/meetings";
+        }
     }
 
     @PostMapping("/edit")

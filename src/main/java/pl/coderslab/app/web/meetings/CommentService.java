@@ -11,6 +11,7 @@ import pl.coderslab.app.web.user.notifications.NotificationService;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,17 +48,20 @@ public class CommentService {
         }
         comment.setText(newComment.getText());
 
+
+        // ustawiamy update
         Meeting meeting = meetingRepository.findOne(newComment.getMeetingId());
         meeting.setUpdated(LocalDateTime.now());
-        meetingRepository.save(meeting); //ustawiamy w ten spsób update.
+        meetingRepository.save(meeting); //ustawiamy w ten sposób update.
+        // zapisujemy komentarz
         comment.setMeeting(meeting);
         commentRepository.save(comment);
 
         // powiadomienie
-
         String notificationText = "Użytkownik <strong>"+userRepository.findByEmail(userEmail).getFullName()+"</strong> dodał nowy komentarz do wydarzenia <strong>"+meeting.getTitle()+"</strong>";
         String alertType = "info";
-        List<User> users = meeting.getMembers();
+        // uwaga nowosc kopiujemy obiekt nie podajemy tylko referencji
+        List<User> users = new ArrayList<>(meeting.getMembers());
         users.add(meeting.getOwner());
         users.remove(userRepository.findByEmail(userEmail));
         notificationService.addNotificationForUserList(notificationText,"meetings?id="+newComment.getMeetingId(),users,alertType);

@@ -2,7 +2,6 @@ package pl.coderslab.app.web.meetings;
 
 import org.springframework.stereotype.Service;
 import pl.coderslab.app.FinderFormDTO;
-import pl.coderslab.app.repositories.NotificationRepository;
 import pl.coderslab.app.web.meetings.CoordianteJsonStructure.Coordinate;
 import pl.coderslab.app.web.meetings.DistanceJsonStructure.Distance;
 import pl.coderslab.app.web.meetings.member.MemberDTO;
@@ -51,18 +50,21 @@ public class MeetingService {
 
     public Meeting getMeetingById(Long id, boolean alldata) {
         Meeting result = meetingRepository.findOne(id);
-        if (alldata) {
-            result.getMembers().size();
-            result.getMembers().forEach(m->m.setBase64Image(Base64.getEncoder().encodeToString(m.getAvatar())));
-            result.setBase64fromOwnerAvatar();
-            result.setComments(commentRepository.getAllByParentAndMeeting(null,result));
-            // w zasadzie nieograniczona ilosc komentarzy do komentarzy
-            for (Comment comment : result.getComments()) {
-                comment.setBase64fromUserAvatar();
-                comment.setChildren(getChildrenLoop(comment.getChildren()));
+
+        if (result!=null) {
+            if (alldata) {
+                result.getMembers().size();
+                result.getMembers().forEach(m -> m.setBase64Image(Base64.getEncoder().encodeToString(m.getAvatar())));
+                result.setBase64fromOwnerAvatar();
+                result.setComments(commentRepository.getAllByParentAndMeeting(null, result));
+                // w zasadzie nieograniczona ilosc komentarzy do komentarzy
+                for (Comment comment : result.getComments()) {
+                    comment.setBase64fromUserAvatar();
+                    comment.setChildren(getChildrenLoop(comment.getChildren()));
+                }
             }
+            setAvailableUsers(result);
         }
-        setAvailableUsers(result);
         return result;
     }
 
@@ -130,8 +132,8 @@ public class MeetingService {
                 +address.replaceAll(" ","+")
                 + "&key=AIzaSyC5EJjfoZUTXckzVuwbvm3Ke0SWYwoi6OI";
         Jsonb jsonb = JsonbBuilder.create();
-        Coordinate result = jsonb.fromJson(getJSONStringFromUrl(googleURL), Coordinate.class);
-
+        //brak internetu - strona sie wysypie.
+        Coordinate result =  jsonb.fromJson(getJSONStringFromUrl(googleURL), Coordinate.class);
         return result;
     }
 
@@ -142,6 +144,7 @@ public class MeetingService {
                 + destinationAddres.replaceAll(" ","+")
                 + "&key=AIzaSyC5EJjfoZUTXckzVuwbvm3Ke0SWYwoi6OI";
         Jsonb jsonb = JsonbBuilder.create();
+        // brak internetu strona sie wysypie
         Distance distance = jsonb.fromJson(getJSONStringFromUrl(googleURL), Distance.class);
 
 
@@ -175,31 +178,33 @@ public class MeetingService {
 
     public void updateMeeting(MeetingEditDTO meetingDTO) {
         Meeting meeting = meetingRepository.findOne(meetingDTO.getId());
+        if (meeting != null) {
 
-        if (meetingDTO.getSendNotification()) {
-            // przygotowanie tresci powiadomienia
-            String notificationText = "";
-            if (!meetingDTO.getAddress().equals(meeting.getAddress())) {
-                notificationText += "adres ";
-            }
-            if (!meetingDTO.getMeetTime().equals(meeting.getMeetTime())) {
-                notificationText += "data i godzina spotkania ";
-            }
-            if (!meetingDTO.getDescription().equals(meeting.getDescription())) {
-                notificationText += "opis ";
-            }
-            if (!meetingDTO.getTitle().equals(meeting.getTitle())) {
-                notificationText += "tytuł";
-            }
-            if (notificationText.length() > 0) {
-                notificationText = "Nastąpila zmiana wydarzenia <strong>" +
-                        meeting.getTitle() + "</strong> : " + notificationText;
-                notificationService.addNotificationForUserList(notificationText, "meetings?id=" + meeting.getId(), getMeetingById(meetingDTO.getId(), true).getMembers(),"primary");
-                // powiadomienie zapisane
-            }
+            if (meetingDTO.getSendNotification()) {
+                // przygotowanie tresci powiadomienia
+                String notificationText = "";
+                if (!meetingDTO.getAddress().equals(meeting.getAddress())) {
+                    notificationText += "adres ";
+                }
+                if (!meetingDTO.getMeetTime().equals(meeting.getMeetTime())) {
+                    notificationText += "data i godzina spotkania ";
+                }
+                if (!meetingDTO.getDescription().equals(meeting.getDescription())) {
+                    notificationText += "opis ";
+                }
+                if (!meetingDTO.getTitle().equals(meeting.getTitle())) {
+                    notificationText += "tytuł";
+                }
+                if (notificationText.length() > 0) {
+                    notificationText = "Nastąpila zmiana wydarzenia <strong>" +
+                            meeting.getTitle() + "</strong> : " + notificationText;
+                    notificationService.addNotificationForUserList(notificationText, "meetings?id=" + meeting.getId(), getMeetingById(meetingDTO.getId(), true).getMembers(), "primary");
+                    // powiadomienie zapisane
+                }
 
+            }
+            fillMeetingAndSave(meetingDTO, meeting);
         }
-        fillMeetingAndSave(meetingDTO, meeting);
     }
 
 
@@ -217,31 +222,33 @@ public class MeetingService {
     }
     public void toogleMemberInMeeting(MemberDTO memberDTO) {
         Meeting meeting = meetingRepository.findOne(memberDTO.getMeetingId());
-        User user = userRepository.findOne(memberDTO.getUserId());
-        meeting.getMembers().size();
+        if (meeting!=null) {
+            User user = userRepository.findOne(memberDTO.getUserId());
+            meeting.getMembers().size();
 
-        String notificationText = "";
-        String alertType = "";
-        if (meeting.getMembers().contains(user)) {
-            System.out.println("Usuwamy uzytkownika z listy członków");
-            notificationText="Uzytkownik <strong>"
-                    +user.getFullName()
-                    +"</strong> opuścił wydarzenie <strong>"
-                    +meeting.getTitle()+"</strong>";
-            alertType = "danger";
-            meeting.removeMember(user);
-        } else {
-            System.out.println("Dodajemy uzytkownika do listy członków");
-            notificationText="Uzytkownik <strong>"
-                    +user.getFullName()
-                    +"</strong> bierze udział w wydarzeniu <strong>"
-                    +meeting.getTitle()+"</strong>";
-            alertType = "success";
-            meeting.addMember(user);
+            String notificationText = "";
+            String alertType = "";
+            if (meeting.getMembers().contains(user)) {
+                System.out.println("Usuwamy uzytkownika z listy członków");
+                notificationText = "Uzytkownik <strong>"
+                        + user.getFullName()
+                        + "</strong> opuścił wydarzenie <strong>"
+                        + meeting.getTitle() + "</strong>";
+                alertType = "danger";
+                meeting.removeMember(user);
+            } else {
+                System.out.println("Dodajemy uzytkownika do listy członków");
+                notificationText = "Uzytkownik <strong>"
+                        + user.getFullName()
+                        + "</strong> bierze udział w wydarzeniu <strong>"
+                        + meeting.getTitle() + "</strong>";
+                alertType = "success";
+                meeting.addMember(user);
+            }
+
+            notificationService.addNotificationForUser(notificationText, "meetings?id=" + meeting.getId(), meeting.getOwner(), alertType);
+            meetingRepository.save(meeting);
         }
-
-        notificationService.addNotificationForUser(notificationText,"meetings?id=" + meeting.getId(), meeting.getOwner(),alertType);
-        meetingRepository.save(meeting);
     }
 
     public List<Meeting> getMeetingByOwner(User owner) {
@@ -265,8 +272,18 @@ public class MeetingService {
     }
 
     public void removeMeeting(Long meetingId) {
-        commentRepository.deleteAllByMeetingId(meetingId);
-        meetingRepository.delete(meetingId);
+        Meeting meeting = meetingRepository.findOne(meetingId);
+
+        if (meeting!= null) {
+            // powiadomienie
+            String notificationText = "Wydarzenie <strong>" + meetingRepository.findOne(meetingId).getTitle() + "</strong> którego jesteś członkiem zostało usunięte";
+            String alertType = "dark";
+            // uwaga nowosc kopiujemy obiekt nie podajemy tylko referencji
+            notificationService.addNotificationForUserList(notificationText, "", meetingRepository.findOne(meetingId).getMembers(), alertType);
+
+            commentRepository.deleteAllByMeetingId(meetingId);
+            meetingRepository.delete(meetingId);
+        }
     }
 
     public List<Meeting> getMeetingByOwnerContainsFraze(String searchFraze, User owner) {
@@ -303,7 +320,6 @@ public class MeetingService {
         if (availableUsers.contains(meeting.getOwner())) {
             meeting.getOwner().setAvailable(true);
         }
-        meeting.getMembers().stream().filter(availableUsers::contains).forEach(m->m.setAvailable(true));
+        meeting.getMembers().forEach(m->{if (availableUsers.contains(m)) m.setAvailable(true);});
     }
-
 }

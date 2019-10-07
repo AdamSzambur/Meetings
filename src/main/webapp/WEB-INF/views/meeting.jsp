@@ -21,6 +21,8 @@
                     <div class="col-md-8">
                         <div class="card-body h-100">
                             <h5 class="card-title">${meeting.title}</h5>
+                            <p class="card-text">Data i godzina spotknia : <strong>${meeting.meetTime.format(formater)}</strong></p>
+                            <p class="card-text">Adres spotknia : <strong>${meeting.address}</strong></p>
                             <p class="card-text">${meeting.description}</p>
                             <p class="card-text"><small class="text-muted">
                                 Ostatnia aktualizacja : ${meeting.updated.format(formater)}
@@ -31,8 +33,6 @@
                                     Chat <i class="far fa-comment-dots"></i> <span class="" id="chat_counter">[0]</span>
                                 </button>
                                 <a href="#" class="btn btn-primary m-1"><i class="far fa-comments"></i> Dodaj komentarz</a>
-
-
                             <c:if test="${meeting.owner != user}">
                                 <c:if test="${!meeting.members.contains(user)}">
                                 <button id="addMember" type="button" class="btn btn-warning m-1"><i class="fas fa-user-plus"></i> Dołącz do wydarzenia</button>
@@ -41,11 +41,13 @@
                                 <button id="removeMember" type="button" class="btn btn-danger m-1"><i class="fas fa-user-minus"></i> Opuść wydarzenie</button>
                                 </c:if>
                             </c:if>
+
+                            <br><br>
                             <p style="position: absolute;bottom: 0;left: 5;">
                                 <i class="fas fa-users"></i> Członkowie grupy :
-                                <img src="data:image/jpeg;base64,${meeting.owner.base64Image}" width="17" height="17" class="avatar <c:if test="${!meeting.owner.available}">avatar_disabled</c:if>" title="${meeting.owner.fullName}"/>
+                                <img src="data:image/jpeg;base64,${meeting.owner.base64Image}" width="20" height="20" class="avatar <c:if test="${!meeting.owner.available}">avatar_disabled</c:if>" title="${meeting.owner.fullName}"/>
                                 <c:forEach items="${meeting.members}" var="member">
-                                    <img src="data:image/jpeg;base64,${member.base64Image}" width="17" height="17" class="avatar <c:if test="${!member.available}">avatar_disabled</c:if>" title="${member.fullName}"/>
+                                    <img src="data:image/jpeg;base64,${member.base64Image}" width="20" height="20" class="avatar <c:if test="${!member.available}">avatar_disabled</c:if>" title="${member.fullName}"/>
                                 </c:forEach>
                             </p>
                         </div>

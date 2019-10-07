@@ -9,7 +9,7 @@ $(function () {
     function getAllUnreadNotifications() {
 
         $.getJSON({
-            url: context+'user/notification/'+userId+'/unread',
+            url: context+'user/notifications/'+userId+'/unread',
             data: {}
         }, function(json) {
 
@@ -56,10 +56,10 @@ $(function () {
 
     function notificationReaded(id, redirectUrl) {
 
-        console.log(context+"user/notification/"+id+"/read");
+        console.log(context+"user/notifications/"+id+"/read");
 
         $.ajax({
-            url: context+"user/notification/"+id+"/read",
+            url: context+"user/notifications/"+id+"/read",
             type: "PUT"
         }).done(function(result) {
             if (redirectUrl) {

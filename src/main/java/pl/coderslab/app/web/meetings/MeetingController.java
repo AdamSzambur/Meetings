@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.coderslab.app.models.Meeting;
 import pl.coderslab.app.web.meetings.member.MemberDTO;
 import pl.coderslab.app.models.User;
 import pl.coderslab.app.web.user.UserService;
@@ -38,12 +39,18 @@ public class MeetingController {
 
     @GetMapping
     public String meetingPage(@RequestParam Long id, Model model, Principal principal) {
-        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
-        model.addAttribute("meeting", meetingService.getMeetingById(id,true));
-        model.addAttribute("newComment", new CommentFormDTO(id));
-        model.addAttribute("memberDTO", new MemberDTO());
-        model.addAttribute("formater", DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm"));
-        return "meeting";
+        Meeting meeting = meetingService.getMeetingById(id,true);
+
+        if (meeting!=null) {
+            model.addAttribute("user", userService.getUserByEmail(principal.getName()));
+            model.addAttribute("meeting", meetingService.getMeetingById(id, true));
+            model.addAttribute("newComment", new CommentFormDTO(id));
+            model.addAttribute("memberDTO", new MemberDTO());
+            model.addAttribute("formater", DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm"));
+            return "meeting";
+        } else {
+            return "redirect:/";
+        }
     }
 
 
@@ -51,8 +58,6 @@ public class MeetingController {
     public String processMeetingPage(@ModelAttribute("newComment") @Valid CommentFormDTO newComment, BindingResult result,
                                      Model model, Principal principal,@RequestParam Long id) {
         if (result.hasErrors()) {
-            model.addAttribute("user", userService.getUserByEmail(principal.getName()));
-            model.addAttribute("meeting", meetingService.getMeetingById(id, true));
             if (newComment.getParentId() != null) {
                 model.addAttribute("error", newComment.getParentId());
             } else {
