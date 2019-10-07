@@ -3,7 +3,6 @@ package pl.coderslab.app.web.meetings.member;
 
 public class MemberDTO {
 
-
     private Long meetingId;
 
     private Long userId;

@@ -55,11 +55,11 @@ public class CommentService {
 
         // powiadomienie
 
-        String notificationText = "Użytkownik "+userRepository.findByEmail(userEmail).getFullName()+" dodał nowy komentarz do wydarzenia "+meeting.getTitle();
+        String notificationText = "Użytkownik <strong>"+userRepository.findByEmail(userEmail).getFullName()+"</strong> dodał nowy komentarz do wydarzenia <strong>"+meeting.getTitle()+"</strong>";
         String alertType = "info";
         List<User> users = meeting.getMembers();
         users.add(meeting.getOwner());
-        users = users.stream().filter(u->u!=userRepository.findByEmail(userEmail)).collect(Collectors.toList());
+        users.remove(userRepository.findByEmail(userEmail));
         notificationService.addNotificationForUserList(notificationText,"meetings?id="+newComment.getMeetingId(),users,alertType);
     }
 

@@ -27,6 +27,7 @@ import java.net.URLConnection;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,6 +53,7 @@ public class MeetingService {
         Meeting result = meetingRepository.findOne(id);
         if (alldata) {
             result.getMembers().size();
+            result.getMembers().forEach(m->m.setBase64Image(Base64.getEncoder().encodeToString(m.getAvatar())));
             result.setBase64fromOwnerAvatar();
             result.setComments(commentRepository.getAllByParentAndMeeting(null,result));
             // w zasadzie nieograniczona ilosc komentarzy do komentarzy
@@ -60,6 +62,7 @@ public class MeetingService {
                 comment.setChildren(getChildrenLoop(comment.getChildren()));
             }
         }
+        setAvailableUsers(result);
         return result;
     }
 
@@ -280,13 +283,11 @@ public class MeetingService {
 
     private List<Meeting> filterMeetings(String searchFraze, List<Meeting> result) {
         result = result.stream()
-                .filter(m -> {
-                    return (
-                            m.getAddress().contains(searchFraze) ||
-                                    m.getTitle().contains(searchFraze) ||
-                                    m.getMeetTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm")).contains(searchFraze)
-                    );
-                })
+                .filter(m -> (
+                        m.getAddress().contains(searchFraze) ||
+                                m.getTitle().contains(searchFraze) ||
+                                m.getMeetTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm")).contains(searchFraze)
+                ))
                 .collect(Collectors.toList());
 
         result.forEach(m -> {
@@ -296,4 +297,13 @@ public class MeetingService {
         });
         return result;
     }
+
+    private void setAvailableUsers(Meeting meeting) {
+        List<User> availableUsers = userService.findAllLoggedInUsers();
+        if (availableUsers.contains(meeting.getOwner())) {
+            meeting.getOwner().setAvailable(true);
+        }
+        meeting.getMembers().stream().filter(availableUsers::contains).forEach(m->m.setAvailable(true));
+    }
+
 }

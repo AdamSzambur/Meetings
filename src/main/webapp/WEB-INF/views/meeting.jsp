@@ -19,7 +19,7 @@
                         <div id="map"></div>
                     </div>
                     <div class="col-md-8">
-                        <div class="card-body">
+                        <div class="card-body h-100">
                             <h5 class="card-title">${meeting.title}</h5>
                             <p class="card-text">${meeting.description}</p>
                             <p class="card-text"><small class="text-muted">
@@ -41,8 +41,15 @@
                                 <button id="removeMember" type="button" class="btn btn-danger m-1"><i class="fas fa-user-minus"></i> Opuść wydarzenie</button>
                                 </c:if>
                             </c:if>
-
+                            <p style="position: absolute;bottom: 0;left: 5;">
+                                <i class="fas fa-users"></i> Członkowie grupy :
+                                <img src="data:image/jpeg;base64,${meeting.owner.base64Image}" width="17" height="17" class="avatar <c:if test="${!meeting.owner.available}">avatar_disabled</c:if>" title="${meeting.owner.fullName}"/>
+                                <c:forEach items="${meeting.members}" var="member">
+                                    <img src="data:image/jpeg;base64,${member.base64Image}" width="17" height="17" class="avatar <c:if test="${!member.available}">avatar_disabled</c:if>" title="${member.fullName}"/>
+                                </c:forEach>
+                            </p>
                         </div>
+
                     </div>
                 </div>
                 <div class="card-footer" data-error="<c:out value="${error == 0 ? 1 : 0}"/>">
