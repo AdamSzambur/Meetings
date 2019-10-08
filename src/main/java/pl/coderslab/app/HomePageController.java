@@ -8,6 +8,7 @@ import pl.coderslab.app.converters.PolishDayAndMonthNamesConverter;
 import pl.coderslab.app.web.meetings.MeetingService;
 import pl.coderslab.app.models.User;
 import pl.coderslab.app.web.user.UserService;
+import pl.coderslab.app.web.user.messages.MessageService;
 
 import javax.validation.Validator;
 import java.security.Principal;
@@ -18,11 +19,12 @@ public class HomePageController {
     private Validator validator;
     private UserService userService;
     private MeetingService meetingService;
+    private MessageService messageService;
 
-    public HomePageController(UserService userService,MeetingService meetingService) {
+    public HomePageController(UserService userService,MeetingService meetingService, MessageService messageService) {
         this.userService = userService;
         this.meetingService = meetingService;
-
+        this.messageService = messageService;
     }
 
     @ModelAttribute("principal")
@@ -30,6 +32,12 @@ public class HomePageController {
         Principal principal = SecurityContextHolder.getContext().getAuthentication();
         return userService.getUserByEmail(principal.getName());
     }
+
+    @ModelAttribute("numberOfNewMessages")
+    public Long numberOfNewMessages() {
+        return messageService.getNewUnreadedMessagesByRecipient(principalToUser().getId());
+    }
+
 
     @GetMapping
     public String homePage(@ModelAttribute("finderFormDTO") FinderFormDTO finderFormDTO, @RequestParam(required = false) String selectedDate, Model model, Principal principal) {

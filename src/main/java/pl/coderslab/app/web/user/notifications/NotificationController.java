@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.coderslab.app.models.Notification;
 import pl.coderslab.app.models.User;
 import pl.coderslab.app.web.user.UserService;
+import pl.coderslab.app.web.user.messages.MessageService;
 
 import java.security.Principal;
 import java.time.format.DateTimeFormatter;
@@ -18,16 +19,23 @@ public class NotificationController {
 
     private NotificationService notificationService;
     private UserService userService;
+    private MessageService messageService;
 
-    public NotificationController(NotificationService notificationService, UserService userService) {
+    public NotificationController(NotificationService notificationService, UserService userService, MessageService messageService) {
         this.notificationService = notificationService;
         this.userService = userService;
+        this.messageService = messageService;
     }
 
     @ModelAttribute("principal")
     public User principalToUser() {
         Principal principal = SecurityContextHolder.getContext().getAuthentication();
         return userService.getUserByEmail(principal.getName());
+    }
+
+    @ModelAttribute("numberOfNewMessages")
+    public Long numberOfNewMessages() {
+        return messageService.getNewUnreadedMessagesByRecipient(principalToUser().getId());
     }
 
 

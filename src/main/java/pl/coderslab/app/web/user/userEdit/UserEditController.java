@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import pl.coderslab.app.web.user.UserFormDTO;
 import pl.coderslab.app.models.User;
 import pl.coderslab.app.web.user.UserService;
+import pl.coderslab.app.web.user.messages.MessageService;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -20,15 +21,22 @@ import java.security.Principal;
 public class UserEditController {
 
     private UserService userService;
+    private MessageService messageService;
 
-    public UserEditController(UserService userService) {
+    public UserEditController(UserService userService,MessageService messageService) {
         this.userService = userService;
+        this.messageService = messageService;
     }
 
     @ModelAttribute("principal")
     public User principalToUser() {
         Principal principal = SecurityContextHolder.getContext().getAuthentication();
         return userService.getUserByEmail(principal.getName());
+    }
+
+    @ModelAttribute("numberOfNewMessages")
+    public Long numberOfNewMessages() {
+        return messageService.getNewUnreadedMessagesByRecipient(principalToUser().getId());
     }
 
     @GetMapping("/userEdit")

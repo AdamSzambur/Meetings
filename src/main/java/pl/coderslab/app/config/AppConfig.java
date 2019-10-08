@@ -63,7 +63,6 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     @Bean
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-     //   resolver.setMaxUploadSize(150000); // maksymalna wielkość pliku 150kb.
         resolver.setDefaultEncoding("utf-8");
         return resolver;
     }

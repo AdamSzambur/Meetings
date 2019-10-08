@@ -34,6 +34,28 @@ public class User extends AbstractEntity {
     @OneToMany(mappedBy = "user")
     private List<Notification> notification;
 
+    @OneToMany(mappedBy = "recipient")
+    private List<InboxMessage> inbox;
+
+    @OneToMany(mappedBy = "sender")
+    private List<OutboxMessage> outbox;
+
+    public List<InboxMessage> getInbox() {
+        return inbox;
+    }
+
+    public void setInbox(List<InboxMessage> inbox) {
+        this.inbox = inbox;
+    }
+
+    public List<OutboxMessage> getOutbox() {
+        return outbox;
+    }
+
+    public void setOutbox(List<OutboxMessage> outbox) {
+        this.outbox = outbox;
+    }
+
     public List<Notification> getNotification() {
         return notification;
     }
