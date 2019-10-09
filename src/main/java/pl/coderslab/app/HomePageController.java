@@ -9,7 +9,9 @@ import pl.coderslab.app.web.meetings.MeetingService;
 import pl.coderslab.app.models.User;
 import pl.coderslab.app.web.user.UserService;
 import pl.coderslab.app.web.user.messages.MessageService;
-
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServlet;
 import javax.validation.Validator;
 import java.security.Principal;
 

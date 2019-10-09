@@ -17,6 +17,7 @@ import pl.coderslab.app.web.user.notifications.NotificationService;
 
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -39,13 +40,15 @@ public class MeetingService {
     private CommentRepository commentRepository;
     private UserRepository userRepository;
     private NotificationService notificationService;
+    private HttpServletRequest request;
 
-    public MeetingService(MeetingRepository meetingRepository, UserService userService, CommentRepository commentRepository, UserRepository userRepository, NotificationService notificationService) {
+    public MeetingService(HttpServletRequest request,MeetingRepository meetingRepository, UserService userService, CommentRepository commentRepository, UserRepository userRepository, NotificationService notificationService) {
         this.meetingRepository = meetingRepository;
         this.userService = userService;
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
         this.notificationService = notificationService;
+        this.request = request;
     }
 
     public Meeting getMeetingById(Long id, boolean alldata) {
@@ -130,7 +133,7 @@ public class MeetingService {
     private Coordinate getCoordinates(String address) {
         String googleURL = "https://maps.googleapis.com/maps/api/geocode/json?address="
                 +address.replaceAll(" ","+")
-                + "&key=AIzaSyC5EJjfoZUTXckzVuwbvm3Ke0SWYwoi6OI";
+                +"&key="+ request.getServletContext().getInitParameter("apiKey");
         Jsonb jsonb = JsonbBuilder.create();
         //brak internetu - strona sie wysypie.
         Coordinate result =  jsonb.fromJson(getJSONStringFromUrl(googleURL), Coordinate.class);
@@ -142,7 +145,8 @@ public class MeetingService {
                 + finderFormDTO.getLatitude() + "," + finderFormDTO.getLongitude()
                 + "&destinations="
                 + destinationAddres.replaceAll(" ","+")
-                + "&key=AIzaSyC5EJjfoZUTXckzVuwbvm3Ke0SWYwoi6OI";
+                + "&key="+request.getServletContext().getInitParameter("apiKey");
+
         Jsonb jsonb = JsonbBuilder.create();
         // brak internetu strona sie wysypie
         Distance distance = jsonb.fromJson(getJSONStringFromUrl(googleURL), Distance.class);

@@ -37,11 +37,19 @@ public class MessageController {
     }
 
     @GetMapping
-    public String getNotificationsByUser(Model model, Principal principal) {
-//        User user = userService.getUserByEmail(principal.getName());
-//        model.addAttribute("user",user);
-//        model.addAttribute("messages", messageService.getAllInboxMessagesByRecipientId(user.getId()));
-//        model.addAttribute("formater", DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm"));
+    public String getNotificationsByUser(@RequestParam String box, @RequestParam(required = false) String searchFraze, Model model, Principal principal) {
+        User user = userService.getUserByEmail(principal.getName());
+        model.addAttribute("user",user);
+
+        if (searchFraze!=null) {
+            model.addAttribute("messages", messageService.getAllMessagesContainsFraze(user.getId(),box, searchFraze));
+        }
+//        if (box.equals("inbox")) {
+//            model.addAttribute("messages", messageService.getAllInboxMessagesByRecipientId(user.getId()));
+//        } else if (box.equals("outbox")) {
+//            model.addAttribute("messages", messageService.getAllOutboxMessagesByRecipientId(user.getId()));
+//        }
+        model.addAttribute("formater", DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm"));
         return "messages";
     }
 

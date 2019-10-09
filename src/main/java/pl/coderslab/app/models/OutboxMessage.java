@@ -7,7 +7,6 @@ import javax.persistence.*;
 @Entity
 @Table(name ="outboxMessages")
 public class OutboxMessage extends Message {
-
     public OutboxMessage() {
     }
 

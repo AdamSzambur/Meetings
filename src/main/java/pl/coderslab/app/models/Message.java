@@ -18,6 +18,8 @@ public abstract class Message extends AbstractEntity {
 
     private Boolean readed = false;
 
+    private Boolean trash = false;
+
     @PrePersist
     public void prePersist() {
         created = LocalDateTime.now();
@@ -55,4 +57,11 @@ public abstract class Message extends AbstractEntity {
         this.readed = readed;
     }
 
+    public Boolean getTrash() {
+        return trash;
+    }
+
+    public void setTrash(Boolean trash) {
+        this.trash = trash;
+    }
 }
