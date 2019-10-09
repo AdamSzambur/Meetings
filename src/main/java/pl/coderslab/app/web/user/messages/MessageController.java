@@ -4,6 +4,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import pl.coderslab.app.models.AbstractMessage;
+import pl.coderslab.app.models.InboxMessage;
 import pl.coderslab.app.models.User;
 import pl.coderslab.app.web.user.UserService;
 import pl.coderslab.app.web.user.notifications.NotificationService;
@@ -37,32 +39,37 @@ public class MessageController {
     }
 
     @GetMapping
-    public String getNotificationsByUser(@RequestParam String box, @RequestParam(required = false) String searchFraze, Model model, Principal principal) {
+    public String getMessagesByUser(@RequestParam String box, @RequestParam(required = false) String searchFraze, Model model, Principal principal) {
         User user = userService.getUserByEmail(principal.getName());
         model.addAttribute("user",user);
 
         if (searchFraze!=null) {
             model.addAttribute("messages", messageService.getAllMessagesContainsFraze(user.getId(),box, searchFraze));
+        } else {
+            model.addAttribute("messages", messageService.getAllMessagesByUser(user.getId(),box));
         }
-//        if (box.equals("inbox")) {
-//            model.addAttribute("messages", messageService.getAllInboxMessagesByRecipientId(user.getId()));
-//        } else if (box.equals("outbox")) {
-//            model.addAttribute("messages", messageService.getAllOutboxMessagesByRecipientId(user.getId()));
-//        }
         model.addAttribute("formater", DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm"));
         return "messages";
     }
 
-//    @PostMapping("/delete")
-//    public String deleteNotification(@RequestParam(required = false) Long notificationId, @RequestParam(required = false) List<Long> selectedNotifications) {
-//        if (notificationId!=null) {
-//            notificationService.deleteNotification(notificationId);
-//        }
-//        if (selectedNotifications!=null) {
-//            notificationService.deleteNotification(selectedNotifications);
-//        }
-//        return "redirect:/user/notifications";
-//    }
+    @PostMapping("/delete")
+    public String deleteMessage(@RequestParam String box, @RequestParam(required = false) Long messageId, @RequestParam(required = false) List<Long> selectedMessages) {
+        if (messageId!=null) {
+            System.out.println("usuwamy message o id "+messageId);
+            messageService.deleteMessage(messageId, box);
+        }
+        if (selectedMessages!=null) {
+            messageService.deleteMessages(selectedMessages, box);
+        }
+        return "redirect:/user/messages?box="+box;
+    }
+
+    @GetMapping("/message")
+    public String getMessage(@RequestParam String box, @RequestParam Long messageId, Model model, Principal principal) {
+        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
+        model.addAttribute("messageDTO", new MessageDTO(messageService.getMessageById(messageId,box)));
+        return "message";
+    }
 }
 
 

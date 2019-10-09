@@ -5,7 +5,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-public abstract class Message extends AbstractEntity {
+public abstract class AbstractMessage extends AbstractEntity {
 
     @Size(min=1, max = 255, message = "Wiadomość musi mieć podany tytuł nie dłuższy niż 255 znaków")
     private String title;

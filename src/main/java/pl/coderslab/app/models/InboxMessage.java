@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name ="inboxMessages")
-public class InboxMessage extends Message {
+public class InboxMessage extends AbstractMessage {
 
     public InboxMessage() {
     }

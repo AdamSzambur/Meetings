@@ -1,7 +1,7 @@
 package pl.coderslab.app.web.meetings;
 
 import org.springframework.stereotype.Service;
-import pl.coderslab.app.FinderFormDTO;
+import pl.coderslab.app.web.FinderFormDTO;
 import pl.coderslab.app.web.meetings.CoordianteJsonStructure.Coordinate;
 import pl.coderslab.app.web.meetings.DistanceJsonStructure.Distance;
 import pl.coderslab.app.web.meetings.member.MemberDTO;

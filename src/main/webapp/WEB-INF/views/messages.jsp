@@ -1,9 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="input" uri="http://www.springframework.org/tags/form" %>
 <jsp:include page="header.jsp"/>
 <c:url value="/" var="mainURL"/>
-<script src="${mainURL}resources/js/userNotifications.js"></script>
+<script src="${mainURL}resources/js/userMessages.js"></script>
 <script src="${mainURL}resources/js/notification.js"></script>
 
 
@@ -14,7 +15,7 @@
         <div class="row justify-content align-items-center" >
             <div class="col-sm-auto align-middle">
                 <h4  style="color: white">Lista wszystkich wiadomości użytkownika</h4>
-                <h6  style="color: white">Wiadomości od innych użytkowników aplikacji</h6>
+                <h6  style="color: white">Wiadomości od/do innych użytkowników aplikacji</h6>
             </div>
         </div>
     </div>
@@ -30,7 +31,7 @@
                         <span class="mb-1 mr-sm-2">Wiadomości</span>
                         <select name="box" onchange="this.form.submit()"
                                 class="custom-select mb-1 mr-sm-2" style="background-color: #F9F9F9; border: 0px">
-                            <option value="inbox" <c:if test="${param.box.equals('inbox')}">selected</c:if>>debrane</option>
+                            <option value="inbox" <c:if test="${param.box.equals('inbox')}">selected</c:if>>odebrane</option>
                             <option value="outbox" <c:if test="${param.box.equals('outbox')}">selected</c:if>>wysłane</option>
                         </select>
                         <span class="mb-1 mr-sm-2">przez uzytkownika</span>
@@ -55,8 +56,9 @@
             </div>
 
 
-            <form method="post" action="${mainURL}user/notifications/delete">
-                <button type="button" class="btn btn-primary btn-sm"  title="Nowa wiadomość" onclick="window.document.href='${mainURL}/user/messages/add'"><i class="far fa-paper-plane"></i> Nowa wiadomość</button>
+            <form method="post" action="${mainURL}user/messages/delete">
+                <input type="hidden" value="${param.box}" name="box">
+                <button type="button" class="btn btn-primary btn-sm"  title="Nowa wiadomość" onclick="window.location.href='${mainURL}user/messages/add?senderId=${user.id}'"><i class="far fa-paper-plane"></i> Nowa wiadomość</button>
                 <button type="button" class="btn btn-danger btn-sm"  title="Usuń zaznaczone" onclick="$('#messageBoxAll').toggleClass('invisible');"><i class="far fa-trash-alt"></i> Usuń zaznaczone</button>
                 <br><br>
             <table class="table table-hover">
@@ -73,13 +75,16 @@
                 <c:forEach items="${messages}" var="message">
                     <tr">
                         <th scope="row" >
-                            <input type="checkbox" name="selectedNotifications" value="${message.id}" class="check-box" style="transform: scale(1.5);">
+                            <input type="checkbox" name="selectedMessages" value="${message.id}" class="check-box" style="transform: scale(1.5);">
                         </th>
                         <th scope="row">${message.created.format(formater)}</th>
-                        <td class="meetingTitle"><c:out value="${param.box.equals('inbox') ? message.sender : message.recipient}"/></td>
+                        <td class="meetingTitle"><c:out value="${param.box.equals('inbox') ? message.sender.fullName : message.recipient.fullName}"/></td>
                         <td>${message.title}</td>
                         <td>
-                            <button type="button" class="btn btn-danger remove btn-sm"  data-message="${message.title}" data-messageid="${message.id}" title="Usuń"><i class="far fa-trash-alt"></i></button>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-success btn-sm" title="Pogląd wiadomości" onclick="window.location.href='${mainURL}user/messages/message?box=${param.box}&messageId=${message.id}'"><i class="far fa-eye"></i></button>
+                                <button type="button" class="btn btn-danger remove btn-sm"  data-message="${message.title}" data-messageid="${message.id}" title="Usuń"><i class="far fa-trash-alt"></i></button>
+                            </div>
                         </td>
                     </tr>
                 </c:forEach>
@@ -93,10 +98,10 @@
                             <span>&times;</span>
                         </button><br>
                         <p style="text-align: center">
-                            <span class="messageValue">Czy napewno chcesz usunąć zaznaczone powiadomienia</span>
+                            <span class="messageValue">Czy napewno chcesz usunąć zaznaczone wiadomości</span>
                                 <input type="hidden" name="notificationId" value="">
                         <p style="text-align: center">
-                            <button type="submit" role="button" class="btn btn-success">Usuń wydarzenia</button>
+                            <button type="submit" role="button" class="btn btn-success">Usuń wiadomości</button>
                             <a role="button" class="btn btn-danger" href="" onclick="event.preventDefault(); $('#messageBoxAll').toggleClass('invisible');">Anuluj</a>
                         </p>
 
@@ -116,10 +121,11 @@
             </button><br>
             <p style="text-align: center">
                 <span class="messageValue"></span>
-                <form method="post" action="${mainURL}user/notifications/delete">
-                    <input type="hidden" name="notificationId" value="">
+                <form method="post" action="${mainURL}user/messages/delete">
+                    <input type="hidden" value="${param.box}" name="box">
+                    <input type="hidden" name="messageId" value="" id="messageId">
                     <p style="text-align: center">
-                        <button type="submit" role="button" class="btn btn-success">Usuń wydarzenie</button>
+                        <button type="submit" role="button" class="btn btn-success">Usuń wiadomość</button>
                         <a role="button" class="btn btn-danger" href="" onclick="event.preventDefault(); $('#messageBox').toggleClass('invisible');">Anuluj</a>
                     </p>
                 </form>

@@ -1,17 +1,16 @@
-package pl.coderslab.app;
+package pl.coderslab.app.web;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.app.converters.PolishDayAndMonthNamesConverter;
+import pl.coderslab.app.web.FinderFormDTO;
 import pl.coderslab.app.web.meetings.MeetingService;
 import pl.coderslab.app.models.User;
 import pl.coderslab.app.web.user.UserService;
 import pl.coderslab.app.web.user.messages.MessageService;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServlet;
+
 import javax.validation.Validator;
 import java.security.Principal;
 

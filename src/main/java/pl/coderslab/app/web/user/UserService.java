@@ -67,4 +67,8 @@ public class UserService {
                 .collect(Collectors.toList());
         return result;
     }
+
+    public List<User> getAllUsersWithoutPrincipal(Long id) {
+        return userRepository.findAll().stream().filter(u->u!=getUserById(id)).collect(Collectors.toList());
+    }
 }
