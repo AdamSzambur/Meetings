@@ -66,6 +66,9 @@ public class MessageController {
 
     @GetMapping("/message")
     public String getMessage(@RequestParam String box, @RequestParam Long messageId, Model model, Principal principal) {
+        if (box.equals("inbox")) {
+            messageService.setInboxMessageReaded(messageId);
+        }
         model.addAttribute("user", userService.getUserByEmail(principal.getName()));
         model.addAttribute("messageDTO", new MessageDTO(messageService.getMessageById(messageId,box)));
         return "message";

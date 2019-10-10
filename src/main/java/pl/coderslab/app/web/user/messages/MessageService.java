@@ -80,4 +80,10 @@ public class MessageService {
             return outboxRepository.findOne(id);
         }
     }
+
+    public void setInboxMessageReaded(Long messageId) {
+        InboxMessage inboxMessage = inboxRepository.findOne(messageId);
+        inboxMessage.setReaded(true);
+        inboxRepository.save(inboxMessage);
+    }
 }

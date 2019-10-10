@@ -16,9 +16,7 @@ public abstract class AbstractMessage extends AbstractEntity {
 
     private LocalDateTime created;
 
-    private Boolean readed = false;
 
-    private Boolean trash = false;
 
     @PrePersist
     public void prePersist() {
@@ -47,21 +45,5 @@ public abstract class AbstractMessage extends AbstractEntity {
 
     public void setCreated(LocalDateTime created) {
         this.created = created;
-    }
-
-    public Boolean getReaded() {
-        return readed;
-    }
-
-    public void setReaded(Boolean readed) {
-        this.readed = readed;
-    }
-
-    public Boolean getTrash() {
-        return trash;
-    }
-
-    public void setTrash(Boolean trash) {
-        this.trash = trash;
     }
 }

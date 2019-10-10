@@ -11,6 +11,7 @@ import pl.coderslab.app.models.User;
 import pl.coderslab.app.web.user.UserService;
 import pl.coderslab.app.web.user.messages.MessageService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.time.Duration;
@@ -25,12 +26,20 @@ public class MeetingController {
     private MeetingService meetingService;
     private CommentService commentService;
     private MessageService messageService;
+    private HttpServletRequest request;
 
-    public MeetingController(UserService userService, MeetingService meetingService, CommentService commentService,MessageService messageService) {
+    public MeetingController(UserService userService, MeetingService meetingService, CommentService commentService,
+                             MessageService messageService, HttpServletRequest request) {
         this.userService = userService;
         this.meetingService = meetingService;
         this.commentService = commentService;
         this.messageService = messageService;
+        this.request = request;
+    }
+
+    @ModelAttribute("googleKey")
+    public String googleKey() {
+        return request.getServletContext().getInitParameter("apiKey");
     }
 
     @ModelAttribute("principal")

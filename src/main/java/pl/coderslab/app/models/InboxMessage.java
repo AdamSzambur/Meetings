@@ -24,6 +24,8 @@ public class InboxMessage extends AbstractMessage {
     @OneToOne
     private User sender;
 
+    private Boolean readed = false;
+
     public User getRecipient() {
         return recipient;
     }
@@ -38,5 +40,13 @@ public class InboxMessage extends AbstractMessage {
 
     public void setSender(User sender) {
         this.sender = sender;
+    }
+
+    public Boolean getReaded() {
+        return readed;
+    }
+
+    public void setReaded(Boolean readed) {
+        this.readed = readed;
     }
 }

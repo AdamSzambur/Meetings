@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.app.models.Meeting;
-import pl.coderslab.app.web.meetings.MeetingDTO;
 import pl.coderslab.app.web.meetings.MeetingService;
 import pl.coderslab.app.models.User;
 import pl.coderslab.app.web.user.UserService;
@@ -23,6 +22,7 @@ public class UserMeetingsController {
     private UserService userService;
     private MeetingService meetingService;
     private MessageService messageService;
+
 
     public UserMeetingsController(UserService userService, MeetingService meetingService, MessageService messageService) {
         this.userService = userService;

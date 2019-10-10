@@ -84,7 +84,7 @@
                                     ${comment.user.fullName}
                                 </c:if>
                                 <c:if test="${!comment.user.email.equals(principal.email)}">
-                                    <a href="${mainURL}message/add?id=${comment.user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${comment.user.fullName}</a>
+                                    <a href="${mainURL}user/messages/add?recipientId=${comment.user.id}&senderId=${user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${comment.user.fullName}</a>
                                 </c:if>
                                 , Utworzono : ${comment.created.format(formater)}
                             </div>
@@ -124,7 +124,7 @@
                                         ${child1.user.fullName}
                                     </c:if>
                                     <c:if test="${!child1.user.email.equals(principal.email)}">
-                                        <a href="${mainURL}message/add?id=${child1.user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${child1.user.fullName}</a>
+                                        <a href="${mainURL}user/messages/add?recipientId=${child1.user.id}&senderId=${user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${child1.user.fullName}</a>
                                     </c:if>
                                     , Utworzono : ${child1.created.format(formater)}
                                 </div>
@@ -165,7 +165,7 @@
                                             ${child1.user.fullName}
                                         </c:if>
                                         <c:if test="${!child2.user.email.equals(principal.email)}">
-                                            <a href="${mainURL}message/add?id=${child2.user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${child2.user.fullName}</a>
+                                            <a href="${mainURL}user/messages/add?recipientId=${child2.user.id}&senderId=${user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${child2.user.fullName}</a>
                                         </c:if>
                                         , Utworzono : ${child2.created.format(formater)}
                                     </div>
@@ -207,7 +207,7 @@
                                                 ${child3.user.fullName}
                                             </c:if>
                                             <c:if test="${!child3.user.email.equals(principal.email)}">
-                                                <a href="${mainURL}message/add?id=${child3.user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${child3.user.fullName}</a>
+                                                <a href="${mainURL}user/messages/add?recipientId=${child3.user.id}&senderId=${user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${child3.user.fullName}</a>
                                             </c:if>
                                             , Utworzono : ${child3.created.format(formater)}
                                         </div>
@@ -250,7 +250,7 @@
                                                     ${child4.user.fullName}
                                                 </c:if>
                                                 <c:if test="${!child4.user.email.equals(principal.email)}">
-                                                    <a href="${mainURL}message/add?id=${child4.user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${child4.user.fullName}</a>
+                                                    <a href="${mainURL}user/messages/add?recipientId=${child4.user.id}&senderId=${user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${child4.user.fullName}</a>
                                                 </c:if>
                                                 , Utworzono : ${child4.created.format(formater)}
                                             </div>
@@ -303,7 +303,7 @@
                     }
                 </script>
                 <script async defer
-                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5EJjfoZUTXckzVuwbvm3Ke0SWYwoi6OI&callback=initMap">
+                        src="https://maps.googleapis.com/maps/api/js?key=${googleKey}&callback=initMap">
                 </script>
             </mapa>
 

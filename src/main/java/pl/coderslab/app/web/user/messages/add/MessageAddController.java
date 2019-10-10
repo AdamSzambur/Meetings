@@ -59,6 +59,7 @@ public class MessageAddController {
 
     @GetMapping("/response")
     public String responseMessage(@RequestParam Long messageId, Principal principal, Model model) {
+        messageService.setInboxMessageReaded(messageId);
         User user = userService.getUserByEmail(principal.getName());
         model.addAttribute("user",user);
         MessageDTO messageDTO = new MessageDTO(messageService.getMessageById(messageId,"inbox"));

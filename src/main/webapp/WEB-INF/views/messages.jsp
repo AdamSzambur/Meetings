@@ -73,7 +73,13 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${messages}" var="message">
-                    <tr">
+                    <c:if test="${param.box.equals('inbox')}">
+                        <c:if test="${message.readed}"><tr></c:if>
+                        <c:if test="${!message.readed}"><tr class="table-primary"></c:if>
+                    </c:if>
+                    <c:if test="${param.box.equals('outbox')}">
+                        <tr>
+                    </c:if>
                         <th scope="row" >
                             <input type="checkbox" name="selectedMessages" value="${message.id}" class="check-box" style="transform: scale(1.5);">
                         </th>
@@ -83,6 +89,9 @@
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <button type="button" class="btn btn-success btn-sm" title="Pogląd wiadomości" onclick="window.location.href='${mainURL}user/messages/message?box=${param.box}&messageId=${message.id}'"><i class="far fa-eye"></i></button>
+                                <c:if test="${param.box.equals('inbox')}">
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href=${mainURL}+'user/messages/add/response?messageId='+${message.id}" title="Odpowiedź na wiadomość"><i class="far fa-share-square"></i></button>
+                                </c:if>
                                 <button type="button" class="btn btn-danger remove btn-sm"  data-message="${message.title}" data-messageid="${message.id}" title="Usuń"><i class="far fa-trash-alt"></i></button>
                             </div>
                         </td>

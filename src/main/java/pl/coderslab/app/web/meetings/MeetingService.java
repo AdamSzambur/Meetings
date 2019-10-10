@@ -1,6 +1,7 @@
 package pl.coderslab.app.web.meetings;
 
 import org.springframework.stereotype.Service;
+import pl.coderslab.app.web.EmailService;
 import pl.coderslab.app.web.FinderFormDTO;
 import pl.coderslab.app.web.meetings.CoordianteJsonStructure.Coordinate;
 import pl.coderslab.app.web.meetings.DistanceJsonStructure.Distance;
@@ -41,13 +42,15 @@ public class MeetingService {
     private UserRepository userRepository;
     private NotificationService notificationService;
     private HttpServletRequest request;
+    private EmailService emailService;
 
-    public MeetingService(HttpServletRequest request,MeetingRepository meetingRepository, UserService userService, CommentRepository commentRepository, UserRepository userRepository, NotificationService notificationService) {
+    public MeetingService(HttpServletRequest request, EmailService emailService,MeetingRepository meetingRepository, UserService userService, CommentRepository commentRepository, UserRepository userRepository, NotificationService notificationService) {
         this.meetingRepository = meetingRepository;
         this.userService = userService;
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
         this.notificationService = notificationService;
+        this.emailService = emailService;
         this.request = request;
     }
 
@@ -241,6 +244,14 @@ public class MeetingService {
                 alertType = "danger";
                 meeting.removeMember(user);
             } else {
+                try {
+                    emailService.sendEmail(userService.getUserById(memberDTO.getUserId()).getEmail(),"Zaplanowane spotkanie \""
+                            +meeting.getTitle()+"\"", "Witamy na spotkaniu "+meeting.getTitle()+"<br />"+"Pamiętaj spotkanie odbędzie sie w dniu/godz "
+                            +meeting.getMeetTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))+" w miejscu "
+                            +meeting.getAddress()+".<br />Poniżej opis spotkania do zobaczenia.<br />"+meeting.getDescription());
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
                 System.out.println("Dodajemy uzytkownika do listy członków");
                 notificationText = "Uzytkownik <strong>"
                         + user.getFullName()

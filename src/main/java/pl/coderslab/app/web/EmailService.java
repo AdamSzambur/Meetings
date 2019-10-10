@@ -25,7 +25,7 @@ public class EmailService {
         int port = Integer.parseInt(request.getServletContext().getInitParameter("port"));
         String userid = request.getServletContext().getInitParameter("userEmail");
         String password = request.getServletContext().getInitParameter("password");
-        String contentType = "text/html";
+        String contentType = "text/html; charset=utf-8";
         String subject = title;
         String from = request.getServletContext().getInitParameter("userEmail");
         String to = email;//some invalid address
