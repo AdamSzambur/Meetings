@@ -5,10 +5,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.coderslab.app.models.Meeting;
 import pl.coderslab.app.web.meetings.member.MemberDTO;
 import pl.coderslab.app.models.User;
 import pl.coderslab.app.web.user.UserService;
+import pl.coderslab.app.web.user.messages.MessageService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.time.Duration;
@@ -22,11 +25,21 @@ public class MeetingController {
     private UserService userService;
     private MeetingService meetingService;
     private CommentService commentService;
+    private MessageService messageService;
+    private HttpServletRequest request;
 
-    public MeetingController(UserService userService, MeetingService meetingService, CommentService commentService) {
+    public MeetingController(UserService userService, MeetingService meetingService, CommentService commentService,
+                             MessageService messageService, HttpServletRequest request) {
         this.userService = userService;
         this.meetingService = meetingService;
         this.commentService = commentService;
+        this.messageService = messageService;
+        this.request = request;
+    }
+
+    @ModelAttribute("googleKey")
+    public String googleKey() {
+        return request.getServletContext().getInitParameter("apiKey");
     }
 
     @ModelAttribute("principal")
@@ -35,15 +48,26 @@ public class MeetingController {
         return userService.getUserByEmail(principal.getName());
     }
 
+    @ModelAttribute("numberOfNewMessages")
+    public Long numberOfNewMessages() {
+        return messageService.getNewUnreadedMessagesByRecipient(principalToUser().getId());
+    }
+
 
     @GetMapping
     public String meetingPage(@RequestParam Long id, Model model, Principal principal) {
-        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
-        model.addAttribute("meeting", meetingService.getMeetingById(id,true));
-        model.addAttribute("newComment", new CommentFormDTO(id));
-        model.addAttribute("memberDTO", new MemberDTO());
-        model.addAttribute("formater", DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm"));
-        return "meeting";
+        Meeting meeting = meetingService.getMeetingById(id,true);
+
+        if (meeting!=null) {
+            model.addAttribute("user", userService.getUserByEmail(principal.getName()));
+            model.addAttribute("meeting", meetingService.getMeetingById(id, true));
+            model.addAttribute("newComment", new CommentFormDTO(id));
+            model.addAttribute("memberDTO", new MemberDTO());
+            model.addAttribute("formater", DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm"));
+            return "meeting";
+        } else {
+            return "redirect:/";
+        }
     }
 
 
@@ -51,8 +75,6 @@ public class MeetingController {
     public String processMeetingPage(@ModelAttribute("newComment") @Valid CommentFormDTO newComment, BindingResult result,
                                      Model model, Principal principal,@RequestParam Long id) {
         if (result.hasErrors()) {
-            model.addAttribute("user", userService.getUserByEmail(principal.getName()));
-            model.addAttribute("meeting", meetingService.getMeetingById(id, true));
             if (newComment.getParentId() != null) {
                 model.addAttribute("error", newComment.getParentId());
             } else {
@@ -63,17 +85,5 @@ public class MeetingController {
             commentService.addComment(newComment,principal.getName());
             return "redirect:/meetings?id="+newComment.getMeetingId();
         }
-    }
-
-    private static long[] getTime(LocalDateTime dob, LocalDateTime now) {
-        LocalDateTime today = LocalDateTime.of(now.getYear(),
-                now.getMonthValue(), now.getDayOfMonth(), dob.getHour(), dob.getMinute(), dob.getSecond());
-        Duration duration = Duration.between(today, now);
-        long seconds = duration.getSeconds();
-        long hours = seconds / 3600;
-        long minutes = ((seconds % 3600) / 60);
-        long secs = (seconds % 60);
-
-        return new long[]{hours, minutes, secs};
     }
 }

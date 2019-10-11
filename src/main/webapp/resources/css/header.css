@@ -48,7 +48,12 @@ code {
 }
 
 .avatar {
-    border-radius: 30%;
+    border-radius: 50%;
+}
+
+.avatar_disabled {
+    -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(100%);
 }
 
 #map {

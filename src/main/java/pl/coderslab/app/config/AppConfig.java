@@ -20,6 +20,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import pl.coderslab.app.converters.LocalDateTimeConverter;
+import pl.coderslab.app.converters.UserConverter;
 
 import javax.persistence.EntityManagerFactory;
 import javax.validation.Validator;
@@ -63,7 +64,6 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     @Bean
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-     //   resolver.setMaxUploadSize(150000); // maksymalna wielkość pliku 150kb.
         resolver.setDefaultEncoding("utf-8");
         return resolver;
     }
@@ -89,10 +89,16 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(getLocalDateTimeConverter());
+        registry.addConverter(getUserConverter());
     }
     @Bean
     public LocalDateTimeConverter getLocalDateTimeConverter() {
         return new LocalDateTimeConverter();
+    }
+
+    @Bean
+    public UserConverter getUserConverter() {
+        return new UserConverter();
     }
 
 }

@@ -28,7 +28,6 @@
     </div>
     <div class="container">
         <div class="rounded border p-2 whiteBg">
-
             <form method="post">
                 <div class="input-group mb-3" >
                     <input name="searchFraze" id="filter" type="text" class="form-control"  placeholder="Podaj szukaną frazę w tablicy spotkań" aria-label="Podaj szukaną frazę w tablicy spotkań" aria-describedby="button-addon2">

@@ -1,4 +1,4 @@
-package pl.coderslab.app;
+package pl.coderslab.app.web;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -8,7 +8,9 @@ import pl.coderslab.app.converters.PolishDayAndMonthNamesConverter;
 import pl.coderslab.app.web.meetings.MeetingService;
 import pl.coderslab.app.models.User;
 import pl.coderslab.app.web.user.UserService;
+import pl.coderslab.app.web.user.messages.MessageService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Validator;
 import java.security.Principal;
 
@@ -18,11 +20,14 @@ public class HomePageController {
     private Validator validator;
     private UserService userService;
     private MeetingService meetingService;
+    private MessageService messageService;
 
-    public HomePageController(UserService userService,MeetingService meetingService) {
+
+
+    public HomePageController(UserService userService,MeetingService meetingService, MessageService messageService) {
         this.userService = userService;
         this.meetingService = meetingService;
-
+        this.messageService = messageService;
     }
 
     @ModelAttribute("principal")
@@ -31,9 +36,14 @@ public class HomePageController {
         return userService.getUserByEmail(principal.getName());
     }
 
-    @GetMapping
-    public String homePage(@ModelAttribute("finderFormDTO") FinderFormDTO finderFormDTO, @RequestParam(required = false) String selectedDate, Model model, Principal principal) {
+    @ModelAttribute("numberOfNewMessages")
+    public Long numberOfNewMessages() {
+        return messageService.getNewUnreadedMessagesByRecipient(principalToUser().getId());
+    }
 
+
+    @GetMapping
+    public String homePage(HttpServletRequest request, @ModelAttribute("finderFormDTO") FinderFormDTO finderFormDTO, @RequestParam(required = false) String selectedDate, Model model, Principal principal) {
         if (selectedDate!=null) {
             model.addAttribute("title","Wszystkie spotkania dostepne we wskazanym dniu");
             model.addAttribute("meetings", meetingService.getMeetingByDate(selectedDate));
@@ -48,7 +58,7 @@ public class HomePageController {
 
         //potrzebujemy tego do parsowania LocalDateTime
         model.addAttribute("changeEnglishToPolish", new PolishDayAndMonthNamesConverter());
-
+        model.addAttribute("googleKey", request.getServletContext().getInitParameter("apiKey"));
         model.addAttribute("user", userService.getUserByEmail(principal.getName()));
         model.addAttribute("loggedUsers", userService.findAllLoggedInUsers());
         return "index";

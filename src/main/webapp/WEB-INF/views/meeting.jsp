@@ -19,8 +19,10 @@
                         <div id="map"></div>
                     </div>
                     <div class="col-md-8">
-                        <div class="card-body">
+                        <div class="card-body h-100">
                             <h5 class="card-title">${meeting.title}</h5>
+                            <p class="card-text">Data i godzina spotknia : <strong>${meeting.meetTime.format(formater)}</strong></p>
+                            <p class="card-text">Adres spotknia : <strong>${meeting.address}</strong></p>
                             <p class="card-text">${meeting.description}</p>
                             <p class="card-text"><small class="text-muted">
                                 Ostatnia aktualizacja : ${meeting.updated.format(formater)}
@@ -31,8 +33,6 @@
                                     Chat <i class="far fa-comment-dots"></i> <span class="" id="chat_counter">[0]</span>
                                 </button>
                                 <a href="#" class="btn btn-primary m-1"><i class="far fa-comments"></i> Dodaj komentarz</a>
-
-
                             <c:if test="${meeting.owner != user}">
                                 <c:if test="${!meeting.members.contains(user)}">
                                 <button id="addMember" type="button" class="btn btn-warning m-1"><i class="fas fa-user-plus"></i> Dołącz do wydarzenia</button>
@@ -42,7 +42,16 @@
                                 </c:if>
                             </c:if>
 
+                            <br><br>
+                            <p style="position: absolute;bottom: 0;left: 5;">
+                                <i class="fas fa-users"></i> Członkowie grupy :
+                                <img src="data:image/jpeg;base64,${meeting.owner.base64Image}" width="20" height="20" class="avatar <c:if test="${!meeting.owner.available}">avatar_disabled</c:if>" title="${meeting.owner.fullName}"/>
+                                <c:forEach items="${meeting.members}" var="member">
+                                    <img src="data:image/jpeg;base64,${member.base64Image}" width="20" height="20" class="avatar <c:if test="${!member.available}">avatar_disabled</c:if>" title="${member.fullName}"/>
+                                </c:forEach>
+                            </p>
                         </div>
+
                     </div>
                 </div>
                 <div class="card-footer" data-error="<c:out value="${error == 0 ? 1 : 0}"/>">
@@ -75,7 +84,7 @@
                                     ${comment.user.fullName}
                                 </c:if>
                                 <c:if test="${!comment.user.email.equals(principal.email)}">
-                                    <a href="${mainURL}message/add?id=${comment.user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${comment.user.fullName}</a>
+                                    <a href="${mainURL}user/messages/add?recipientId=${comment.user.id}&senderId=${user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${comment.user.fullName}</a>
                                 </c:if>
                                 , Utworzono : ${comment.created.format(formater)}
                             </div>
@@ -115,7 +124,7 @@
                                         ${child1.user.fullName}
                                     </c:if>
                                     <c:if test="${!child1.user.email.equals(principal.email)}">
-                                        <a href="${mainURL}message/add?id=${child1.user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${child1.user.fullName}</a>
+                                        <a href="${mainURL}user/messages/add?recipientId=${child1.user.id}&senderId=${user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${child1.user.fullName}</a>
                                     </c:if>
                                     , Utworzono : ${child1.created.format(formater)}
                                 </div>
@@ -156,7 +165,7 @@
                                             ${child1.user.fullName}
                                         </c:if>
                                         <c:if test="${!child2.user.email.equals(principal.email)}">
-                                            <a href="${mainURL}message/add?id=${child2.user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${child2.user.fullName}</a>
+                                            <a href="${mainURL}user/messages/add?recipientId=${child2.user.id}&senderId=${user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${child2.user.fullName}</a>
                                         </c:if>
                                         , Utworzono : ${child2.created.format(formater)}
                                     </div>
@@ -198,7 +207,7 @@
                                                 ${child3.user.fullName}
                                             </c:if>
                                             <c:if test="${!child3.user.email.equals(principal.email)}">
-                                                <a href="${mainURL}message/add?id=${child3.user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${child3.user.fullName}</a>
+                                                <a href="${mainURL}user/messages/add?recipientId=${child3.user.id}&senderId=${user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${child3.user.fullName}</a>
                                             </c:if>
                                             , Utworzono : ${child3.created.format(formater)}
                                         </div>
@@ -241,7 +250,7 @@
                                                     ${child4.user.fullName}
                                                 </c:if>
                                                 <c:if test="${!child4.user.email.equals(principal.email)}">
-                                                    <a href="${mainURL}message/add?id=${child4.user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${child4.user.fullName}</a>
+                                                    <a href="${mainURL}user/messages/add?recipientId=${child4.user.id}&senderId=${user.id}" title="Wyślij wiadomość"><i class="far fa-envelope"></i> ${child4.user.fullName}</a>
                                                 </c:if>
                                                 , Utworzono : ${child4.created.format(formater)}
                                             </div>
@@ -294,7 +303,7 @@
                     }
                 </script>
                 <script async defer
-                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5EJjfoZUTXckzVuwbvm3Ke0SWYwoi6OI&callback=initMap">
+                        src="https://maps.googleapis.com/maps/api/js?key=${googleKey}&callback=initMap">
                 </script>
             </mapa>
 

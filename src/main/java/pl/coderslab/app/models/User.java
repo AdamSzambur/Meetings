@@ -22,6 +22,9 @@ public class User extends AbstractEntity {
     @Column(name = "last_name")
     private String lastName;
 
+    @Transient
+    private Boolean available = false;
+
     @OneToMany(mappedBy = "owner")
     private List<Meeting> myMeetings;
 
@@ -30,6 +33,28 @@ public class User extends AbstractEntity {
 
     @OneToMany(mappedBy = "user")
     private List<Notification> notification;
+
+    @OneToMany(mappedBy = "recipient")
+    private List<InboxMessage> inbox;
+
+    @OneToMany(mappedBy = "sender")
+    private List<OutboxMessage> outbox;
+
+    public List<InboxMessage> getInbox() {
+        return inbox;
+    }
+
+    public void setInbox(List<InboxMessage> inbox) {
+        this.inbox = inbox;
+    }
+
+    public List<OutboxMessage> getOutbox() {
+        return outbox;
+    }
+
+    public void setOutbox(List<OutboxMessage> outbox) {
+        this.outbox = outbox;
+    }
 
     public List<Notification> getNotification() {
         return notification;
@@ -67,6 +92,15 @@ public class User extends AbstractEntity {
 
     public User() {
         setAvatar(Base64.getDecoder().decode(getDefaultAvatar()));
+    }
+
+
+    public Boolean getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(Boolean available) {
+        this.available = available;
     }
 
     public List<Meeting> getMyMeetings() {

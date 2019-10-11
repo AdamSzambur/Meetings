@@ -12,6 +12,7 @@ import pl.coderslab.app.web.meetings.MeetingDTO;
 import pl.coderslab.app.web.meetings.MeetingService;
 import pl.coderslab.app.models.User;
 import pl.coderslab.app.web.user.UserService;
+import pl.coderslab.app.web.user.messages.MessageService;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -24,16 +25,23 @@ public class MeetingAddController {
 
     private UserService userService;
     private MeetingService meetingService;
+    private MessageService messageService;
 
-    public MeetingAddController(UserService userService, MeetingService meetingService) {
+    public MeetingAddController(UserService userService, MeetingService meetingService, MessageService messageService) {
         this.userService = userService;
         this.meetingService = meetingService;
+        this.messageService = messageService;
     }
 
     @ModelAttribute("principal")
     public User principalToUser() {
         Principal principal = SecurityContextHolder.getContext().getAuthentication();
         return userService.getUserByEmail(principal.getName());
+    }
+
+    @ModelAttribute("numberOfNewMessages")
+    public Long numberOfNewMessages() {
+        return messageService.getNewUnreadedMessagesByRecipient(principalToUser().getId());
     }
 
     @GetMapping
@@ -48,8 +56,6 @@ public class MeetingAddController {
     @PostMapping
     public  String processAddPage(@ModelAttribute("meeting") @Valid MeetingDTO meeting, BindingResult result,
                                   Model model, Principal principal) {
-        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
-
         if (result.hasErrors()) {
             return "meetingAdd";
         }

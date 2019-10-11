@@ -1,4 +1,4 @@
-package pl.coderslab.app;
+package pl.coderslab.app.web;
 
 public class FinderFormDTO {
     private Double latitude;

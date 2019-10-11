@@ -60,4 +60,12 @@ public class NotificationService {
         notification.setStatus(status);
         notificationRepository.save(notification);
     }
+
+    public void deleteNotification(Long notificationId) {
+        notificationRepository.delete(notificationId);
+    }
+
+    public void deleteNotification(List<Long> notificationsId) {
+        notificationsId.forEach(n->notificationRepository.delete(n));
+    }
 }
