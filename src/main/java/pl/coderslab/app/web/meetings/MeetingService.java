@@ -187,28 +187,53 @@ public class MeetingService {
         Meeting meeting = meetingRepository.findOne(meetingDTO.getId());
         if (meeting != null) {
 
-            if (meetingDTO.getSendNotification()) {
+            if (meetingDTO.getSendNotification() || meetingDTO.getSendEmail()) {
                 // przygotowanie tresci powiadomienia
                 String notificationText = "";
+                String emailText = "";
                 if (!meetingDTO.getAddress().equals(meeting.getAddress())) {
                     notificationText += "adres ";
+                    emailText += "  Zmiana adresu spotkania : <strong>"+meetingDTO.getAddress()+"</strong><br>";
                 }
                 if (!meetingDTO.getMeetTime().equals(meeting.getMeetTime())) {
                     notificationText += "data i godzina spotkania ";
+                    emailText += "  Zmiana godziny/daty spotkania : <strong>"+meetingDTO.getMeetTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm"))+"</strong><br>";
                 }
                 if (!meetingDTO.getDescription().equals(meeting.getDescription())) {
                     notificationText += "opis ";
+                    emailText += "  Zmiana opisu : <strong>"+meetingDTO.getDescription()+"</strong><br>";
                 }
                 if (!meetingDTO.getTitle().equals(meeting.getTitle())) {
                     notificationText += "tytuł";
+                    emailText += "  Zmiana tytułu wydarzenia : <strong>"+meetingDTO.getTitle()+"</strong><br>";
                 }
+
                 if (notificationText.length() > 0) {
                     notificationText = "Nastąpila zmiana wydarzenia <strong>" +
                             meeting.getTitle() + "</strong> : " + notificationText;
-                    notificationService.addNotificationForUserList(notificationText, "meetings?id=" + meeting.getId(), getMeetingById(meetingDTO.getId(), true).getMembers(), "primary");
-                    // powiadomienie zapisane
-                }
 
+                    emailText = "Nastąpila zmiana wydarzenia <strong>" +
+                            meeting.getTitle() + "</strong><br>" + emailText + "<br>Pozdrowienia Meetings :)";
+
+
+
+                    if (meetingDTO.getSendNotification()) {
+                        notificationService.addNotificationForUserList(notificationText, "meetings?id=" + meeting.getId(), getMeetingById(meetingDTO.getId(), true).getMembers(), "primary");
+                        // powiadomienie zapisane
+                    }
+
+                    if (meetingDTO.getSendEmail()) {
+                        for (User member : meeting.getMembers()) {
+                            try {
+                                emailService.sendEmail(member.getEmail(),"Zmiany w spotkaniu \""+meeting.getTitle()+"\"",emailText);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        // email wyslany
+                    }
+
+                }
             }
             fillMeetingAndSave(meetingDTO, meeting);
         }
