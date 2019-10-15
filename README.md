@@ -1,42 +1,99 @@
-Projekt Meeting
+Projekt Meetings
 ------------------------------------------
+
+####Zakres funkcjonalności
 
 **Strona główna**
 
 [+] Lista aktualnych spotkań które zaplanowane są na kolejne 7 dni.
 
-[+] Możliwość wyboru określonej kategorii spotkania z listy wyboru lub za pomocą filtrowania opisu spotkania.
+[+] Filtrowanie tablicy spotkań po dowolnej wartości znajdującej się w rekordzie.
 
-[+/-] Możliwość wyboru spotkania w określonej odległości od miejsc w ktorym aktualnie się znajdujemy
+[+] Wybór spotkania w określonej odległości od miejsca w ktorym aktualnie się znajdujemy (API Google)
 
-[+] Na głównej stronie będzie również możliwość dopisania nowej propozycji spotkania.
+[+] Dopisywanie nowej propozycji spotkania.
+
+[+] Wyszukiwanie wg daty spotkania - Kalendarz.
 
 
 **Nowe spotkanie**
 
-[+] Grupa tematyczna – dodajemy nową lub korzystamy z innej
+[+] Opis spotkania .
 
-[+] Opis spotkania 
+[+] Lokalizacja spotkania (API Google).
 
-[+/-] Lokalizacja spotkania (fajnie by było użyć tutaj API Google).
+[+] Termin spotkania.
 
-[+] Termin spotkania
 
-[+] Możliwość wysłania zaproszenia do innych użytkowników – twoich znajomych
+**Strona spotkania**
 
-**Aktualne spotkania w których bierzemy udział**
+[+] Mapa z miejscem spotkania (API Google).
 
-[+] możliwość dodania jakiejś dodatkowej informacji 
+[+] Czatowanie z pozostałymi członkami grupy (Autorskie API :)).
 
-[+] możliwość wypisania się z listy osób zainteresowanych udziałem w spotkaniu (0 uzytkowników dopisanych do spotkania – spotkanie znika z bazy danych, uzyj crona)
+[+] Dodanie komentarzy.
 
-[+/-] czat z innymi uzytkownikami spotkania
+[+] Dopisywanie się i wypisywanie z grupy członków wydarzenia.
 
+
+
+**Aktualne spotkania w których bierzemy udział oraz jesteśmy gospodarzem**
+
+[+] Modyfikowanie wszystkich informacji spotkania.
+
+[+] Wysłanie informacji o zmianie wartości spotkania do członków grupy e-mailem.
+
+[+] Wysłanie powiadomienia do pozostałych członków grupy.
+
+
+**Wiadomości**
+
+[+] Na każdej podstronie w nagłówku informacja o ilości nowych wiadomości.
+
+[+] Lista wiadomości w skrzynce odbiorczej i nadawczej (Zaznaczone wiadomości nie przeczytane).
+
+[+] Wysyłanie wiadomości do innych uzytkowników aplikacji.
+
+[+] Usuwanie wiadomości.
 
 **Strona użytkownika**
 
-[+] możliwość zmiany opisu użytkownika (Imie, Nazwisko, hasło itd.)
+[+] Zmiana opisu użytkownika (Imie, Nazwisko, hasło, e-mail).
 
-[+] wyszukiwanie znajomych , wysyłanie innym uzytkownikom zaproszenia do grona znajomych
+[+] Dodawanie/zmiany avatara.
 
-[+/-] mozliwosc dodania własnego avatara :)
+####Wykorzystane API/Technologie
+
+[+] javax.servlet
+
+[+] springframework
+
+[+] hibernate
+
+[+] mysql-connector-java
+
+[+] spring security
+
+[+] javax - validator
+
+[+] javax.json.bind
+
+[+] javax.mail
+
+[+] jackson-datatype-jsr310
+
+[+] jsp
+
+[+] jstl
+
+[+] java script
+
+[+] ajax
+
+[+] bootstrap
+
+
+
+
+
+
