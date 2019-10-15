@@ -66,25 +66,31 @@ Projekt Meetings
 
 ##### Back-end
 
-[+] javax.servlet
+[+] javax.servlet-api
 
-[+] springframework
+[+] spring-webmvc
 
-[+] hibernate
+[+] spring-orm
+
+[+] spring-data-jpa
+
+[+] spring-security-web
+
+[+] hibernate-core
+
+[+] hibernate-validator
 
 [+] mysql-connector-java
 
-[+] spring security
+[+] jackson-databind
 
-[+] javax - validator
+[+] javax.json.bind-api
 
-[+] javax.json.bind
+[+] jackson-datatype-jsr310
+
+[+] javax.json
 
 [+] javax.mail
-
-[+] jackson-datatype
-
-[+] jsp
 
 [+] jstl
 
