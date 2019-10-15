@@ -3,8 +3,8 @@ package pl.coderslab.app.web.meetings;
 import org.springframework.stereotype.Service;
 import pl.coderslab.app.web.EmailService;
 import pl.coderslab.app.web.FinderFormDTO;
-import pl.coderslab.app.web.meetings.CoordianteJsonStructure.Coordinate;
-import pl.coderslab.app.web.meetings.DistanceJsonStructure.Distance;
+import pl.coderslab.app.web.meetings.coordianteJsonStructure.Coordinate;
+import pl.coderslab.app.web.meetings.distanceJsonStructure.Distance;
 import pl.coderslab.app.web.meetings.member.MemberDTO;
 import pl.coderslab.app.models.Comment;
 import pl.coderslab.app.models.Meeting;
@@ -257,7 +257,6 @@ public class MeetingService {
         if (meeting!=null) {
             User user = userRepository.findOne(memberDTO.getUserId());
             meeting.getMembers().size();
-
             String notificationText = "";
             String alertType = "";
             if (meeting.getMembers().contains(user)) {

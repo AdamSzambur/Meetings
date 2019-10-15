@@ -1,4 +1,4 @@
-package pl.coderslab.app.web.meetings.DistanceJsonStructure;
+package pl.coderslab.app.web.meetings.distanceJsonStructure;
 
 public class Element {
     private DistanceOrDuration distance;

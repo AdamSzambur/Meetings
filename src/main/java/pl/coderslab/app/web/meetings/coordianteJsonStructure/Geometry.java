@@ -1,4 +1,4 @@
-package pl.coderslab.app.web.meetings.CoordianteJsonStructure;
+package pl.coderslab.app.web.meetings.coordianteJsonStructure;
 
 public class Geometry {
     private Location location;
