@@ -1,7 +1,7 @@
 Projekt Meetings
 ------------------------------------------
 
-####Zakres funkcjonalności
+#### Zakres funkcjonalności
 
 **Strona główna**
 
@@ -62,7 +62,9 @@ Projekt Meetings
 
 [+] Dodawanie/zmiany avatara.
 
-####Wykorzystane API/Technologie
+#### Wykorzystane API/Technologie
+
+##### Back-end
 
 [+] javax.servlet
 
@@ -80,19 +82,16 @@ Projekt Meetings
 
 [+] javax.mail
 
-[+] jackson-datatype-jsr310
+[+] jackson-datatype
 
 [+] jsp
 
 [+] jstl
+
+##### Front-end
 
 [+] java script
 
 [+] ajax
 
 [+] bootstrap
-
-
-
-
-
