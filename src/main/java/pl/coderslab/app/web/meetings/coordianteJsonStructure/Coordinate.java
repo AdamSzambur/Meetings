@@ -1,4 +1,4 @@
-package pl.coderslab.app.web.meetings.CoordianteJsonStructure;
+package pl.coderslab.app.web.meetings.coordianteJsonStructure;
 
 import java.util.List;
 

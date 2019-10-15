@@ -38,6 +38,7 @@ public class HomePageController {
 
     @ModelAttribute("numberOfNewMessages")
     public Long numberOfNewMessages() {
+        if (principalToUser()==null) return 0L;
         return messageService.getNewUnreadedMessagesByRecipient(principalToUser().getId());
     }
 
@@ -55,6 +56,8 @@ public class HomePageController {
             model.addAttribute("title","Wydarzenia kolejne 7 dni");
             model.addAttribute("meetings",meetingService.getMeetingsNext7Days());
         }
+
+        //System.out.println(principal.getName());
 
         //potrzebujemy tego do parsowania LocalDateTime
         model.addAttribute("changeEnglishToPolish", new PolishDayAndMonthNamesConverter());

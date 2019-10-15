@@ -1,7 +1,7 @@
 Projekt Meetings
 ------------------------------------------
 
-####Zakres funkcjonalności
+#### Zakres funkcjonalności
 
 **Strona główna**
 
@@ -15,7 +15,6 @@ Projekt Meetings
 
 [+] Wyszukiwanie wg daty spotkania - Kalendarz.
 
-
 **Nowe spotkanie**
 
 [+] Opis spotkania .
@@ -23,7 +22,6 @@ Projekt Meetings
 [+] Lokalizacja spotkania (API Google).
 
 [+] Termin spotkania.
-
 
 **Strona spotkania**
 
@@ -35,8 +33,6 @@ Projekt Meetings
 
 [+] Dopisywanie się i wypisywanie z grupy członków wydarzenia.
 
-
-
 **Aktualne spotkania w których bierzemy udział oraz jesteśmy gospodarzem**
 
 [+] Modyfikowanie wszystkich informacji spotkania.
@@ -45,6 +41,9 @@ Projekt Meetings
 
 [+] Wysłanie powiadomienia do pozostałych członków grupy.
 
+[+] Dodanie komentarzy.
+
+[+] Dopisywanie się i wypisywanie z grupy członków wydarzenia.
 
 **Wiadomości**
 
@@ -62,7 +61,10 @@ Projekt Meetings
 
 [+] Dodawanie/zmiany avatara.
 
-####Wykorzystane API/Technologie
+
+#### Wykorzystane API/Technologie
+
+##### Back-end
 
 [+] javax.servlet
 
@@ -80,20 +82,16 @@ Projekt Meetings
 
 [+] javax.mail
 
-[+] jackson-datatype-jsr310
+[+] jackson-datatype
 
 [+] jsp
 
 [+] jstl
+
+##### Front-end
 
 [+] java script
 
 [+] ajax
 
 [+] bootstrap
-
-
-
-
-
-
